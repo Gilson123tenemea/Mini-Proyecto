@@ -5,6 +5,9 @@
  */
 package BD.AlquilerInterfaz;
 
+import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
+import com.db4o.Db4o;
+import com.db4o.ObjectContainer;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,15 +22,19 @@ public class dashboard extends javax.swing.JFrame {
     /**
      * Creates new form dashboard
      */
-    
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
-    public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap";
-    
+    //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap";
+    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+
     public dashboard() {
         initComponents();
         this.setTitle("Base De Datos Orientada a Objetos");
         this.setLocationRelativeTo(null);
 
+    }
+
+    public void cerrarBaseDeDatos() {
+        BaseD.close(); // Cierra la conexión con la base de datos
     }
 
     /**
@@ -310,10 +317,10 @@ public class dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
-        // TODO add your handling code here:
-        dispose();
+        cerrarBaseDeDatos(); // Cierra la base de datos
+        dispose(); // Cierra la ventana
     }//GEN-LAST:event_btnsalirActionPerformed
-public  void ShowJPanel(JPanel p) {
+    public void ShowJPanel(JPanel p) {
         p.setSize(810, 589);
         p.setLocation(0, 0);
 
