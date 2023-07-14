@@ -21,10 +21,13 @@ public class dashboard extends javax.swing.JFrame {
      */
     
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
-    public static String direccionBD = "E:\\EDWIN\\M2B\\BASE\\AlquilerInterfaz.yap";
+    public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap";
     
     public dashboard() {
         initComponents();
+        this.setTitle("Base De Datos Orientada a Objetos");
+        this.setLocationRelativeTo(null);
+
     }
 
     /**
