@@ -6,10 +6,15 @@
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Cliente;
+import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
+import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
+import static BD.AlquilerInterfaz.CRUD_Propietario.cerrarBaseDatos;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.query.Query;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import com.toedter.calendar.JCalendar;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -25,8 +30,7 @@ import javax.swing.table.TableModel;
  */
 public class CRUD_Clientes extends javax.swing.JPanel {
 
-    public static ArrayList<Cliente> mipersonaList = new ArrayList<>();
-
+    public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
     String CedulaCli = "";
     String NombreCli = "";
     String ApellidoCli = "";
@@ -42,6 +46,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
      */
     public CRUD_Clientes() {
         initComponents();
+        cargarTabla();
 
     }
 
@@ -61,28 +66,30 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        btnH = new javax.swing.JRadioButton();
+        rbtnHombre = new javax.swing.JRadioButton();
         jLabel9 = new javax.swing.JLabel();
-        btnM = new javax.swing.JRadioButton();
+        rbtnMujer = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
-        cbboxNacionalidad = new javax.swing.JComboBox<>();
+        cbxNacionalidad = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
-        jDnacimiento = new com.toedter.calendar.JDateChooser();
-        btningresar = new javax.swing.JButton();
+        dchFechaNacimiento = new com.toedter.calendar.JDateChooser();
+        btnCrear = new javax.swing.JButton();
         btnmod = new javax.swing.JButton();
         btneliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablePersona = new javax.swing.JTable();
         btnreport = new javax.swing.JButton();
-        SpinnerEdad = new javax.swing.JSpinner();
+        spnEdad = new javax.swing.JSpinner();
         txtcelu = new javax.swing.JTextField();
-        Tfieldcedu = new javax.swing.JTextField();
-        Tfieldnomb = new javax.swing.JTextField();
-        Tfieldape = new javax.swing.JTextField();
-        TfieldCorreo = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtApellido = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         btncargardatos = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        BuscarOpcion = new javax.swing.JComboBox<>();
+        ComboBoxFiltro = new javax.swing.JComboBox<>();
+        btnBuscarFiltro = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -98,30 +105,30 @@ public class CRUD_Clientes extends javax.swing.JPanel {
 
         jLabel8.setText("Sexo:");
 
-        btngrupSexo.add(btnH);
-        btnH.setText("Hombre");
-        btnH.addActionListener(new java.awt.event.ActionListener() {
+        btngrupSexo.add(rbtnHombre);
+        rbtnHombre.setText("Hombre");
+        rbtnHombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHActionPerformed(evt);
+                rbtnHombreActionPerformed(evt);
             }
         });
 
         jLabel9.setText("Celular:");
 
-        btngrupSexo.add(btnM);
-        btnM.setText("mujer");
+        btngrupSexo.add(rbtnMujer);
+        rbtnMujer.setText("mujer");
 
         jLabel5.setText("Nacionalidad:");
 
-        cbboxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
 
         jLabel12.setText("Fecha Nacimiento:");
 
-        btningresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
-        btningresar.setText("GUARDAR");
-        btningresar.addActionListener(new java.awt.event.ActionListener() {
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
+        btnCrear.setText("GUARDAR");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btningresarActionPerformed(evt);
+                btnCrearActionPerformed(evt);
             }
         });
 
@@ -170,7 +177,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
             }
         });
 
-        SpinnerEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        spnEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
 
         btncargardatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btncargardatos.addActionListener(new java.awt.event.ActionListener() {
@@ -182,12 +189,21 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("REGISTRO DE CLIENTE");
 
-        BuscarOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ver todos", "Cedula", "Buscar Parametros" }));
-        BuscarOpcion.addActionListener(new java.awt.event.ActionListener() {
+        ComboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cedula", "Nombre", "Genero" }));
+        ComboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarOpcionActionPerformed(evt);
+                ComboBoxFiltroActionPerformed(evt);
             }
         });
+
+        btnBuscarFiltro.setText("Buscar");
+        btnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarFiltroActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("FILTRO BUSQUEDA");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -196,65 +212,70 @@ public class CRUD_Clientes extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(4, 4, 4)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(23, 23, 23)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addGap(4, 4, 4)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Tfieldape, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Tfieldnomb, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnH)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnM))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(247, 247, 247))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(SpinnerEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel12)
+                                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jDnacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel5)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(cbboxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtcelu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(Tfieldcedu, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(28, 28, 28)
-                                                    .addComponent(btncargardatos)
-                                                    .addGap(102, 102, 102)
-                                                    .addComponent(jLabel6)
-                                                    .addGap(23, 23, 23)
-                                                    .addComponent(TfieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(btningresar)
-                                .addGap(18, 18, 18)
-                                .addComponent(BuscarOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(btnmod)
-                                .addGap(18, 18, 18)
-                                .addComponent(btneliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnreport)))
-                        .addGap(0, 70, Short.MAX_VALUE)))
-                .addContainerGap())
+                                            .addComponent(btncargardatos)))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnCrear)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rbtnHombre)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rbtnMujer)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(393, 393, 393)
+                                        .addComponent(btnBuscarFiltro))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnmod)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btneliminar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnreport)
+                                        .addGap(44, 44, 44))))
+                            .addComponent(spnEdad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcelu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(77, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel7)
@@ -268,135 +289,189 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Tfieldcedu, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addComponent(btncargardatos)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel6)
-                        .addComponent(TfieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btncargardatos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(Tfieldnomb, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Tfieldape, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbboxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addGap(38, 38, 38)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(SpinnerEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addComponent(jLabel12)
-                    .addComponent(jDnacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel12))
+                    .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
-                        .addComponent(btnH)
-                        .addComponent(btnM))
+                        .addComponent(rbtnHombre)
+                        .addComponent(rbtnMujer)
+                        .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10)
+                        .addComponent(btnBuscarFiltro))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtcelu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BuscarOpcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btningresar)
-                        .addComponent(btnmod)
-                        .addComponent(btneliminar)
-                        .addComponent(btnreport)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrear)
+                    .addComponent(btnmod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btneliminar)
+                    .addComponent(btnreport, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHActionPerformed
+    private void rbtnHombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnHombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHActionPerformed
+    }//GEN-LAST:event_rbtnHombreActionPerformed
 
-    private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
+        crearCliente();
+    }//GEN-LAST:event_btnCrearActionPerformed
 
-        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
-        Crear_Cli(BaseD);
-        //Cerrar_BD(BaseD);
+    // Método para crear un nuevo propietario
+    private void crearCliente() {
+        if (!validarCampos()) {
+            return;
+        }
 
-    }//GEN-LAST:event_btningresarActionPerformed
-    public void Crear_Cli(ObjectContainer basep) {
+        String cedula = txtCedula.getText();
+
+        // Consultar si ya existe un cliente con la misma cédula
+        ObjectSet<Cliente> result = BaseD.queryByExample(new Cliente(cedula, null, null, null, 0, null, null, null, null));
+        if (!result.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ya existe un cliente con la cédula ingresada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Si no existe un cliente con la misma cédula, proceder con la creación
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
+        int edad = (int) spnEdad.getValue();
+        String telefono = txtcelu.getText();
+        String correo = txtCorreo.getText();
+        String nacionalidad = cbxNacionalidad.getSelectedItem().toString();
+        Date fechaNacimiento = dchFechaNacimiento.getDate();
+
+        Cliente mi_cli = new Cliente(cedula, nombre, apellido, genero, edad, telefono, correo, nacionalidad, fechaNacimiento);
+        BaseD.store(mi_cli); // Almacenar el objeto en la base de datos
+
+        JOptionPane.showMessageDialog(null, "Cliente creado exitosamente.");
+        limpiarCampos();
+        cargarTabla();
+    }
+
+    // Método para consultar un propietario por su cédula
+    private void consultarCliente() {
+        String cedula = txtCedula.getText();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+        query.descend("Cedula").constrain(cedula); // Cedula que esta en la clase
+        ObjectSet<Cliente> result = query.execute();
+        if (!result.isEmpty()) {
+            Cliente cliente = result.next();
+            mostrarCliente(cliente);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
+            limpiarCampos();
+        }
+    }
+
+    // Método para modificar un propietario existente
+    private void modificarCliente() {
+        if (!validarCampos()) {
+            return;
+        }
+
+        String cedula = txtCedula.getText();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+        query.descend("Cedula").constrain(cedula);
+        ObjectSet<Cliente> result = query.execute();
+        if (!result.isEmpty()) {
+            Cliente cliente = result.next();
+            // Actualizar los campos del propietario con los valores ingresados en la interfaz
+            cliente.setNombreCliente(txtNombre.getText());
+            cliente.setApellidoCliente(txtApellido.getText());
+            cliente.setGeneroCliente(rbtnHombre.isSelected() ? "Hombre" : "Mujer");
+            cliente.setEdadCliente((int) spnEdad.getValue());
+            cliente.setCelular(txtcelu.getText());
+            cliente.setCorreo(txtCorreo.getText());
+            cliente.setNacionalidad(cbxNacionalidad.getSelectedItem().toString());
+            cliente.setFecha_Naci(dchFechaNacimiento.getDate());
+
+            BaseD.store(cliente); // Actualizar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Cliente modificado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
+        }
+    }
+
+    // Método para mostrar los datos de un propietario en los campos de la interfaz
+    private void mostrarCliente(Cliente cliente) {
+        txtNombre.setText(cliente.getNombreCliente());
+        txtApellido.setText(cliente.getApellidoCliente());
+        rbtnHombre.setSelected(cliente.getGeneroCliente() == "H");
+        rbtnMujer.setSelected(cliente.getGeneroCliente() == "M");
+        spnEdad.setValue(cliente.getEdadCliente());
+        txtcelu.setText(cliente.getCelular());
+        txtCorreo.setText(cliente.getCorreo());
+        cbxNacionalidad.setSelectedItem(cliente.getNacionalidad());
+        dchFechaNacimiento.setDate(cliente.getFecha_Naci());
+    }
+
+// Método para validar los campos de la interfaz
+    public boolean validarCampos() {
         Validaciones miValidaciones = new Validaciones();
-        if (validarCampos(basep)) {
-            if (!Comprobar_Cliente(basep, CedulaCli)) {
-                Cliente Cnuevo = new Cliente(CedulaCli, NombreCli, ApellidoCli, GeneroCli, EdadCli, correoCli, CelularCli, NacionalidadCli, fechaNaciCli);
-                basep.set(Cnuevo);
-                JOptionPane.showMessageDialog(null, "El cliente se guardó correctamente");
-                // LimpiarCampos();
-            } else {
-                JOptionPane.showMessageDialog(null, "El cliente ya existe");
-            }
-            Tfieldcedu.setText("");
-        }
-    }
-
-    public static boolean Comprobar_Cliente(ObjectContainer basep, String CedulaCli) {
-        Cliente ejemploCliente = new Cliente(CedulaCli, null, null, null, 0, null, null, null, null);
-        ObjectSet<Cliente> result = basep.queryByExample(ejemploCliente);
-        return !result.isEmpty();
-    }
-
-    public void asignarVariables(ObjectContainer basep) {
-        CedulaCli = Tfieldcedu.getText();
-        NombreCli = Tfieldnomb.getText();
-        ApellidoCli = Tfieldape.getText();
-        if (btnH.isSelected()) {
-            GeneroCli = "Hombre";
-        }
-        if (btnM.isSelected()) {
-            GeneroCli = "Mujer";
-        }
-
-        CelularCli = txtcelu.getText();
-        correoCli = TfieldCorreo.getText();
-        EdadCli = (Integer) SpinnerEdad.getValue();
-        NacionalidadCli = cbboxNacionalidad.getSelectedItem().toString();
-        fechaNaciCli = jDnacimiento.getDate();
-    }
-
-    public boolean validarCampos(ObjectContainer basep) {
-        Validaciones miValidaciones = new Validaciones();
-        asignarVariables(basep);
         boolean ban_confirmar = true;
 
-        if (Tfieldcedu.getText().isEmpty()) {
+        if (txtCedula.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese la cédula del cliente");
             ban_confirmar = false;
-        } else if (!miValidaciones.validarCedula(CedulaCli)) {
+        } else if (!miValidaciones.validarCedula(txtCedula.getText())) {
             JOptionPane.showMessageDialog(this, "Cédula incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
 
-        if (Tfieldnomb.getText().isEmpty()) {
+        if (txtNombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el nombre del cliente");
             ban_confirmar = false;
-        } else if (!miValidaciones.ValidarNomApe(NombreCli)) {
+        } else if (!miValidaciones.ValidarNomApe(txtNombre.getText())) {
             JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
 
-        if (Tfieldape.getText().isEmpty()) {
+        if (txtApellido.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el apellido del cliente");
             ban_confirmar = false;
-        } else if (!miValidaciones.ValidarNomApe(ApellidoCli)) {
+        } else if (!miValidaciones.ValidarNomApe(txtApellido.getText())) {
             JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
@@ -405,270 +480,247 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         if (txtcelu.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el celular del cliente");
             ban_confirmar = false;
-        } else if (!miValidaciones.validarCedula(CelularCli)) {
-            JOptionPane.showMessageDialog(this, "Celular incorrecta. Ingrese de nuevo");
+        } else if (!miValidaciones.validarCedula(txtcelu.getText())) {
+            JOptionPane.showMessageDialog(this, "Celular incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        if (TfieldCorreo.getText().isEmpty()) {
+        if (txtCorreo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el correo del cliente");
             ban_confirmar = false;
-        } else if (!miValidaciones.ValidarCorreo(correoCli)) {
+        } else if (!miValidaciones.ValidarCorreo(txtCorreo.getText())) {
             JOptionPane.showMessageDialog(this, "Correo incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        if (cbboxNacionalidad.getSelectedItem() == null) {
+        if (cbxNacionalidad.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Ingrese la nacionalidad del cliente");
             ban_confirmar = false;
         } else {
-            if (!miValidaciones.ValidarCiudad(NacionalidadCli)) {
-                JOptionPane.showMessageDialog(this, "nacionalidad invalida");
+            if (!miValidaciones.ValidarCiudad(cbxNacionalidad.getSelectedItem().toString())) {
+                JOptionPane.showMessageDialog(this, "Nacionalidad inválida");
                 ban_confirmar = false;
             }
         }
         return ban_confirmar;
     }
 
-    public static void Cerrar_BD(ObjectContainer basep) {
-
-        basep.close();
-    }
 
     private void btnmodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodActionPerformed
         // TODO add your handling code here:
-
+        modificarCliente();
     }//GEN-LAST:event_btnmodActionPerformed
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
         // TODO add your handling code here:
-        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
-        Eliminar_Cliente(BaseD);
-        //Cerrar_BD(BaseD);
+        eliminarCliente();
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreportActionPerformed
         // TODO add your handling code here:
-
+        cargarTabla();
+        limpiarCampos();
+        habilitarParametros();
     }//GEN-LAST:event_btnreportActionPerformed
-    public void CargarTabla(ObjectSet<Cliente> result) {
-        if (result.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El cliente no se encuentra en la base de datos");
-        } else {
-            DefaultTableModel modeloDatos = new DefaultTableModel(new String[]{"CEDULA", "NOMBRE", "APELLIDO", "EDAD", "SEXO", "CELULAR", "CORREO", "NACIONALIDAD", "FECHA NACI"}, result.size());
-            jTablePersona.setModel(modeloDatos);
+    // Método para cargar la tabla con los propietarios existentes en la base de datos
+    private void cargarTabla() {
+        DefaultTableModel model = (DefaultTableModel) jTablePersona.getModel();
+        model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
-            for (int i = 0; i < result.size(); i++) {
-                Cliente persona = result.get(i);
-                modeloDatos.setValueAt(persona.getCedula(), i, 0);
-                modeloDatos.setValueAt(persona.getNombreCliente(), i, 1);
-                modeloDatos.setValueAt(persona.getApellidoCliente(), i, 2);
-                modeloDatos.setValueAt(persona.getEdadCliente(), i, 3);
-                modeloDatos.setValueAt(persona.getGeneroCliente(), i, 4);
-                modeloDatos.setValueAt(persona.getCelular(), i, 5);
-                modeloDatos.setValueAt(persona.getCorreo(), i, 6);
-                modeloDatos.setValueAt(persona.getNacionalidad(), i, 7);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaNacimiento = sdf.format(persona.getFecha_Naci());
-                modeloDatos.setValueAt(fechaNacimiento, i, 8);
-            }
+        ObjectSet<Cliente> result = BaseD.queryByExample(Cliente.class);
+        while (result.hasNext()) {
+            Cliente cliente = result.next();
+            Object[] row = {
+                cliente.getCedula(),
+                cliente.getNombreCliente(),
+                cliente.getApellidoCliente(),
+                cliente.getEdadCliente(),
+                cliente.getGeneroCliente(),
+                cliente.getCelular(),
+                cliente.getCorreo(),
+                cliente.getNacionalidad(),
+                cliente.getFecha_Naci()
+            };
+            model.addRow(row);
+        }
+    }
+    //////////////////////////////////// filtra clientes ///
+
+    private void filtrarClientes(String criterio, String valorBusqueda) {
+        DefaultTableModel model = (DefaultTableModel) jTablePersona.getModel();
+        model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+
+        ObjectSet<Cliente> result;
+
+        if (criterio.equals("Cedula")) {
+            result = BaseD.queryByExample(new Cliente(valorBusqueda, null, null, null, 0, null, null, null, null));
+        } else if (criterio.equals("Nombre")) {
+            result = BaseD.queryByExample(new Cliente(null, valorBusqueda, null, null, 0, null, null, null, null));
+        } else if (criterio.equals("Genero")) {
+            Cliente filtro = new Cliente(null, null, null, valorBusqueda, 0, null, null, null, null);
+            result = BaseD.queryByExample(filtro);
+        } else {
+            // Criterio inválido, no se realiza la búsqueda
+            return;
+        }
+
+        while (result.hasNext()) {
+            Cliente cliente = result.next();
+            Object[] row = {
+                cliente.getCedula(),
+                cliente.getNombreCliente(),
+                cliente.getApellidoCliente(),
+                cliente.getEdadCliente(),
+                cliente.getGeneroCliente(),
+                cliente.getCelular(),
+                cliente.getCorreo(),
+                cliente.getNacionalidad(),
+                cliente.getFecha_Naci()
+            };
+            model.addRow(row);
         }
     }
 
 
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
-        // TODO add your handling code here:
-        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
-        Buscar_ClienteCed(BaseD);
-        //Cerrar_BD(BaseD);
+        txtCedula.setEnabled(false);
+        btnCrear.setEnabled(false);
+        consultarCliente();
 
     }//GEN-LAST:event_btncargardatosActionPerformed
 
-    private void BuscarOpcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarOpcionActionPerformed
+    private void ComboBoxFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxFiltroActionPerformed
+        // Obtener el criterio seleccionado del JComboBox
+        String criterioSeleccionado = ComboBoxFiltro.getSelectedItem().toString();
+
+        // Habilitar o deshabilitar los campos de búsqueda según el criterio seleccionado
+        habilitarCamposBusqueda(criterioSeleccionado);
+    }//GEN-LAST:event_ComboBoxFiltroActionPerformed
+
+    private void btnBuscarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFiltroActionPerformed
         // TODO add your handling code here:
-        if (BuscarOpcion.getSelectedIndex() == 0) {
-            deshabilitarParametros();
-        } else {
-            if (BuscarOpcion.getSelectedIndex() == 1) {
-                deshabilitarParametros();
-            } else {
-                if (BuscarOpcion.getSelectedIndex() == 2) {
-                    deshabilitarParametros();
-                } else {
-                    if (BuscarOpcion.getSelectedIndex() == 3) {
-                        habilitarParametros();
-                    }
-                }
-            }
-        }
-    }//GEN-LAST:event_BuscarOpcionActionPerformed
-    public void Buscar_ClienteCed(ObjectContainer basep) {
+        try {
+            // Obtener el criterio seleccionado del JComboBox
+            String criterioSeleccionado = ComboBoxFiltro.getSelectedItem().toString();
 
-        if (BuscarOpcion.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(null, "Selección invalida");
-//            deshabilitarParametros();
-        } else {
-            if (BuscarOpcion.getSelectedIndex() == 1) { /// ver todos
-//                deshabilitarParametros();
-                Cliente Cbuscar = new Cliente(null, null, null, null, 0, null, null, null, null);
+            // Obtener el valor de búsqueda ingresado por el usuario
+            String valorBusqueda = obtenerValorBusqueda(criterioSeleccionado);
 
-                ObjectSet result = basep.get(Cbuscar);
-                CargarTabla(result);
-            } else {
-                if (BuscarOpcion.getSelectedIndex() == 2) {
-//                    deshabilitarParametros();
-                    String CeduAux = Tfieldcedu.getText();  /// buscar por cedula
-
-                    Cliente Cbuscar = new Cliente(CeduAux, null, null, null, 0, null, null, null, null);
-
-                    ObjectSet result = basep.get(Cbuscar);
-                    CargarTabla(result);
-
-                } else {
-                    if (BuscarOpcion.getSelectedIndex() == 3) {
-//                        habilitarParametros();
-                        BuscarParametros(basep);  // buscar por parametro
-
-                    }
-                }
-            }
+            // Realizar la búsqueda y cargar los resultados en el JTable
+            filtrarClientes(criterioSeleccionado, valorBusqueda);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se encontro clientes con esos parametros");
         }
 
-        //Borrar la eleccion y ponerla al inicio
-        BuscarOpcion.setSelectedIndex(0);
+    }//GEN-LAST:event_btnBuscarFiltroActionPerformed
+    private void habilitarCamposBusqueda(String criterioSeleccionado) {
+        // Deshabilitar todos los campos de búsqueda
+        deshabilitarParametros();
+        // ...
+
+        // Habilitar el campo de búsqueda correspondiente al criterio seleccionado
+        if (criterioSeleccionado.equals("Cedula")) {
+            txtCedula.setEnabled(true);
+        } else if (criterioSeleccionado.equals("Nombre")) {
+            txtNombre.setEnabled(true);
+        } else if (criterioSeleccionado.equals("Genero")) {
+            rbtnHombre.setEnabled(true);
+            rbtnMujer.setEnabled(true);
+        }
+        // ...
+    }
+
+    private String obtenerValorBusqueda(String criterioSeleccionado) {
+        String valorBusqueda = "";
+
+        // Obtener el valor de búsqueda según el criterio seleccionado
+        if (criterioSeleccionado.equals("Cedula")) {
+            valorBusqueda = txtCedula.getText();
+        } else if (criterioSeleccionado.equals("Nombre")) {
+            valorBusqueda = txtNombre.getText();
+        } else if (criterioSeleccionado.equals("Genero")) {
+            if (rbtnHombre.isSelected()) {
+                valorBusqueda = "Hombre";
+            } else if (rbtnMujer.isSelected()) {
+                valorBusqueda = "Mujer";
+            }
+        }
+        // ...
+
+        return valorBusqueda;
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Método para eliminar un cliente existente
+    private void eliminarCliente() {
+        String cedula = txtCedula.getText();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+        query.descend("Cedula").constrain(cedula);
+        ObjectSet<Cliente> result = query.execute();
+        if (!result.isEmpty()) {
+            Cliente cliente = result.next();
+            BaseD.delete(cliente); // Eliminar el objeto de la base de datos
+            JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
+        }
     }
 
     public void habilitarParametros() {
-        Tfieldnomb.setEnabled(true);
-        Tfieldape.setEnabled(true);
-        SpinnerEdad.setEnabled(true);
-        btnH.setEnabled(true);
-        btnM.setEnabled(true);
-        //txtcelu.setEnabled(true);
-        //TfieldCorreo.setEnabled(true);
-        cbboxNacionalidad.setEnabled(true);
+        txtCedula.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtApellido.setEnabled(true);
+        spnEdad.setEnabled(true);
+        rbtnHombre.setEnabled(true);
+        rbtnMujer.setEnabled(true);
+        txtcelu.setEnabled(true);
+        txtCorreo.setEnabled(true);
+        cbxNacionalidad.setEnabled(true);
 
     }
 
     public void deshabilitarParametros() {
-        Tfieldnomb.setEnabled(false);
-        Tfieldape.setEnabled(false);
-        SpinnerEdad.setEnabled(false);
-        btnH.setEnabled(false);
-        btnM.setEnabled(false);
+        txtNombre.setEnabled(false);
+        txtApellido.setEnabled(false);
+        spnEdad.setEnabled(false);
+        rbtnHombre.setEnabled(false);
+        rbtnMujer.setEnabled(false);
         txtcelu.setEnabled(false);
-        TfieldCorreo.setEnabled(false);
-        cbboxNacionalidad.setEnabled(false);
+        txtCorreo.setEnabled(false);
+        cbxNacionalidad.setEnabled(false);
 
     }
+// Método para limpiar los campos de la interfaz
 
-    public void BuscarParametros(ObjectContainer basep) {
-        String NombreAux;
-        String ApellidoAux;
-        String NaciAux;
-        int edadAux;
-        String genero;
-
-        if (Tfieldnomb.getText().isEmpty()) {
-
-            NombreAux = null;
-        } else {
-            NombreAux = Tfieldnomb.getText();
-        }
-
-        if (Tfieldape.getText().isEmpty()) {
-
-            ApellidoAux = null;
-        } else {
-            ApellidoAux = Tfieldape.getText();
-        }
-
-        if (cbboxNacionalidad.getSelectedIndex() == 0) {
-            NaciAux = null;
-        } else {
-            NaciAux = cbboxNacionalidad.getSelectedItem().toString();
-        }
-
-        if ((Integer) SpinnerEdad.getValue() < 18 || (Integer) SpinnerEdad.getValue() > 65) {
-
-            edadAux = 0;
-        } else {
-            edadAux = (Integer) SpinnerEdad.getValue();
-        }
-        if (btnH.isSelected()) {
-            genero = btnH.getText();
-        } else {
-            if (btnM.isSelected()) {
-                genero = btnM.getText();
-            } else {
-
-                genero = null;
-            }
-        }
-
-        if (NombreAux == null && ApellidoAux == null && edadAux == 0 && NaciAux == null && genero == null) {
-            JOptionPane.showMessageDialog(null, "Aun no ha ingresado los parametros");
-//            Nombre.setEditable(true);
-//            Apellido.setEditable(true);
-//            Ciudad.setEditable(true);
-//            Edad.setEnabled(true);
-        } else {
-            Cliente Cbuscar = new Cliente(null, NombreAux, ApellidoAux, genero, edadAux, null, null, NaciAux, null);
-
-            ObjectSet result = basep.get(Cbuscar);
-            CargarTabla(result);
-//            Nombre.setEditable(true);
-//            Apellido.setEditable(true);
-//            Ciudad.setEditable(true);
-//            Edad.setEnabled(true);
-        }
+    private void limpiarCampos() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        rbtnHombre.setSelected(true);
+        spnEdad.setValue(1);
+        txtcelu.setText("");
+        txtCorreo.setText("");
+        cbxNacionalidad.setSelectedIndex(0);
+        dchFechaNacimiento.setDate(null);
     }
 
-    public void Eliminar_Cliente(ObjectContainer basep) {
-
-        //Cliente Einterfaz = new Cliente();//Crear un objeto de la clase Estudiantes para traer el metodo Comprobar_Estudiantes
-        if (Tfieldcedu.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "cedula no valido");
-        } else {
-
-            String cedu = Tfieldcedu.getText();
-            Cliente Celiminar = new Cliente(cedu, null, null, null, 0, null, null, null, null);
-            ObjectSet result = basep.get(Celiminar);
-
-            if (!Comprobar_Cliente(basep, cedu)) {
-
-                JOptionPane.showMessageDialog(null, "El cliente no existe en la base de datos");
-
-            } else {
-
-                Cliente clienteeeliminar = (Cliente) result.next();
-
-                basep.delete(clienteeeliminar);
-                JOptionPane.showMessageDialog(null, "El cliente fue eliminado de la base de datos exitosamente");
-            }
-
-        }
-
-        //Borrar el campo de texto
-        Tfieldcedu.setText("");
+    public static void cerrarBaseDatos() {
+        BaseD.close(); // Cerrar la base de datos
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> BuscarOpcion;
-    private javax.swing.JSpinner SpinnerEdad;
-    private javax.swing.JTextField TfieldCorreo;
-    private javax.swing.JTextField Tfieldape;
-    private javax.swing.JTextField Tfieldcedu;
-    private javax.swing.JTextField Tfieldnomb;
-    private javax.swing.JRadioButton btnH;
-    private javax.swing.JRadioButton btnM;
+    private javax.swing.JComboBox<String> ComboBoxFiltro;
+    private javax.swing.JButton btnBuscarFiltro;
+    private javax.swing.JButton btnCrear;
     private javax.swing.JButton btncargardatos;
     private javax.swing.JButton btneliminar;
     private javax.swing.ButtonGroup btngrupSexo;
-    private javax.swing.JButton btningresar;
     private javax.swing.JButton btnmod;
     private javax.swing.JButton btnreport;
-    private javax.swing.JComboBox<String> cbboxNacionalidad;
-    private com.toedter.calendar.JDateChooser jDnacimiento;
+    private javax.swing.JComboBox<String> cbxNacionalidad;
+    private com.toedter.calendar.JDateChooser dchFechaNacimiento;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -680,6 +732,13 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTablePersona;
+    private javax.swing.JRadioButton rbtnHombre;
+    private javax.swing.JRadioButton rbtnMujer;
+    private javax.swing.JSpinner spnEdad;
+    private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtcelu;
     // End of variables declaration//GEN-END:variables
 }
