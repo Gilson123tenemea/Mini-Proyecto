@@ -16,7 +16,7 @@ public class AgenteInmobiliario {
     private String Cedula;
     private String NombreAgente;
     private String ApellidoAgente;
-    private char GeneroAgente;
+    private String GeneroAgente;
     private int EdadAgente;
     private String correoAgente;
     private String celularAgente;
@@ -27,7 +27,7 @@ public class AgenteInmobiliario {
     public AgenteInmobiliario() {
     }
 
-    public AgenteInmobiliario(String Cedula, String NombreAgente, String ApellidoAgente, char GeneroAgente, int EdadAgente, String correoAgente, String celularAgente, String nacionalidadAgente, Date fecha_NaciAgente, String id_casa) {
+    public AgenteInmobiliario(String Cedula, String NombreAgente, String ApellidoAgente, String GeneroAgente, int EdadAgente, String correoAgente, String celularAgente, String nacionalidadAgente, Date fecha_NaciAgente, String id_casa) {
         this.Cedula = Cedula;
         this.NombreAgente = NombreAgente;
         this.ApellidoAgente = ApellidoAgente;
@@ -64,11 +64,11 @@ public class AgenteInmobiliario {
         this.ApellidoAgente = ApellidoAgente;
     }
 
-    public char getGeneroAgente() {
+    public String getGeneroAgente() {
         return GeneroAgente;
     }
 
-    public void setGeneroAgente(char GeneroAgente) {
+    public void setGeneroAgente(String GeneroAgente) {
         this.GeneroAgente = GeneroAgente;
     }
 
