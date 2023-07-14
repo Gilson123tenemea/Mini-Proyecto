@@ -530,7 +530,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        //consultarPropietario();
+        consultarPropietario();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
