@@ -346,11 +346,11 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                     SpinnerEdad.getModel().setValue(personaCargar.getEdadPropietario());
 
                     // Cargar otros campos según corresponda
-                    if (personaCargar.getGeneroPropietario() == 'H') {
+                   /* if (personaCargar.getGeneroPropietario() == 'H') {
                         btnH.setSelected(true);
                     } else if (personaCargar.getGeneroPropietario() == 'M') {
                         btnM.setSelected(true);
-                    }
+                    }*/
                     TelfPropietario.setText(personaCargar.getTelfPropietario());
                     TfieldCorreo.setText(personaCargar.getCorreo_propi());
                     
@@ -376,98 +376,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
 
-        try {
-            Propietario mipersona = new Propietario();
-            
-            
-            String cedula;
-            do {
-                cedula = Tfieldcedu.getText();
-                if (!Validaciones.ValidarCedula(cedula)) {
-                    JOptionPane.showMessageDialog(this, "Cédula incorrecta. Ingrese de nuevo");
-                    return; // me regresa al formulario para ingresar de nuevo
-                }
-            } while (!Validaciones.ValidarCedula(cedula));
-            mipersona.setCedulaPropietario(cedula);
-
-            String nombre; // varible que asigno al dato de textfield
-            do {
-                nombre = Tfieldnomb.getText();
-                if (!Validaciones.ValidarNomApe(nombre)) {
-                    JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarNomApe(nombre));
-            mipersona.setNombrePropietario(nombre);
-
-            String apellido;
-            do {
-                apellido = Tfieldape.getText();
-                if (!Validaciones.ValidarNomApe(apellido)) {
-                    JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarNomApe(apellido));
-            mipersona.setApellidoPropietario(apellido);
-
-            mipersona.setEdadPropietario((Integer) SpinnerEdad.getValue());
-
-            if (btnH.isSelected()) {
-                GeneroPersona = 'H';
-            } else if (btnM.isSelected()) {
-                GeneroPersona = 'M';
-            }
-            mipersona.setGeneroPropietario(GeneroPersona);
-
-            String celular;
-            do {
-                celular = TelfPropietario.getText();
-                if (!Validaciones.ValidarCedula(celular)) {
-                    JOptionPane.showMessageDialog(this, "# Celular no valido. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarCedula(celular));
-            mipersona.setTelfPropietario(celular);
-
-            String correo;
-            do {
-                correo = TfieldCorreo.getText();
-                if (!Validaciones.ValidarCorreo(correo)) {
-                    JOptionPane.showMessageDialog(this, "Correo no valido. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarCorreo(correo));
-            mipersona.setCorreo_propi(correo);
-
-            /* mipersona.setTipoSangre(cbBoxSangre.getSelectedItem().toString());
-
-            if (CHBOXDisca.isSelected()) {
-                mipersona.setDiscapacidad(true);
-            } else {
-                mipersona.setDiscapacidad(false);
-            }*/
-            mipersona.setNacionalidad_propi((String) cbboxNacionalidad.getSelectedItem());
-
-            // Obtener fecha de nacimiento del JCalendar
-            Date fechaNacimiento = jDnacimiento.getDate();
-            mipersona.setFecha_Naci(fechaNacimiento);
-
-            mipropiList.add(mipersona);
-            JOptionPane.showMessageDialog(this, "Persona creada exitosamente");
-
-            CargarTabla();
-
-            Tfieldcedu.setText("");
-            Tfieldnomb.setText("");
-            Tfieldape.setText("");
-            TfieldCorreo.setText("");
-            TelfPropietario.setText("");
-            btngrupSexo.clearSelection();
-
-            jDnacimiento.setDate(null);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Los campos están vacíos");
-        }
+      
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void btnconsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsulActionPerformed
@@ -510,96 +419,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void btnmodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodActionPerformed
         // TODO add your handling code here:
 
-        Propietario mipersonamod = null;
-        boolean encontrado = false;
-
-        if (mipropiList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene datos de personas");
-        } else {
-            for (int i = 0; i < mipropiList.size(); i++) {
-                if (mipropiList.get(i).getCedulaPropietario().equals(Tfieldcedu.getText())) {
-
-                    encontrado = true;
-
-                    mipersonamod = mipropiList.get(i);
-
-                    String nombre; // variable que asigno al dato del textfield
-                    do {
-                        nombre = Tfieldnomb.getText();
-                        if (!Validaciones.ValidarNomApe(nombre)) {
-                            JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarNomApe(nombre));
-                    mipersonamod.setNombrePropietario(nombre);
-
-                    String apellido;
-                    do {
-                        apellido = Tfieldape.getText();
-                        if (!Validaciones.ValidarNomApe(apellido)) {
-                            JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarNomApe(apellido));
-                    mipersonamod.setApellidoPropietario(apellido);
-
-                    mipersonamod.setEdadPropietario((Integer) SpinnerEdad.getValue());
-
-                    // Obtener el sexo seleccionado
-                    char sexo = ' ';
-                    if (btnH.isSelected()) {
-                        sexo = 'H';
-                    } else if (btnM.isSelected()) {
-                        sexo = 'M';
-                    }
-                    mipersonamod.setGeneroPropietario(sexo);
-
-                    String celular;
-                    do {
-                        celular = TelfPropietario.getText();
-                        if (!Validaciones.ValidarCedula(celular)) {
-                            JOptionPane.showMessageDialog(this, "# Celular no válido. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarCedula(celular));
-                    mipersonamod.setTelfPropietario(celular);
-
-                    String correo;
-                    do {
-                        correo = TfieldCorreo.getText();
-                        if (!Validaciones.ValidarCorreo(correo)) {
-                            JOptionPane.showMessageDialog(this, "Correo no válido. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarCorreo(correo));
-                    mipersonamod.setCorreo_propi(correo);
-
-                    mipersonamod.setNacionalidad_propi((String) cbboxNacionalidad.getSelectedItem());
-
-                    // Obtener fecha de nacimiento del JCalendar
-                    Date fechaNacimiento = jDnacimiento.getDate();
-                    mipersonamod.setFecha_Naci(fechaNacimiento);
-
-                    break;
-                }
-            }
-
-            if (encontrado) {
-                JOptionPane.showMessageDialog(this, "Persona modificada exitosamente");
-                Tfieldcedu.setEditable(true);
-                btningresar.setEnabled(true);
-                CargarTabla();
-                Tfieldcedu.setText("");
-                Tfieldnomb.setText("");
-                Tfieldape.setText("");
-                TelfPropietario.setText("");
-                TfieldCorreo.setText("");
-                jDnacimiento.setDate(null);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró a esa persona");
-
-            }
-        }
+       
     }//GEN-LAST:event_btnmodActionPerformed
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
@@ -641,7 +461,7 @@ public void CargarTabla() {
     }
 
     public static int Comprobar_Propietario(ObjectContainer baseA, String ced_propietario) {
-        Propietario Pbuscar = new Propietario(ced_propietario, null, null, '0' , 0, null, null, null, null);
+        Propietario Pbuscar = new Propietario(ced_propietario, null, null, null , 0, null, null, null, null);
         ObjectSet result = baseA.get(Pbuscar);
         return result.size();
     }
