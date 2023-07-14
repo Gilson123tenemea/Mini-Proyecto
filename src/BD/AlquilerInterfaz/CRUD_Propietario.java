@@ -282,6 +282,12 @@ public class CRUD_Propietario extends javax.swing.JPanel {
 
         jLabel1.setText("Cedula:");
 
+        txtCedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCedulaActionPerformed(evt);
+            }
+        });
+
         btncargardatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btncargardatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -510,6 +516,8 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
+        txtCedula.setEnabled(false);
+        btnCrear.setEnabled(false);
         consultarPropietario();
     }//GEN-LAST:event_btncargardatosActionPerformed
 
@@ -536,6 +544,10 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         cargarTabla();
     }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCedulaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
