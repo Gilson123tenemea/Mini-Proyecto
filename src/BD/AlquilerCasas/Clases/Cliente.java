@@ -17,11 +17,10 @@ public class Cliente {
     private String Cedula;
     private String NombreCliente;
     private String ApellidoCliente;
-    private char GeneroCliente;
+    private String GeneroCliente;
     private int EdadCliente;
     private String correo;
      private String celular;
-    private String CiudadCliente;
         private String nacionalidad;
         private Date fecha_Naci;
     public static ArrayList<String> listaCiudades = new ArrayList<>();
@@ -29,7 +28,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String Cedula, String NombreCliente, String ApellidoCliente, char GeneroCliente, int EdadCliente, String correo, String celular, String CiudadCliente, String nacionalidad, Date fecha_Naci) {
+    public Cliente(String Cedula, String NombreCliente, String ApellidoCliente, String GeneroCliente, int EdadCliente, String correo, String celular, String nacionalidad, Date fecha_Naci) {
         this.Cedula = Cedula;
         this.NombreCliente = NombreCliente;
         this.ApellidoCliente = ApellidoCliente;
@@ -37,10 +36,11 @@ public class Cliente {
         this.EdadCliente = EdadCliente;
         this.correo = correo;
         this.celular = celular;
-        this.CiudadCliente = CiudadCliente;
         this.nacionalidad = nacionalidad;
         this.fecha_Naci = fecha_Naci;
     }
+
+   
 
     
 
@@ -68,11 +68,11 @@ public class Cliente {
         this.ApellidoCliente = ApellidoCliente;
     }
 
-    public char getGeneroCliente() {
+    public String getGeneroCliente() {
         return GeneroCliente;
     }
 
-    public void setGeneroCliente(char GeneroCliente) {
+    public void setGeneroCliente(String GeneroCliente) {
         this.GeneroCliente = GeneroCliente;
     }
 
@@ -101,14 +101,6 @@ public class Cliente {
     }
     
 
-    public String getCiudadCliente() {
-        return CiudadCliente;
-    }
-
-    public void setCiudadCliente(String CiudadCliente) {
-        this.CiudadCliente = CiudadCliente;
-    }
-
     public static ArrayList<String> getListaCiudades() {
         return listaCiudades;
     }
@@ -135,9 +127,10 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "Cedula=" + Cedula + ", NombreCliente=" + NombreCliente + ", ApellidoCliente=" + ApellidoCliente + ", GeneroCliente=" + GeneroCliente + ", EdadCliente=" + EdadCliente + ", correo=" + correo + ", celular=" + celular + ", CiudadCliente=" + CiudadCliente + ", nacionalidad=" + nacionalidad + ", fecha_Naci=" + fecha_Naci + '}';
+        return "Cliente{" + "Cedula=" + Cedula + ", NombreCliente=" + NombreCliente + ", ApellidoCliente=" + ApellidoCliente + ", GeneroCliente=" + GeneroCliente + ", EdadCliente=" + EdadCliente + ", correo=" + correo + ", celular=" + celular + ", nacionalidad=" + nacionalidad + ", fecha_Naci=" + fecha_Naci + '}';
     }
-    
+
+
 
      
 
