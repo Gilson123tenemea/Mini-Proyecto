@@ -10,6 +10,7 @@ import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.toedter.calendar.JCalendar;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
      */
     public CRUD_Clientes() {
         initComponents();
-        CargarTabla();
+
     }
 
     /**
@@ -68,7 +69,6 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         jDnacimiento = new com.toedter.calendar.JDateChooser();
         btningresar = new javax.swing.JButton();
-        btnconsul = new javax.swing.JButton();
         btnmod = new javax.swing.JButton();
         btneliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -82,6 +82,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         TfieldCorreo = new javax.swing.JTextField();
         btncargardatos = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        BuscarOpcion = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -121,14 +122,6 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         btningresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btningresarActionPerformed(evt);
-            }
-        });
-
-        btnconsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
-        btnconsul.setText("CONSULTAR");
-        btnconsul.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnconsulActionPerformed(evt);
             }
         });
 
@@ -189,6 +182,13 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("REGISTRO DE CLIENTE");
 
+        BuscarOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ver todos", "Cedula", "Buscar Parametros" }));
+        BuscarOpcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarOpcionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -246,8 +246,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                                 .addGap(63, 63, 63)
                                 .addComponent(btningresar)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnconsul)
-                                .addGap(18, 18, 18)
+                                .addComponent(BuscarOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
                                 .addComponent(btnmod)
                                 .addGap(18, 18, 18)
                                 .addComponent(btneliminar)
@@ -308,12 +308,13 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                             .addComponent(txtcelu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btningresar)
-                    .addComponent(btnconsul)
-                    .addComponent(btnmod)
-                    .addComponent(btneliminar)
-                    .addComponent(btnreport))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BuscarOpcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btningresar)
+                        .addComponent(btnmod)
+                        .addComponent(btneliminar)
+                        .addComponent(btnreport)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -432,43 +433,6 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         basep.close();
     }
 
-    private void btnconsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsulActionPerformed
-        // TODO add your handling code here:
-        boolean encontrado = false;
-        if (mipersonaList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene datos de personas");
-        } else {
-            DefaultTableModel model = (DefaultTableModel) jTablePersona.getModel();
-            model.setRowCount(0); // Limpiar la tabla
-            for (int i = 0; i < mipersonaList.size(); i++) {
-                if (mipersonaList.get(i).getCedula().equals(Tfieldcedu.getText())) {
-                    JOptionPane.showMessageDialog(this, "Si existe esa persona");
-                    encontrado = true;
-
-                    Cliente persona = mipersonaList.get(i);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    model.addRow(new Object[]{
-                        persona.getCedula(),
-                        persona.getNombreCliente(),
-                        persona.getApellidoCliente(),
-                        persona.getEdadCliente(),
-                        persona.getGeneroCliente(),
-                        persona.getCelular(),
-                        persona.getCorreo(),
-                        persona.getNacionalidad(),
-                        persona.getFecha_Naci()
-                    });
-                    break;//deja de buscar
-                }
-            }
-            if (!encontrado) {
-                JOptionPane.showMessageDialog(this, "No se encontro a la persona");
-                CargarTabla();
-            }
-            Tfieldcedu.setText("");
-        }
-    }//GEN-LAST:event_btnconsulActionPerformed
-
     private void btnmodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodActionPerformed
         // TODO add your handling code here:
 
@@ -476,89 +440,219 @@ public class CRUD_Clientes extends javax.swing.JPanel {
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
         // TODO add your handling code here:
-        int removfila = jTablePersona.getSelectedRow();
-        if (removfila >= 0) {
-            int confirmacion = JOptionPane.showConfirmDialog(null, "Eliminar", "¿Desea eliminar el registro?", JOptionPane.YES_NO_OPTION);
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                mipersonaList.remove(removfila);
-                CargarTabla();
-            }
-        }
+        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+        Eliminar_Cliente(BaseD);
+        Cerrar_BD(BaseD);
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreportActionPerformed
         // TODO add your handling code here:
-        CargarTabla();
+
     }//GEN-LAST:event_btnreportActionPerformed
-    public void CargarTabla() {
-        DefaultTableModel modelodefault = new DefaultTableModel(new String[]{"CEDULA", "NOMBRE", "APELLIDO", "EDAD", "SEXO", "CELULAR", "CORREO", "NACIONALIDAD", "FECHA NACI"}, mipersonaList.size());
-        jTablePersona.setModel(modelodefault);
-        TableModel modeloDatos = jTablePersona.getModel();
+    public void CargarTabla(ObjectSet<Cliente> result) {
+        if (result.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El cliente no se encuentra en la base de datos");
+        } else {
+            DefaultTableModel modeloDatos = new DefaultTableModel(new String[]{"CEDULA", "NOMBRE", "APELLIDO", "EDAD", "SEXO", "CELULAR", "CORREO", "NACIONALIDAD", "FECHA NACI"}, result.size());
+            jTablePersona.setModel(modeloDatos);
 
-        for (int i = 0; i < mipersonaList.size(); i++) {
-            Cliente personadat = mipersonaList.get(i);
-            modeloDatos.setValueAt(personadat.getCedula(), i, 0);
-            modeloDatos.setValueAt(personadat.getNombreCliente(), i, 1);
-            modeloDatos.setValueAt(personadat.getApellidoCliente(), i, 2);
-            modeloDatos.setValueAt(personadat.getEdadCliente(), i, 3);
-            modeloDatos.setValueAt(personadat.getGeneroCliente(), i, 4);
-            modeloDatos.setValueAt(personadat.getCelular(), i, 5);
-            modeloDatos.setValueAt(personadat.getCorreo(), i, 6);
-            modeloDatos.setValueAt(personadat.getNacionalidad(), i, 7);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaNacimiento = sdf.format(personadat.getFecha_Naci()); //transformo al formato dd/mm/yyyy
-            modeloDatos.setValueAt(fechaNacimiento, i, 8);
-
+            for (int i = 0; i < result.size(); i++) {
+                Cliente persona = result.get(i);
+                modeloDatos.setValueAt(persona.getCedula(), i, 0);
+                modeloDatos.setValueAt(persona.getNombreCliente(), i, 1);
+                modeloDatos.setValueAt(persona.getApellidoCliente(), i, 2);
+                modeloDatos.setValueAt(persona.getEdadCliente(), i, 3);
+                modeloDatos.setValueAt(persona.getGeneroCliente(), i, 4);
+                modeloDatos.setValueAt(persona.getCelular(), i, 5);
+                modeloDatos.setValueAt(persona.getCorreo(), i, 6);
+                modeloDatos.setValueAt(persona.getNacionalidad(), i, 7);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaNacimiento = sdf.format(persona.getFecha_Naci());
+                modeloDatos.setValueAt(fechaNacimiento, i, 8);
+            }
         }
     }
+
+
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
         // TODO add your handling code here:
-        btningresar.setEnabled(false);
-        Tfieldcedu.setEditable(false);
-        boolean encontrado = false;
-        if (mipersonaList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene datos de personas");
-            Tfieldcedu.setEditable(true);
-            btningresar.setEnabled(true);
-        } else {
-            for (int i = 0; i < mipersonaList.size(); i++) {
-                if (mipersonaList.get(i).getCedula().equals(Tfieldcedu.getText())) {
-                    JOptionPane.showMessageDialog(this, "Si existe esa persona");
-                    encontrado = true;
+        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+        Buscar_ClienteCed(BaseD);
+        Cerrar_BD(BaseD);
 
-                    Cliente personaCargar = mipersonaList.get(i);
-                    Tfieldnomb.setText(personaCargar.getNombreCliente());
-                    Tfieldape.setText(personaCargar.getApellidoCliente());
-                    //mipersona.setEdad((Integer) SpinnerEdad.getValue());
-                    // SpinnerEdad.setValue(String.valueOf((Integer) personaCargar.getEdad()));
-                    SpinnerEdad.getModel().setValue(personaCargar.getEdadCliente());
-
-                    // Cargar otros campos según corresponda
-                    /* if (personaCargar.getGeneroCliente() == 'Hombre') {
-                        btnH.setSelected(true);
-                    } else if (personaCargar.getGeneroCliente() == 'Mujer') {
-                        btnM.setSelected(true);
-                    }*/
-                    txtcelu.setText(personaCargar.getCelular());
-                    TfieldCorreo.setText(personaCargar.getCorreo());
-
-                    cbboxNacionalidad.setSelectedItem(personaCargar.getNacionalidad());
-                    jDnacimiento.setDate(personaCargar.getFecha_Naci());
-
-                    break;
-                }
-
-            }
-            if (!encontrado) {
-                JOptionPane.showMessageDialog(this, "No se encontro a esa persona");
-                Tfieldcedu.setEditable(true);
-                btningresar.setEnabled(true);
-            }
-        }
     }//GEN-LAST:event_btncargardatosActionPerformed
 
+    private void BuscarOpcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarOpcionActionPerformed
+        // TODO add your handling code here:
+        if (BuscarOpcion.getSelectedIndex() == 0) {
+            deshabilitarParametros();
+        } else {
+            if (BuscarOpcion.getSelectedIndex() == 1) {
+                deshabilitarParametros();
+            } else {
+                if (BuscarOpcion.getSelectedIndex() == 2) {
+                    deshabilitarParametros();
+                } else {
+                    if (BuscarOpcion.getSelectedIndex() == 3) {
+                        habilitarParametros();
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_BuscarOpcionActionPerformed
+    public void Buscar_ClienteCed(ObjectContainer basep) {
+
+        if (BuscarOpcion.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selección invalida");
+//            deshabilitarParametros();
+        } else {
+            if (BuscarOpcion.getSelectedIndex() == 1) { /// ver todos
+//                deshabilitarParametros();
+                Cliente Cbuscar = new Cliente(null, null, null, null, 0, null, null, null, null);
+
+                ObjectSet result = basep.get(Cbuscar);
+                CargarTabla(result);
+            } else {
+                if (BuscarOpcion.getSelectedIndex() == 2) {
+//                    deshabilitarParametros();
+                    String CeduAux = Tfieldcedu.getText();  /// buscar por cedula
+
+                    Cliente Cbuscar = new Cliente(CeduAux, null, null, null, 0, null, null, null, null);
+
+                    ObjectSet result = basep.get(Cbuscar);
+                    CargarTabla(result);
+
+                } else {
+                    if (BuscarOpcion.getSelectedIndex() == 3) {
+//                        habilitarParametros();
+                        BuscarParametros(basep);  // buscar por parametro
+
+                    }
+                }
+            }
+        }
+
+        //Borrar la eleccion y ponerla al inicio
+        BuscarOpcion.setSelectedIndex(0);
+    }
+
+    public void habilitarParametros() {
+        Tfieldnomb.setEnabled(true);
+        Tfieldape.setEnabled(true);
+        SpinnerEdad.setEnabled(true);
+        btnH.setEnabled(true);
+        btnM.setEnabled(true);
+        //txtcelu.setEnabled(true);
+        //TfieldCorreo.setEnabled(true);
+        cbboxNacionalidad.setEnabled(true);
+
+    }
+
+    public void deshabilitarParametros() {
+        Tfieldnomb.setEnabled(false);
+        Tfieldape.setEnabled(false);
+        SpinnerEdad.setEnabled(false);
+        btnH.setEnabled(false);
+        btnM.setEnabled(false);
+        txtcelu.setEnabled(false);
+        TfieldCorreo.setEnabled(false);
+        cbboxNacionalidad.setEnabled(false);
+
+    }
+
+    public void BuscarParametros(ObjectContainer basep) {
+        String NombreAux;
+        String ApellidoAux;
+        String NaciAux;
+        int edadAux;
+        String genero;
+
+        if (Tfieldnomb.getText().isEmpty()) {
+
+            NombreAux = null;
+        } else {
+            NombreAux = Tfieldnomb.getText();
+        }
+
+        if (Tfieldape.getText().isEmpty()) {
+
+            ApellidoAux = null;
+        } else {
+            ApellidoAux = Tfieldape.getText();
+        }
+
+        if (cbboxNacionalidad.getSelectedIndex() == 0) {
+            NaciAux = null;
+        } else {
+            NaciAux = cbboxNacionalidad.getSelectedItem().toString();
+        }
+
+        if ((Integer) SpinnerEdad.getValue() < 18 || (Integer) SpinnerEdad.getValue() > 65) {
+
+            edadAux = 0;
+        } else {
+            edadAux = (Integer) SpinnerEdad.getValue();
+        }
+        if (btnH.isSelected()) {
+            genero = btnH.getText();
+        } else {
+            if (btnM.isSelected()) {
+                genero = btnM.getText();
+            } else {
+
+                genero = null;
+            }
+        }
+
+        if (NombreAux == null && ApellidoAux == null && edadAux == 0 && NaciAux == null && genero == null) {
+            JOptionPane.showMessageDialog(null, "Aun no ha ingresado los parametros");
+//            Nombre.setEditable(true);
+//            Apellido.setEditable(true);
+//            Ciudad.setEditable(true);
+//            Edad.setEnabled(true);
+        } else {
+            Cliente Cbuscar = new Cliente(null, NombreAux, ApellidoAux, genero, edadAux, null, null, NaciAux, null);
+
+            ObjectSet result = basep.get(Cbuscar);
+            CargarTabla(result);
+//            Nombre.setEditable(true);
+//            Apellido.setEditable(true);
+//            Ciudad.setEditable(true);
+//            Edad.setEnabled(true);
+        }
+    }
+
+    public void Eliminar_Cliente(ObjectContainer basep) {
+
+        //Cliente Einterfaz = new Cliente();//Crear un objeto de la clase Estudiantes para traer el metodo Comprobar_Estudiantes
+        if (Tfieldcedu.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "cedula no valido");
+        } else {
+
+            String cedu = Tfieldcedu.getText();
+            Cliente Celiminar = new Cliente(cedu, null, null, null, 0, null, null, null, null);
+            ObjectSet result = basep.get(Celiminar);
+
+            if (!Comprobar_Cliente(basep, cedu)) {
+
+                JOptionPane.showMessageDialog(null, "El cliente no existe en la base de datos");
+
+            } else {
+
+                Cliente clienteeeliminar = (Cliente) result.next();
+
+                basep.delete(clienteeeliminar);
+                JOptionPane.showMessageDialog(null, "El cliente fue eliminado de la base de datos exitosamente");
+            }
+
+        }
+
+        //Borrar el campo de texto
+        Tfieldcedu.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> BuscarOpcion;
     private javax.swing.JSpinner SpinnerEdad;
     private javax.swing.JTextField TfieldCorreo;
     private javax.swing.JTextField Tfieldape;
@@ -567,7 +661,6 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     private javax.swing.JRadioButton btnH;
     private javax.swing.JRadioButton btnM;
     private javax.swing.JButton btncargardatos;
-    private javax.swing.JButton btnconsul;
     private javax.swing.JButton btneliminar;
     private javax.swing.ButtonGroup btngrupSexo;
     private javax.swing.JButton btningresar;
