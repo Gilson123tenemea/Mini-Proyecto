@@ -16,7 +16,7 @@ public class Propietario {
     private String CedulaPropietario;
     private String NombrePropietario;
     private String ApellidoPropietario;
-    private char GeneroPropietario;
+    private String GeneroPropietario;
     private int EdadPropietario;
     private String TelfPropietario;
     private String correo_propi;
@@ -27,7 +27,7 @@ public class Propietario {
     public Propietario() {
     }
 
-    public Propietario(String CedulaPropietario, String NombrePropietario, String ApellidoPropietario, char GeneroPropietario, int EdadPropietario, String TelfPropietario, String correo_propi, String nacionalidad_propi, Date fecha_Naci) {
+    public Propietario(String CedulaPropietario, String NombrePropietario, String ApellidoPropietario, String GeneroPropietario, int EdadPropietario, String TelfPropietario, String correo_propi, String nacionalidad_propi, Date fecha_Naci) {
         this.CedulaPropietario = CedulaPropietario;
         this.NombrePropietario = NombrePropietario;
         this.ApellidoPropietario = ApellidoPropietario;
@@ -65,11 +65,11 @@ public class Propietario {
         this.ApellidoPropietario = ApellidoPropietario;
     }
 
-    public char getGeneroPropietario() {
+    public String getGeneroPropietario() {
         return GeneroPropietario;
     }
 
-    public void setGeneroPropietario(char GeneroPropietario) {
+    public void setGeneroPropietario(String GeneroPropietario) {
         this.GeneroPropietario = GeneroPropietario;
     }
 
