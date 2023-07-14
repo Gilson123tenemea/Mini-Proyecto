@@ -7,6 +7,10 @@ package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Validaciones;
+import com.db4o.Db4o;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +25,16 @@ import javax.swing.table.TableModel;
 public class CRUD_Clientes extends javax.swing.JPanel {
 
     public static ArrayList<Cliente> mipersonaList = new ArrayList<>();
-    char GeneroPersona;
-    boolean discapacidad;
+
+    String CedulaCli = "";
+    String NombreCli = "";
+    String ApellidoCli = "";
+    int EdadCli = 0;
+    String GeneroCli = "";
+    String CelularCli = "";
+    String correoCli = "";
+    String NacionalidadCli = "";
+    Date fechaNaciCli = null;
 
     /**
      * Creates new form CRUD_Clientes
@@ -315,97 +327,110 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
 
-        try {
-            Cliente mipersona = new Cliente();
-            String cedula;
-            do {
-                cedula = Tfieldcedu.getText();
-                if (!Validaciones.ValidarCedula(cedula)) {
-                    JOptionPane.showMessageDialog(this, "Cédula incorrecta. Ingrese de nuevo");
-                    return; // me regresa al formulario para ingresar de nuevo
-                }
-            } while (!Validaciones.ValidarCedula(cedula));
-            mipersona.setCedula(cedula);
+        ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+        Crear_Cli(BaseD);
+        Cerrar_BD(BaseD);
 
-            String nombre; // varible que asigno al dato de textfield
-            do {
-                nombre = Tfieldnomb.getText();
-                if (!Validaciones.ValidarNomApe(nombre)) {
-                    JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarNomApe(nombre));
-            mipersona.setNombreCliente(nombre);
-
-            String apellido;
-            do {
-                apellido = Tfieldape.getText();
-                if (!Validaciones.ValidarNomApe(apellido)) {
-                    JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarNomApe(apellido));
-            mipersona.setApellidoCliente(apellido);
-
-            mipersona.setEdadCliente((Integer) SpinnerEdad.getValue());
-
-            if (btnH.isSelected()) {
-                GeneroPersona = 'H';
-            } else if (btnM.isSelected()) {
-                GeneroPersona = 'M';
-            }
-            mipersona.setGeneroCliente(GeneroPersona);
-
-            String celular;
-            do {
-                celular = txtcelu.getText();
-                if (!Validaciones.ValidarCedula(celular)) {
-                    JOptionPane.showMessageDialog(this, "# Celular no valido. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarCedula(celular));
-            mipersona.setCelular(celular);
-
-            String correo;
-            do {
-                correo = TfieldCorreo.getText();
-                if (!Validaciones.ValidarCorreo(correo)) {
-                    JOptionPane.showMessageDialog(this, "Correo no valido. Ingrese de nuevo");
-                    return;
-                }
-            } while (!Validaciones.ValidarCorreo(correo));
-            mipersona.setCorreo(correo);
-
-            /* mipersona.setTipoSangre(cbBoxSangre.getSelectedItem().toString());
-
-            if (CHBOXDisca.isSelected()) {
-                mipersona.setDiscapacidad(true);
-            } else {
-                mipersona.setDiscapacidad(false);
-            }*/
-            mipersona.setNacionalidad((String) cbboxNacionalidad.getSelectedItem());
-
-            // Obtener fecha de nacimiento del JCalendar
-            Date fechaNacimiento = jDnacimiento.getDate();
-            mipersona.setFecha_Naci(fechaNacimiento);
-
-            mipersonaList.add(mipersona);
-            JOptionPane.showMessageDialog(this, "Persona creada exitosamente");
-
-            CargarTabla();
-
-            Tfieldcedu.setText("");
-            Tfieldnomb.setText("");
-            Tfieldape.setText("");
-            TfieldCorreo.setText("");
-            txtcelu.setText("");
-            btngrupSexo.clearSelection();
-
-            jDnacimiento.setDate(null);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Los campos están vacíos");
-        }
     }//GEN-LAST:event_btningresarActionPerformed
+    public void Crear_Cli(ObjectContainer basep) {
+        Validaciones miValidaciones = new Validaciones();
+        if (validarCampos(basep)) {
+            if (!Comprobar_Cliente(basep, CedulaCli)) {
+                Cliente Cnuevo = new Cliente(CedulaCli, NombreCli, ApellidoCli, GeneroCli, EdadCli, correoCli, CelularCli, NacionalidadCli, fechaNaciCli);
+                basep.set(Cnuevo);
+                JOptionPane.showMessageDialog(null, "El cliente se guardó correctamente");
+                // LimpiarCampos();
+            } else {
+                JOptionPane.showMessageDialog(null, "El cliente ya existe");
+            }
+            Tfieldcedu.setText("");
+        }
+    }
+
+    public static boolean Comprobar_Cliente(ObjectContainer basep, String CedulaCli) {
+        Cliente ejemploCliente = new Cliente(CedulaCli, null, null, null, 0, null, null, null, null);
+        ObjectSet<Cliente> result = basep.queryByExample(ejemploCliente);
+        return !result.isEmpty();
+    }
+
+    public void asignarVariables(ObjectContainer basep) {
+        CedulaCli = Tfieldcedu.getText();
+        NombreCli = Tfieldnomb.getText();
+        ApellidoCli = Tfieldape.getText();
+        if (btnH.isSelected()) {
+            GeneroCli = "Hombre";
+        }
+        if (btnM.isSelected()) {
+            GeneroCli = "Mujer";
+        }
+
+        CelularCli = txtcelu.getText();
+        correoCli = TfieldCorreo.getText();
+        EdadCli = (Integer) SpinnerEdad.getValue();
+        NacionalidadCli = cbboxNacionalidad.getSelectedItem().toString();
+        fechaNaciCli = jDnacimiento.getDate();
+    }
+
+    public boolean validarCampos(ObjectContainer basep) {
+        Validaciones miValidaciones = new Validaciones();
+        asignarVariables(basep);
+        boolean ban_confirmar = true;
+
+        if (Tfieldcedu.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese la cédula del cliente");
+            ban_confirmar = false;
+        } else if (!miValidaciones.validarCedula(CedulaCli)) {
+            JOptionPane.showMessageDialog(this, "Cédula incorrecta. Ingrese de nuevo");
+            ban_confirmar = false;
+        }
+
+        if (Tfieldnomb.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el nombre del cliente");
+            ban_confirmar = false;
+        } else if (!miValidaciones.ValidarNomApe(NombreCli)) {
+            JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
+            ban_confirmar = false;
+        }
+
+        if (Tfieldape.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el apellido del cliente");
+            ban_confirmar = false;
+        } else if (!miValidaciones.ValidarNomApe(ApellidoCli)) {
+            JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
+            ban_confirmar = false;
+        }
+
+        // Validar otros campos aquí...
+        if (txtcelu.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el celular del cliente");
+            ban_confirmar = false;
+        } else if (!miValidaciones.validarCedula(CelularCli)) {
+            JOptionPane.showMessageDialog(this, "Celular incorrecta. Ingrese de nuevo");
+            ban_confirmar = false;
+        }
+        if (TfieldCorreo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el correo del cliente");
+            ban_confirmar = false;
+        } else if (!miValidaciones.ValidarCorreo(correoCli)) {
+            JOptionPane.showMessageDialog(this, "Correo incorrecto. Ingrese de nuevo");
+            ban_confirmar = false;
+        }
+        if (cbboxNacionalidad.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Ingrese la nacionalidad del cliente");
+            ban_confirmar = false;
+        } else {
+            if (!miValidaciones.ValidarCiudad(NacionalidadCli)) {
+                JOptionPane.showMessageDialog(this, "nacionalidad invalida");
+                ban_confirmar = false;
+            }
+        }
+        return ban_confirmar;
+    }
+
+    public static void Cerrar_BD(ObjectContainer basep) {
+
+        basep.close();
+    }
 
     private void btnconsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconsulActionPerformed
         // TODO add your handling code here:
@@ -447,96 +472,6 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     private void btnmodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodActionPerformed
         // TODO add your handling code here:
 
-        Cliente mipersonamod = null;
-        boolean encontrado = false;
-
-        if (mipersonaList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No tiene datos de personas");
-        } else {
-            for (int i = 0; i < mipersonaList.size(); i++) {
-                if (mipersonaList.get(i).getCedula().equals(Tfieldcedu.getText())) {
-
-                    encontrado = true;
-
-                    mipersonamod = mipersonaList.get(i);
-
-                    String nombre; // variable que asigno al dato del textfield
-                    do {
-                        nombre = Tfieldnomb.getText();
-                        if (!Validaciones.ValidarNomApe(nombre)) {
-                            JOptionPane.showMessageDialog(this, "Nombre incorrecto. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarNomApe(nombre));
-                    mipersonamod.setNombreCliente(nombre);
-
-                    String apellido;
-                    do {
-                        apellido = Tfieldape.getText();
-                        if (!Validaciones.ValidarNomApe(apellido)) {
-                            JOptionPane.showMessageDialog(this, "Apellido incorrecto. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarNomApe(apellido));
-                    mipersonamod.setApellidoCliente(apellido);
-
-                    mipersonamod.setEdadCliente((Integer) SpinnerEdad.getValue());
-
-                    // Obtener el sexo seleccionado
-                    char sexo = ' ';
-                    if (btnH.isSelected()) {
-                        sexo = 'H';
-                    } else if (btnM.isSelected()) {
-                        sexo = 'M';
-                    }
-                    mipersonamod.setGeneroCliente(sexo);
-
-                    String celular;
-                    do {
-                        celular = txtcelu.getText();
-                        if (!Validaciones.ValidarCedula(celular)) {
-                            JOptionPane.showMessageDialog(this, "# Celular no válido. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarCedula(celular));
-                    mipersonamod.setCelular(celular);
-
-                    String correo;
-                    do {
-                        correo = TfieldCorreo.getText();
-                        if (!Validaciones.ValidarCorreo(correo)) {
-                            JOptionPane.showMessageDialog(this, "Correo no válido. Ingrese de nuevo");
-                            return;
-                        }
-                    } while (!Validaciones.ValidarCorreo(correo));
-                    mipersonamod.setCorreo(correo);
-
-                    mipersonamod.setNacionalidad((String) cbboxNacionalidad.getSelectedItem());
-
-                    // Obtener fecha de nacimiento del JCalendar
-                    Date fechaNacimiento = jDnacimiento.getDate();
-                    mipersonamod.setFecha_Naci(fechaNacimiento);
-
-                    break;
-                }
-            }
-
-            if (encontrado) {
-                JOptionPane.showMessageDialog(this, "Persona modificada exitosamente");
-                Tfieldcedu.setEditable(true);
-                btningresar.setEnabled(true);
-                CargarTabla();
-                Tfieldcedu.setText("");
-                Tfieldnomb.setText("");
-                Tfieldape.setText("");
-                txtcelu.setText("");
-                TfieldCorreo.setText("");
-                jDnacimiento.setDate(null);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró a esa persona");
-
-            }
-        }
     }//GEN-LAST:event_btnmodActionPerformed
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
@@ -556,7 +491,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         CargarTabla();
     }//GEN-LAST:event_btnreportActionPerformed
     public void CargarTabla() {
-        DefaultTableModel modelodefault = new DefaultTableModel(new String[]{"CEDULA", "NOMBRE", "APELLIDO", "EDAD", "SEXO", "CELULAR", "CORREO","NACIONALIDAD", "FECHA NACI"}, mipersonaList.size());
+        DefaultTableModel modelodefault = new DefaultTableModel(new String[]{"CEDULA", "NOMBRE", "APELLIDO", "EDAD", "SEXO", "CELULAR", "CORREO", "NACIONALIDAD", "FECHA NACI"}, mipersonaList.size());
         jTablePersona.setModel(modelodefault);
         TableModel modeloDatos = jTablePersona.getModel();
 
@@ -599,11 +534,11 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                     SpinnerEdad.getModel().setValue(personaCargar.getEdadCliente());
 
                     // Cargar otros campos según corresponda
-                    if (personaCargar.getGeneroCliente() == 'H') {
+                    /* if (personaCargar.getGeneroCliente() == 'Hombre') {
                         btnH.setSelected(true);
-                    } else if (personaCargar.getGeneroCliente() == 'M') {
+                    } else if (personaCargar.getGeneroCliente() == 'Mujer') {
                         btnM.setSelected(true);
-                    }
+                    }*/
                     txtcelu.setText(personaCargar.getCelular());
                     TfieldCorreo.setText(personaCargar.getCorreo());
 
