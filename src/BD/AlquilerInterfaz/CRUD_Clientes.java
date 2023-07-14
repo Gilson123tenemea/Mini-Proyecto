@@ -330,7 +330,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
 
         ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
         Crear_Cli(BaseD);
-        Cerrar_BD(BaseD);
+        //Cerrar_BD(BaseD);
 
     }//GEN-LAST:event_btningresarActionPerformed
     public void Crear_Cli(ObjectContainer basep) {
@@ -442,7 +442,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         // TODO add your handling code here:
         ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
         Eliminar_Cliente(BaseD);
-        Cerrar_BD(BaseD);
+        //Cerrar_BD(BaseD);
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreportActionPerformed
@@ -478,7 +478,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         // TODO add your handling code here:
         ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
         Buscar_ClienteCed(BaseD);
-        Cerrar_BD(BaseD);
+        //Cerrar_BD(BaseD);
 
     }//GEN-LAST:event_btncargardatosActionPerformed
 
