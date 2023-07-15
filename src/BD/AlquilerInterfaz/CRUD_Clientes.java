@@ -8,8 +8,9 @@ package BD.AlquilerInterfaz;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
-import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
+//import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
 import static BD.AlquilerInterfaz.CRUD_Propietario.cerrarBaseDatos;
+//import static BD.AlquilerInterfaz.CalendarioDispo.BaseD;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -30,7 +31,8 @@ import javax.swing.table.TableModel;
  */
 public class CRUD_Clientes extends javax.swing.JPanel {
 
-    public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    //public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    private ObjectContainer BaseD;
     String CedulaCli = "";
     String NombreCli = "";
     String ApellidoCli = "";
@@ -44,7 +46,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     /**
      * Creates new form CRUD_Clientes
      */
-    public CRUD_Clientes() {
+    public CRUD_Clientes(ObjectContainer BaseD) {
+        this.BaseD = BaseD;
         initComponents();
         cargarTabla();
 
@@ -705,7 +708,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     }
 
     public static void cerrarBaseDatos() {
-        BaseD.close(); // Cerrar la base de datos
+        //BaseD.close(); // Cerrar la base de datos
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
