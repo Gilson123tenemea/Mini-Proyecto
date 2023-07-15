@@ -531,6 +531,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         ObjectSet<Cliente> result = BaseD.queryByExample(Cliente.class);
         while (result.hasNext()) {
             Cliente cliente = result.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Object[] row = {
                 cliente.getCedula(),
                 cliente.getNombreCliente(),
@@ -540,7 +541,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getCelular(),
                 cliente.getCorreo(),
                 cliente.getNacionalidad(),
-                cliente.getFecha_Naci()
+                sdf.format(cliente.getFecha_Naci())
+                
             };
             model.addRow(row);
         }
@@ -567,6 +569,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
 
         while (result.hasNext()) {
             Cliente cliente = result.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Object[] row = {
                 cliente.getCedula(),
                 cliente.getNombreCliente(),
@@ -576,7 +579,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getCelular(),
                 cliente.getCorreo(),
                 cliente.getNacionalidad(),
-                cliente.getFecha_Naci()
+                sdf.format(cliente.getFecha_Naci())
+                
             };
             model.addRow(row);
         }
