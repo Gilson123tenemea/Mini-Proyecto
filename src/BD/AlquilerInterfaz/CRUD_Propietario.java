@@ -374,7 +374,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtCelular = new javax.swing.JTextField();
         btnCrear = new javax.swing.JButton();
-        btnConsultar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
@@ -477,15 +476,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         });
         add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 110, -1));
 
-        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
-        btnConsultar.setText("CONSULTAR");
-        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarActionPerformed(evt);
-            }
-        });
-        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, -1, -1));
-
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -570,10 +560,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         crearPropietario();
     }//GEN-LAST:event_btnCrearActionPerformed
 
-    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        consultarPropietario();
-    }//GEN-LAST:event_btnConsultarActionPerformed
-
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         modificarPropietario();
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -629,7 +615,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> ComboBoxFiltro;
     private javax.swing.JTable TablaPropietarios;
     private javax.swing.JButton btnBuscarFiltro;
-    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
