@@ -424,19 +424,15 @@ public class CalendarioDispo extends javax.swing.JPanel {
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) TablaDisponi.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         ObjectSet<CalendarioDisponibilidad> result = BaseD.queryByExample(CalendarioDisponibilidad.class);
         while (result.hasNext()) {
             CalendarioDisponibilidad dispo = result.next();
-            // Obtener el formato deseado para la fecha (en este caso: dd/MM/yyyy)
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            //String fechaFormateada = dateFormat.format(dispo.getFechas_disponibles());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Object[] row = {
                 dispo.getID_calendario(),
                 dispo.getId_casa(),
-                dispo.getFechas_disponibles()
-            //fechaFormateada
+                sdf.format(dispo.getFechas_disponibles())
             };
             model.addRow(row);
         }
