@@ -2,19 +2,18 @@ package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
-import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CRUD_Propietario extends javax.swing.JPanel {
-    private ObjectContainer BaseD;
 
-    //public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    private ObjectContainer BaseD;
 
     public CRUD_Propietario(ObjectContainer BaseD) {
         this.BaseD = BaseD; // Asignar la instancia pasada como parámetro
@@ -103,7 +102,12 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         // Si no existe un propietario con la misma cédula, proceder con la creación
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
-        String genero = rbtnHombre.isSelected() ? "H" : "M";
+        String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
+        if (rbtnHombre.isSelected()) {
+            genero = "Hombre";
+        } else if (rbtnMujer.isSelected()) {
+            genero = "Mujer";
+        }
         int edad = (int) spnEdad.getValue();
         String telefono = txtCelular.getText();
         String correo = txtCorreo.getText();
@@ -150,7 +154,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
             // Actualizar los campos del propietario con los valores ingresados en la interfaz
             propietario.setNombrePropietario(txtNombre.getText());
             propietario.setApellidoPropietario(txtApellido.getText());
-            propietario.setGeneroPropietario(rbtnHombre.isSelected() ? "H" : "M");
+            propietario.setGeneroPropietario(rbtnHombre.isSelected() ? "Hombre" : "Mujer");
             propietario.setEdadPropietario((int) spnEdad.getValue());
             propietario.setTelfPropietario(txtCelular.getText());
             propietario.setCorreo_propi(txtCorreo.getText());
@@ -184,12 +188,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         }
     }
 
-    // Método para generar el reporte de propietarios
-    private void generarReporte() {
-        // Lógica para generar el reporte
-        //JOptionPane.showMessageDialog(null, "Reporte generado exitosamente.");
-    }
-
     // Método para limpiar los campos de la interfaz
     private void limpiarCampos() {
         txtCedula.setText("");
@@ -211,17 +209,20 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         ObjectSet<Propietario> result = BaseD.queryByExample(Propietario.class);
         while (result.hasNext()) {
             Propietario propietario = result.next();
+            String genero = propietario.getGeneroPropietario().equals("H") ? "Hombre" : "Mujer";
+
             Object[] row = {
                 propietario.getCedulaPropietario(),
                 propietario.getNombrePropietario(),
                 propietario.getApellidoPropietario(),
                 propietario.getEdadPropietario(),
-                propietario.getGeneroPropietario(),
+                genero,
                 propietario.getTelfPropietario(),
                 propietario.getCorreo_propi(),
                 propietario.getNacionalidad_propi(),
                 propietario.getFecha_Naci()
             };
+
             model.addRow(row);
         }
     }
@@ -230,13 +231,116 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void mostrarPropietario(Propietario propietario) {
         txtNombre.setText(propietario.getNombrePropietario());
         txtApellido.setText(propietario.getApellidoPropietario());
-        rbtnHombre.setSelected(propietario.getGeneroPropietario() == "H");
-        rbtnMujer.setSelected(propietario.getGeneroPropietario() == "M");
+        if (propietario.getGeneroPropietario().equals("Hombre")) {
+            rbtnHombre.setSelected(true);
+        } else if (propietario.getGeneroPropietario().equals("Mujer")) {
+            rbtnMujer.setSelected(true);
+        }
         spnEdad.setValue(propietario.getEdadPropietario());
         txtCelular.setText(propietario.getTelfPropietario());
         txtCorreo.setText(propietario.getCorreo_propi());
         cbxNacionalidad.setSelectedItem(propietario.getNacionalidad_propi());
         dchFechaNacimiento.setDate(propietario.getFecha_Naci());
+    }
+    //////////////////////////////////// filtra clientes ///
+
+    private void filtrarPropietriod(String criterio, String valorBusqueda) {
+        DefaultTableModel model = (DefaultTableModel) TablaPropietarios.getModel();
+        model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+
+        ObjectSet<Propietario> result;
+
+        if (criterio.equals("Cedula")) {
+            result = BaseD.queryByExample(new Propietario(valorBusqueda, null, null, null, 0, null, null, null, null));
+        } else if (criterio.equals("Nombre")) {
+            result = BaseD.queryByExample(new Propietario(null, valorBusqueda, null, null, 0, null, null, null, null));
+        } else if (criterio.equals("Genero")) {
+            result = BaseD.queryByExample(new Propietario(null, null, null, valorBusqueda.equals("Hombre") ? "H" : "Mujer", 0, null, null, null, null));
+        } else {
+            // Criterio inválido, no se realiza la búsqueda
+            return;
+        }
+
+        while (result.hasNext()) {
+            Propietario propietario = result.next();
+            String genero = propietario.getGeneroPropietario().equals("H") ? "Hombre" : "Mujer";
+
+            Object[] row = {
+                propietario.getCedulaPropietario(),
+                propietario.getNombrePropietario(),
+                propietario.getApellidoPropietario(),
+                propietario.getEdadPropietario(),
+                genero,
+                propietario.getTelfPropietario(),
+                propietario.getCorreo_propi(),
+                propietario.getNacionalidad_propi(),
+                propietario.getFecha_Naci()
+            };
+
+            model.addRow(row);
+        }
+    }
+
+    private void habilitarCamposBusqueda(String criterioSeleccionado) {
+        // Deshabilitar todos los campos de búsqueda
+        deshabilitarParametros();
+        // ...
+
+        // Habilitar el campo de búsqueda correspondiente al criterio seleccionado
+        if (criterioSeleccionado.equals("Cedula")) {
+            txtCedula.setEnabled(true);
+        } else if (criterioSeleccionado.equals("Nombre")) {
+            txtNombre.setEnabled(true);
+        } else if (criterioSeleccionado.equals("Genero")) {
+            rbtnHombre.setEnabled(true);
+            rbtnMujer.setEnabled(true);
+        }
+        // ...
+    }
+
+    private String obtenerValorBusqueda(String criterioSeleccionado) {
+        String valorBusqueda = "";
+
+        // Obtener el valor de búsqueda según el criterio seleccionado
+        if (criterioSeleccionado.equals("Cedula")) {
+            valorBusqueda = txtCedula.getText();
+        } else if (criterioSeleccionado.equals("Nombre")) {
+            valorBusqueda = txtNombre.getText();
+        } else if (criterioSeleccionado.equals("Genero")) {
+            if (rbtnHombre.isSelected()) {
+                valorBusqueda = "Hombre";
+            } else if (rbtnMujer.isSelected()) {
+                valorBusqueda = "Mujer";
+            }
+        }
+        // ...
+
+        return valorBusqueda;
+    }
+
+    public void habilitarParametros() {
+        txtCedula.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtApellido.setEnabled(true);
+        spnEdad.setEnabled(true);
+        rbtnHombre.setEnabled(true);
+        rbtnMujer.setEnabled(true);
+        txtCelular.setEnabled(true);
+        txtCorreo.setEnabled(true);
+        cbxNacionalidad.setEnabled(true);
+
+    }
+
+    public void deshabilitarParametros() {
+        txtNombre.setEnabled(false);
+        txtApellido.setEnabled(false);
+        spnEdad.setEnabled(false);
+        rbtnHombre.setEnabled(false);
+        rbtnMujer.setEnabled(false);
+        txtCelular.setEnabled(false);
+        txtCorreo.setEnabled(false);
+        cbxNacionalidad.setEnabled(false);
+
     }
 
     public static void cerrarBaseDatos() {
@@ -276,19 +380,26 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         btnReporte = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaPropietarios = new javax.swing.JTable();
+        ComboBoxFiltro = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        btnBuscarFiltro = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("REGISTRO PROPIETARIOS");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         jLabel1.setText("Cedula:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         txtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCedulaActionPerformed(evt);
             }
         });
+        add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 150, -1));
 
         btncargardatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btncargardatos.addActionListener(new java.awt.event.ActionListener() {
@@ -296,24 +407,44 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btncargardatosActionPerformed(evt);
             }
         });
+        add(btncargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
 
         jLabel6.setText("Correo:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, -1, -1));
+        add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 150, 29));
 
         jLabel2.setText("Nombre:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 150, 27));
 
         jLabel5.setText("Nacionalidad:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
 
         cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        add(cbxNacionalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, 150, 28));
 
         jLabel3.setText("Apellido:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+
+        txtApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApellidoActionPerformed(evt);
+            }
+        });
+        add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 150, 27));
 
         jLabel12.setText("Fecha Nacimiento:");
+        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, -1));
+        add(dchFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 150, 30));
 
         jLabel4.setText("Edad:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
         spnEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        add(spnEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 80, -1));
 
         jLabel8.setText("Sexo:");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         btngrupSexo.add(rbtnHombre);
         rbtnHombre.setText("Hombre");
@@ -322,11 +453,20 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 rbtnHombreActionPerformed(evt);
             }
         });
+        add(rbtnHombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, -1, -1));
 
         btngrupSexo.add(rbtnMujer);
-        rbtnMujer.setText("Mujer");
+        rbtnMujer.setText("mujer");
+        rbtnMujer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnMujerActionPerformed(evt);
+            }
+        });
+        add(rbtnMujer, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 70, -1));
 
         jLabel9.setText("Celular:");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, -1));
+        add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 150, 30));
 
         btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnCrear.setText("CREAR");
@@ -335,6 +475,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btnCrearActionPerformed(evt);
             }
         });
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 110, -1));
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsultar.setText("CONSULTAR");
@@ -343,6 +484,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btnConsultarActionPerformed(evt);
             }
         });
+        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, -1, -1));
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
@@ -351,6 +493,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btnModificarActionPerformed(evt);
             }
         });
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, -1, 40));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -359,6 +502,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, -1, -1));
 
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnReporte.setText("REPORTE");
@@ -367,6 +511,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btnReporteActionPerformed(evt);
             }
         });
+        add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 240, -1, 40));
 
         TablaPropietarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -389,132 +534,26 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(TablaPropietarios);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addGap(4, 4, 4)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(rbtnHombre)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbtnMujer))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel12)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel5)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(28, 28, 28)
-                                                    .addComponent(btncargardatos)
-                                                    .addGap(102, 102, 102)
-                                                    .addComponent(jLabel6)
-                                                    .addGap(23, 23, 23)
-                                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(btnCrear)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnConsultar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnModificar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnReporte)))
-                        .addGap(0, 24, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1))
-                    .addComponent(btncargardatos)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(38, 38, 38)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addComponent(jLabel12)
-                    .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(rbtnHombre)
-                        .addComponent(rbtnMujer))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrear)
-                    .addComponent(btnConsultar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnReporte))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 780, 220));
+
+        ComboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cedula", "Nombre", "Genero" }));
+        ComboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBoxFiltroActionPerformed(evt);
+            }
+        });
+        add(ComboBoxFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 80, 123, -1));
+
+        jLabel10.setText("FILTRO BUSQUEDA");
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, -1, -1));
+
+        btnBuscarFiltro.setText("Buscar");
+        btnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarFiltroActionPerformed(evt);
+            }
+        });
+        add(btnBuscarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
@@ -545,15 +584,51 @@ public class CRUD_Propietario extends javax.swing.JPanel {
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         cargarTabla();
+        limpiarCampos();
+        habilitarParametros();
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCedulaActionPerformed
 
+    private void ComboBoxFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxFiltroActionPerformed
+        // Obtener el criterio seleccionado del JComboBox
+        String criterioSeleccionado = ComboBoxFiltro.getSelectedItem().toString();
+
+        // Habilitar o deshabilitar los campos de búsqueda según el criterio seleccionado
+        habilitarCamposBusqueda(criterioSeleccionado);
+    }//GEN-LAST:event_ComboBoxFiltroActionPerformed
+
+    private void btnBuscarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFiltroActionPerformed
+        // TODO add your handling code here:
+        try {
+            // Obtener el criterio seleccionado del JComboBox
+            String criterioSeleccionado = ComboBoxFiltro.getSelectedItem().toString();
+
+            // Obtener el valor de búsqueda ingresado por el usuario
+            String valorBusqueda = obtenerValorBusqueda(criterioSeleccionado);
+
+            // Realizar la búsqueda y cargar los resultados en el JTable
+            filtrarPropietriod(criterioSeleccionado, valorBusqueda);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se encontro propietarios con esos parametros");
+        }
+    }//GEN-LAST:event_btnBuscarFiltroActionPerformed
+
+    private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtApellidoActionPerformed
+
+    private void rbtnMujerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnMujerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnMujerActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> ComboBoxFiltro;
     private javax.swing.JTable TablaPropietarios;
+    private javax.swing.JButton btnBuscarFiltro;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
@@ -564,6 +639,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxNacionalidad;
     private com.toedter.calendar.JDateChooser dchFechaNacimiento;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
