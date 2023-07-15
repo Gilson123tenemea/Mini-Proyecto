@@ -13,15 +13,15 @@ import java.util.Date;
  */
 public class Promocion {
     private String ID_promocion;
-    private CasaVacacional casa;
-    private double descuento;
+    private String casa;
+    private int descuento;
     private Date  fecha_inicio_desc;
     private Date  fecha_fin_desc;
 
     public Promocion() {
     }
 
-    public Promocion(String ID_promocion, CasaVacacional casa, double descuento, Date fecha_inicio_desc, Date fecha_fin_desc) {
+    public Promocion(String ID_promocion, String casa, int descuento, Date fecha_inicio_desc, Date fecha_fin_desc) {
         this.ID_promocion = ID_promocion;
         this.casa = casa;
         this.descuento = descuento;
@@ -37,19 +37,19 @@ public class Promocion {
         this.ID_promocion = ID_promocion;
     }
 
-    public CasaVacacional getCasa() {
+    public String getCasa() {
         return casa;
     }
 
-    public void setCasa(CasaVacacional casa) {
+    public void setCasa(String casa) {
         this.casa = casa;
     }
 
-    public double getDescuento() {
+    public int getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(double descuento) {
+    public void setDescuento(int descuento) {
         this.descuento = descuento;
     }
 
@@ -68,6 +68,10 @@ public class Promocion {
     public void setFecha_fin_desc(Date fecha_fin_desc) {
         this.fecha_fin_desc = fecha_fin_desc;
     }
+
+    
+
+   
 
     @Override
     public String toString() {
