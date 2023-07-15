@@ -27,7 +27,7 @@ public class dashboard extends javax.swing.JFrame {
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
-        
+
         initComponents();
         this.setTitle("Base De Datos Orientada a Objetos");
         this.setLocationRelativeTo(null);
@@ -107,6 +107,11 @@ public class dashboard extends javax.swing.JFrame {
         btnadmi.setBorder(null);
         btnadmi.setBorderPainted(false);
         btnadmi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnadmi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnadmiActionPerformed(evt);
+            }
+        });
 
         btncasa.setText("CASAS VACACIONALES");
         btncasa.setBorder(null);
@@ -358,6 +363,10 @@ public class dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         ShowJPanel(new CRUD_Promociones(baseD));
     }//GEN-LAST:event_btnPromoActionPerformed
+
+    private void btnadmiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadmiActionPerformed
+        ShowJPanel(new V_AgenteInmobiliario(baseD));
+    }//GEN-LAST:event_btnadmiActionPerformed
 
     /**
      * @param args the command line arguments
