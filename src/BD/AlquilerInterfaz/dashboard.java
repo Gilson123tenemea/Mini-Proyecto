@@ -5,7 +5,6 @@
  */
 package BD.AlquilerInterfaz;
 
-import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import java.awt.BorderLayout;
@@ -23,10 +22,12 @@ public class dashboard extends javax.swing.JFrame {
      * Creates new form dashboard
      */
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
-    public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap";//Isaac Villa
+    //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
+    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+    ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
+        
         initComponents();
         this.setTitle("Base De Datos Orientada a Objetos");
         this.setLocationRelativeTo(null);
@@ -34,7 +35,7 @@ public class dashboard extends javax.swing.JFrame {
     }
 
     public void cerrarBaseDeDatos() {
-        BaseD.close(); // Cierra la conexión con la base de datos
+        baseD.close(); // Cierra la conexión con la base de datos
     }
 
     /**
@@ -71,10 +72,14 @@ public class dashboard extends javax.swing.JFrame {
         Contenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Bg.setBackground(new java.awt.Color(255, 255, 255));
+        Bg.setForeground(new java.awt.Color(255, 255, 255));
 
         menu.setBackground(new java.awt.Color(0, 102, 153));
+        menu.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabelCasa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/casa.png"))); // NOI18N
 
@@ -256,6 +261,7 @@ public class dashboard extends javax.swing.JFrame {
         );
 
         header.setBackground(new java.awt.Color(0, 153, 204));
+        header.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
@@ -270,6 +276,9 @@ public class dashboard extends javax.swing.JFrame {
 
         titulo.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         titulo.setText("ALQUILER DE CASAS VACACIONALES M2B");
+
+        Contenido.setBackground(new java.awt.Color(255, 255, 255));
+        Contenido.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout ContenidoLayout = new javax.swing.GroupLayout(Contenido);
         Contenido.setLayout(ContenidoLayout);
@@ -292,7 +301,7 @@ public class dashboard extends javax.swing.JFrame {
                     .addGroup(BgLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 209, Short.MAX_VALUE))
+                        .addGap(0, 366, Short.MAX_VALUE))
                     .addGroup(BgLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -312,26 +321,17 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(Bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
-        //cerrarBaseDeDatos(); // Cierra la base de datos
+        cerrarBaseDeDatos(); // Cierra la base de datos
         dispose(); // Cierra la ventana
     }//GEN-LAST:event_btnsalirActionPerformed
     public void ShowJPanel(JPanel p) {
-        p.setSize(810, 589);
+        p.setSize(810, 600);
         p.setLocation(0, 0);
 
         Contenido.removeAll();
@@ -341,17 +341,17 @@ public class dashboard extends javax.swing.JFrame {
     }
     private void btnclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclienteActionPerformed
         // TODO add your handling code here:     
-        ShowJPanel(new CRUD_Clientes());
+        ShowJPanel(new CRUD_Clientes(baseD));
     }//GEN-LAST:event_btnclienteActionPerformed
 
     private void btnpropiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpropiActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CRUD_Propietario());
+        ShowJPanel(new CRUD_Propietario(baseD));
     }//GEN-LAST:event_btnpropiActionPerformed
 
     private void btnCalendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalendarioActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CalendarioDispo());
+        ShowJPanel(new CalendarioDispo(baseD));
     }//GEN-LAST:event_btnCalendarioActionPerformed
 
     private void btnPromoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromoActionPerformed
