@@ -14,8 +14,8 @@ import BD.AlquilerCasas.Clases.CalendarioDisponibilidad;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
-import static BD.AlquilerInterfaz.CRUD_Clientes.BaseD;
-import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
+//import static BD.AlquilerInterfaz.CRUD_Clientes.BaseD;
+//import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -37,12 +37,14 @@ import com.db4o.query.Query;
  */
 public class CalendarioDispo extends javax.swing.JPanel {
 
-    public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    //public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    private ObjectContainer BaseD;
 
     /**
      * Creates new form CalendarioDispo
      */
-    public CalendarioDispo() {
+    public CalendarioDispo(ObjectContainer BaseD) {
+        this.BaseD = BaseD;
         initComponents();
         cargarTabla();
         cargarComboFechas(); // Llamada al método para cargar las fechas en el combobox
