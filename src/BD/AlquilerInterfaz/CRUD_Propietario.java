@@ -12,10 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CRUD_Propietario extends javax.swing.JPanel {
+    private ObjectContainer BaseD;
 
-    public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
+    //public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
 
-    public CRUD_Propietario() {
+    public CRUD_Propietario(ObjectContainer BaseD) {
+        this.BaseD = BaseD; // Asignar la instancia pasada como parámetro
         initComponents();
         cargarTabla();
         // Cerrar la base de datos cuando se presiona la x
@@ -238,7 +240,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     }
 
     public static void cerrarBaseDatos() {
-        BaseD.close(); // Cerrar la base de datos
+        //BaseD.close(); // Cerrar la base de datos
     }
 
     @SuppressWarnings("unchecked")
