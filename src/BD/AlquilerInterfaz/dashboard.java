@@ -23,7 +23,9 @@ public class dashboard extends javax.swing.JFrame {
      */
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";//Isaac Villa
+    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+    //public static String direccionBD = "---\\AlquilerInterfaz.yap"; Agrega aqui tu propia ubicacion de base Gilson
+    //Aqui la tuya Seteven
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
@@ -192,6 +194,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton8.setBorder(null);
         jButton8.setBorderPainted(false);
         jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("SERVICIO ADICIONAL");
         jButton9.setBorder(null);
@@ -403,6 +410,10 @@ public class dashboard extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ShowJPanel(new CRUD_Actividades());
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        ShowJPanel(new CRUD_Comentario(baseD));
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
