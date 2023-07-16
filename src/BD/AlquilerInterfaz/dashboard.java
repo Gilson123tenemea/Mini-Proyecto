@@ -23,9 +23,9 @@ public class dashboard extends javax.swing.JFrame {
      */
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+   // public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
     //public static String direccionBD = "---\\AlquilerInterfaz.yap"; Agrega aqui tu propia ubicacion de base Gilson
-    //Aqui la tuya Seteven
+    public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap";
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
