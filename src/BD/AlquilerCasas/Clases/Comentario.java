@@ -12,18 +12,19 @@ import java.util.Date;
  * @author USER
  */
 public class Comentario {
-    private String ID_cometario;
+
+    private String ID_comentario;
     private String IDCliente;
     private String id_casa;
     private String contenido;
     private int puntuacion;
-    private Date  fecha_comentario;
+    private Date fecha_comentario;
 
     public Comentario() {
     }
 
-    public Comentario(String ID_cometario, String IDCliente, String id_casa, String contenido, int puntuacion, Date fecha_comentario) {
-        this.ID_cometario = ID_cometario;
+    public Comentario(String ID_comentario, String IDCliente, String id_casa, String contenido, int puntuacion, Date fecha_comentario) {
+        this.ID_comentario = ID_comentario;
         this.IDCliente = IDCliente;
         this.id_casa = id_casa;
         this.contenido = contenido;
@@ -31,12 +32,12 @@ public class Comentario {
         this.fecha_comentario = fecha_comentario;
     }
 
-    public String getID_cometario() {
-        return ID_cometario;
+    public String getID_comentario() {
+        return ID_comentario;
     }
 
-    public void setID_cometario(String ID_cometario) {
-        this.ID_cometario = ID_cometario;
+    public void setID_comentario(String ID_comentario) {
+        this.ID_comentario = ID_comentario;
     }
 
     public String getIDCliente() {
@@ -81,8 +82,7 @@ public class Comentario {
 
     @Override
     public String toString() {
-        return "Comentario{" + "ID_cometario=" + ID_cometario + ", IDCliente=" + IDCliente + ", id_casa=" + id_casa + ", contenido=" + contenido + ", puntuacion=" + puntuacion + ", fecha_comentario=" + fecha_comentario + '}';
+        return "Comentario{" + "ID_comentario=" + ID_comentario + ", IDCliente=" + IDCliente + ", id_casa=" + id_casa + ", contenido=" + contenido + ", puntuacion=" + puntuacion + ", fecha_comentario=" + fecha_comentario + '}';
     }
-    
-    
+
 }
