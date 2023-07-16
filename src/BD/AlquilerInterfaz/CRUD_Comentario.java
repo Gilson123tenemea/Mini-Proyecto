@@ -27,7 +27,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     /**
      * Creates new form CRUD_Comentario
      */
-    public CRUD_Comentario() {
+    public CRUD_Comentario(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
         cargarTabla();
@@ -276,9 +276,9 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             }
         });
 
-        CboxIDCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxIDCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
-        CboxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
 
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
