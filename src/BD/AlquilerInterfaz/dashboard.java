@@ -182,6 +182,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton9.setBorder(null);
         jButton9.setBorderPainted(false);
         jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         btnsalir.setText("SALIR");
         btnsalir.setBorder(null);
@@ -367,6 +372,10 @@ public class dashboard extends javax.swing.JFrame {
     private void btnadmiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadmiActionPerformed
         ShowJPanel(new V_AgenteInmobiliario(baseD));
     }//GEN-LAST:event_btnadmiActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        ShowJPanel(new V_ServicioAdicional(baseD));
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     /**
      * @param args the command line arguments
