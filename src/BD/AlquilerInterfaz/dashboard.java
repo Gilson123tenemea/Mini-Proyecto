@@ -23,7 +23,7 @@ public class dashboard extends javax.swing.JFrame {
      */
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+    public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";//Isaac Villa
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
@@ -117,6 +117,11 @@ public class dashboard extends javax.swing.JFrame {
         btncasa.setBorder(null);
         btncasa.setBorderPainted(false);
         btncasa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btncasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncasaActionPerformed(evt);
+            }
+        });
 
         btnreservar.setText("RESERVACION");
         btnreservar.setBorder(null);
@@ -132,11 +137,21 @@ public class dashboard extends javax.swing.JFrame {
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("ACTIVIDADES");
         jButton3.setBorder(null);
         jButton3.setBorderPainted(false);
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("FACTURA");
         jButton1.setBorder(null);
@@ -376,6 +391,18 @@ public class dashboard extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         ShowJPanel(new V_ServicioAdicional(baseD));
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void btncasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncasaActionPerformed
+        ShowJPanel(new CRUD_CasaVacacional1()); 
+    }//GEN-LAST:event_btncasaActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       ShowJPanel(new CRUD_Vehiculo());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ShowJPanel(new CRUD_Actividades());
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
