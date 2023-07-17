@@ -130,6 +130,11 @@ public class dashboard extends javax.swing.JFrame {
         btnreservar.setBorder(null);
         btnreservar.setBorderPainted(false);
         btnreservar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnreservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnreservarActionPerformed(evt);
+            }
+        });
 
         btnpago.setText("PAGO");
         btnpago.setBorder(null);
@@ -195,6 +200,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton6.setBorder(null);
         jButton6.setBorderPainted(false);
         jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("REPORTE");
         jButton7.setBorder(null);
@@ -435,6 +445,16 @@ public class dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         ShowJPanel(new CRUD_Factura());
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnreservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreservarActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Rerservaciones());
+    }//GEN-LAST:event_btnreservarActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Contrato());
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
