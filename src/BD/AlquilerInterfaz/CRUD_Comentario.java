@@ -49,7 +49,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         String IDCliente = CboxIDCliente.getSelectedItem().toString();
         String id_casa = CboxCasa.getSelectedItem().toString();
         String contenido = txtContenido.getText();
-        int puntuacion = Integer.parseInt(txtPuntuacion.getText());
+        int puntuacion = (int) spnPuntuacion.getValue();
         String puntuacionString = Integer.toString(puntuacion);
 
         Date fecha_comentario = jcalendarFechaComentario.getDate();
@@ -105,7 +105,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             comentario.setIDCliente(CboxIDCliente.getSelectedItem().toString());
             comentario.setId_casa(CboxCasa.getSelectedItem().toString());
             comentario.setContenido(txtContenido.getText());
-            comentario.setPuntuacion(Integer.parseInt(txtPuntuacion.getText()));
+            comentario.setPuntuacion((int) spnPuntuacion.getValue());
             Date fecha_comentario = jcalendarFechaComentario.getDate();
 
             comentario.setFecha_comentario(fecha_comentario);
@@ -143,7 +143,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         CboxIDCliente.setSelectedIndex(0);
         CboxCasa.setSelectedIndex(0);
         txtContenido.setText("");
-        txtPuntuacion.setText("");
+        spnPuntuacion.setValue(0);
         jcalendarFechaComentario.setDate(null);
     }
 
@@ -199,20 +199,23 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             }
         }
         if (txtContenido.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); 
+            JOptionPane.showMessageDialog(this, "Ingrese un valor valido");
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarContenido(txtContenido.getText())) {
             JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        if (txtPuntuacion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); // Ejemplo: AS-1234
+        int puntuacion = (int) spnPuntuacion.getValue();
+
+        if (puntuacion == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un valor válido");
             ban_confirmar = false;
-        } else if (!miValidaciones.ValidarPuntuacion(txtPuntuacion.getText())) {
+        } else if (!miValidaciones.ValidarPuntuacion(Integer.toString(puntuacion))) {
             JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
         return ban_confirmar;
+
     }
 
     @SuppressWarnings("unchecked")
@@ -239,7 +242,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         btnConsultar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        txtPuntuacion = new javax.swing.JTextField();
+        spnPuntuacion = new javax.swing.JSpinner();
 
         jLabel1.setText("ID COMENTARIO:");
 
@@ -308,6 +311,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             }
         });
 
+        spnPuntuacion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -335,11 +340,15 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                                             .addComponent(jLabel5)
                                             .addComponent(jLabel4)
                                             .addComponent(jLabel3))
-                                        .addGap(45, 45, 45)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(CboxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(45, 45, 45)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtContenido, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(CboxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(46, 46, 46)
+                                                .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
@@ -391,7 +400,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(txtPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -429,7 +438,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-       
+
     }//GEN-LAST:event_btnRegresarActionPerformed
 
 
@@ -452,8 +461,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.calendar.JDateChooser jcalendarFechaComentario;
+    private javax.swing.JSpinner spnPuntuacion;
     private javax.swing.JTextField txtContenido;
     private javax.swing.JTextField txtIDComen;
-    private javax.swing.JTextField txtPuntuacion;
     // End of variables declaration//GEN-END:variables
 }
