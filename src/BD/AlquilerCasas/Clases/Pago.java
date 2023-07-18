@@ -16,12 +16,12 @@ public class Pago {
     private String id_reservacion;
     private double monto;
     private Date  fecha_pago;
-    private int estado_pago;
+    private String estado_pago;
 
     public Pago() {
     }
 
-    public Pago(String ID_pago, String id_reservacion, double monto, Date fecha_pago, int estado_pago) {
+    public Pago(String ID_pago, String id_reservacion, double monto, Date fecha_pago, String estado_pago) {
         this.ID_pago = ID_pago;
         this.id_reservacion = id_reservacion;
         this.monto = monto;
@@ -61,11 +61,11 @@ public class Pago {
         this.fecha_pago = fecha_pago;
     }
 
-    public int getEstado_pago() {
+    public String getEstado_pago() {
         return estado_pago;
     }
 
-    public void setEstado_pago(int estado_pago) {
+    public void setEstado_pago(String estado_pago) {
         this.estado_pago = estado_pago;
     }
 
