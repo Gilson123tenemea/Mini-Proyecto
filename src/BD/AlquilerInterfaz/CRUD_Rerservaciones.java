@@ -1,6 +1,7 @@
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.CasaVacacional;
+import BD.AlquilerCasas.Clases.Cliente;
 import static BD.AlquilerInterfaz.CRUD_Reservacion.cerrarBaseDatos;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -16,6 +17,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         this.BaseD = BaseD;
         initComponents();
         cargarCasas();
+        cargarClientes();
         //cerrarBaseDatos();
     }
     public void cargarCasas() {
@@ -35,7 +37,24 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             }
         }
     }
+    //////////cargar clientes 
+    public void cargarClientes() {
+        CboxClientes.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
 
+        ObjectSet<Cliente> cliente = query.execute();
+
+        if (cliente.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes ingresados");
+        } else {
+            //System.out.println("clientes registradas:");
+            while (cliente.hasNext()) {
+                Cliente cli = cliente.next();
+                CboxClientes.addItem(cli.getNombreCliente());
+            }
+        }
+    }
     public static void cerrarBaseDatos() {
         //BaseD.close(); // Cerrar la base de datos
     }
@@ -50,7 +69,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         cbxCasas = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        CboxClientes = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -75,7 +94,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
 
         jLabel4.setText("ID CLIENTE :");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         jButton1.setText("INGRESAR");
@@ -132,7 +151,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                         .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -191,7 +210,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,12 +233,12 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> CboxClientes;
     private javax.swing.JComboBox<String> cbxCasas;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;

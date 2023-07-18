@@ -96,7 +96,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
                   <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnFactura" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnPromo" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnCalendario" alignment="0" max="32767" attributes="0"/>
                   <Component id="jButton6" alignment="0" max="32767" attributes="0"/>
@@ -153,7 +153,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnpago" min="-2" pref="26" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="btnFactura" min="-2" pref="26" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton6" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -299,7 +299,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="btnFactura">
               <Properties>
                 <Property name="text" type="java.lang.String" value="FACTURA"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -311,7 +311,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFacturaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnPromo">

@@ -1,6 +1,7 @@
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.CasaVacacional;
+import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Comentario;
 import BD.AlquilerCasas.Clases.Promocion;
 import BD.AlquilerCasas.Clases.Validaciones;
@@ -20,6 +21,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         this.BaseD = BaseD;
         initComponents();
         cargarCasas();
+        cargarClientes();
         cargarTabla();
     }
     public void cargarCasas() {
@@ -39,6 +41,24 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             }
         }
     }
+    //////////cargar clientes 
+    public void cargarClientes() {
+        CboxClientes.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+
+        ObjectSet<Cliente> cliente = query.execute();
+
+        if (cliente.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes ingresados");
+        } else {
+            //System.out.println("clientes registradas:");
+            while (cliente.hasNext()) {
+                Cliente cli = cliente.next();
+                CboxClientes.addItem(cli.getNombreCliente());
+            }
+        }
+    }
     /// metodo para crear promociones
 
     public void crearComentario() {
@@ -53,7 +73,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             return;
         }
         // Si no existe un comentario con el mismo código, proceder con la creación
-        String IDCliente = CboxIDCliente.getSelectedItem().toString();
+        String IDCliente = CboxClientes.getSelectedItem().toString();
         String id_casa = cbxCasas.getSelectedItem().toString();
         String contenido = txtContenido.getText();
         int puntuacion = (int) spnPuntuacion.getValue();
@@ -115,7 +135,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         if (!result.isEmpty()) {
             Comentario comentario = result.next();
             // Actualizar los campos del propietario con los valores ingresados en la interfaz
-            comentario.setIDCliente(CboxIDCliente.getSelectedItem().toString());
+            comentario.setIDCliente(CboxClientes.getSelectedItem().toString());
             comentario.setId_casa(cbxCasas.getSelectedItem().toString());
             comentario.setContenido(txtContenido.getText());
             comentario.setPuntuacion((int) spnPuntuacion.getValue());
@@ -153,7 +173,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDComen.setText("");
-        CboxIDCliente.setSelectedIndex(0);
+        CboxClientes.setSelectedIndex(0);
         cbxCasas.setSelectedIndex(0);
         txtContenido.setText("");
         spnPuntuacion.setValue(0);
@@ -196,11 +216,11 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Codigo incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        if (CboxIDCliente.getSelectedItem() == null || CboxIDCliente.getSelectedItem().toString().isEmpty()) {
+        if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
         } else {
-            if (!miValidaciones.ValidarCiudad(CboxIDCliente.getSelectedItem().toString())) {
+            if (!miValidaciones.ValidarCiudad(CboxClientes.getSelectedItem().toString())) {
                 JOptionPane.showMessageDialog(this, "Selección de cliente no válida");
                 ban_confirmar = false;
             }
@@ -250,7 +270,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaComentario = new javax.swing.JTable();
-        CboxIDCliente = new javax.swing.JComboBox<>();
+        CboxClientes = new javax.swing.JComboBox<>();
         cbxCasas = new javax.swing.JComboBox<>();
         btnCrear = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
@@ -290,7 +310,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaComentario);
 
-        CboxIDCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
+        CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
 
         cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
 
@@ -371,7 +391,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cbxCasas, 0, 134, Short.MAX_VALUE)
-                                    .addComponent(CboxIDCliente, 0, 134, Short.MAX_VALUE)
+                                    .addComponent(CboxClientes, 0, 134, Short.MAX_VALUE)
                                     .addComponent(txtIDComen)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(261, 261, 261)
@@ -393,7 +413,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(CboxIDCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
@@ -444,7 +464,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CboxIDCliente;
+    private javax.swing.JComboBox<String> CboxClientes;
     private javax.swing.JTable TablaComentario;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnCrear;

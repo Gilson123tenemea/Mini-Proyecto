@@ -5,19 +5,46 @@
  */
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.Cliente;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.query.Query;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author HP
  */
 public class CRUD_Factura extends javax.swing.JPanel {
 
+      private ObjectContainer BaseD;
     /**
      * Creates new form CRUD_Factura
      */
-    public CRUD_Factura() {
+    public CRUD_Factura(ObjectContainer BaseD) {
+        this.BaseD = BaseD;
         initComponents();
+        cargarClientes();
     }
 
+     //////////cargar clientes 
+    public void cargarClientes() {
+        CboxClientes.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+
+        ObjectSet<Cliente> cliente = query.execute();
+
+        if (cliente.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay clientes ingresados");
+        } else {
+            //System.out.println("clientes registradas:");
+            while (cliente.hasNext()) {
+                Cliente cli = cliente.next();
+                CboxClientes.addItem(cli.getNombreCliente());
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +69,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CboxClientes = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         jButton5 = new javax.swing.JButton();
 
@@ -80,7 +107,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
 
         jButton4.setText("BUSCAR");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -105,7 +132,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                             .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                             .addComponent(jTextField4)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(CboxClientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
@@ -144,7 +171,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(46, 46, 46)
                                 .addComponent(jLabel3))
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -173,12 +200,12 @@ public class CRUD_Factura extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> CboxClientes;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

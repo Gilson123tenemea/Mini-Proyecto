@@ -63,7 +63,7 @@ public class dashboard extends javax.swing.JFrame {
         btnpago = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnFactura = new javax.swing.JButton();
         btnPromo = new javax.swing.JButton();
         btnCalendario = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -167,13 +167,13 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("FACTURA");
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnFactura.setText("FACTURA");
+        btnFactura.setBorder(null);
+        btnFactura.setBorderPainted(false);
+        btnFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnFacturaActionPerformed(evt);
             }
         });
 
@@ -248,7 +248,7 @@ public class dashboard extends javax.swing.JFrame {
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnPromo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,7 +300,7 @@ public class dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnpago, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -442,10 +442,10 @@ public class dashboard extends javax.swing.JFrame {
         ShowJPanel(new CRUD_Pago(baseD));
     }//GEN-LAST:event_btnpagoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturaActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CRUD_Factura());
-    }//GEN-LAST:event_jButton1ActionPerformed
+        ShowJPanel(new CRUD_Factura(baseD));
+    }//GEN-LAST:event_btnFacturaActionPerformed
 
     private void btnreservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreservarActionPerformed
         // TODO add your handling code here:
@@ -496,6 +496,7 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Bg;
     private javax.swing.JPanel Contenido;
     private javax.swing.JButton btnCalendario;
+    private javax.swing.JButton btnFactura;
     private javax.swing.JButton btnPromo;
     private javax.swing.JButton btnadmi;
     private javax.swing.JButton btncasa;
@@ -505,7 +506,6 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnreservar;
     private javax.swing.JButton btnsalir;
     private javax.swing.JPanel header;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
