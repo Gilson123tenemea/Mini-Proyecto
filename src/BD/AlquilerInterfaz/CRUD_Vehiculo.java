@@ -1,22 +1,45 @@
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.CasaVacacional;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.query.Query;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author ADMIN_01
  */
 public class CRUD_Vehiculo extends javax.swing.JPanel {
 
-    /**
-     * Creates new form CRUD_Vehiculo
-     */
-    public CRUD_Vehiculo() {
+    private ObjectContainer BaseD;
+
+    public CRUD_Vehiculo(ObjectContainer BaseD) {
+        this.BaseD = BaseD;
         initComponents();
+    }
+
+    public void cargarCasas() {
+        cbxCasa.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+
+        ObjectSet<CasaVacacional> casas = query.execute();
+
+        if (casas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+        } else {
+            //System.out.println("Casas registradas:");
+            while (casas.hasNext()) {
+                CasaVacacional casa = casas.next();
+                cbxCasa.addItem(casa.getNombre());
+            }
+        }
     }
 
     /**
@@ -48,6 +71,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         tbnReporte = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        cbxCasa = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -95,19 +119,19 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 txtCarsaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtCarsa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 100, -1));
+        jPanel1.add(txtCarsa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 100, -1));
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnGuardar.setText("GUARDAR");
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 120, 40));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 120, 40));
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, 40));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, -1, 40));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 120, 40));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 260, 120, 40));
 
         tbnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         tbnReporte.setText("REPORTE");
@@ -116,7 +140,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 tbnReporteActionPerformed(evt);
             }
         });
-        jPanel1.add(tbnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 310, 120, 40));
+        jPanel1.add(tbnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 260, 120, 40));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,7 +155,10 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 770, 110));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 770, 230));
+
+        cbxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(cbxCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 130, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -159,6 +186,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> cboxTipoVehiculo;
+    private javax.swing.JComboBox<String> cbxCasa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
