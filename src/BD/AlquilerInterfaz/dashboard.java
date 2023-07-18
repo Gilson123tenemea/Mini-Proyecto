@@ -25,7 +25,8 @@ public class dashboard extends javax.swing.JFrame {
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
    // public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
     //public static String direccionBD = "---\\AlquilerInterfaz.yap"; Agrega aqui tu propia ubicacion de base Gilson
-    public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap";
+    //public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Stiven Carpio
+    public static String direccionBD = "C:\\Users\\PC01\\Documents\\GitHub\\AlquilerInterfaz.yap";
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
@@ -129,11 +130,21 @@ public class dashboard extends javax.swing.JFrame {
         btnreservar.setBorder(null);
         btnreservar.setBorderPainted(false);
         btnreservar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnreservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnreservarActionPerformed(evt);
+            }
+        });
 
         btnpago.setText("PAGO");
         btnpago.setBorder(null);
         btnpago.setBorderPainted(false);
         btnpago.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnpago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpagoActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("VEHICULO");
         jButton2.setBorder(null);
@@ -159,6 +170,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton1.setBorder(null);
         jButton1.setBorderPainted(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         btnPromo.setText("PROMOCIONES");
         btnPromo.setBorder(null);
@@ -184,6 +200,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton6.setBorder(null);
         jButton6.setBorderPainted(false);
         jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("REPORTE");
         jButton7.setBorder(null);
@@ -414,6 +435,26 @@ public class dashboard extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         ShowJPanel(new CRUD_Comentario(baseD));
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void btnpagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpagoActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Pago());
+    }//GEN-LAST:event_btnpagoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Factura());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnreservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreservarActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Rerservaciones());
+    }//GEN-LAST:event_btnreservarActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        ShowJPanel(new CRUD_Contrato());
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
