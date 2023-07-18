@@ -39,20 +39,26 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             return;
         }
         String ID_comentario = txtIDComen.getText();
-        // Consultar si ya existe un cliente con la misma cédula
+        // Consultar si ya existe un cliente con el mismo código
         ObjectSet<Comentario> result = BaseD.queryByExample(new Comentario(ID_comentario, null, null, null, 0, null));
         if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un comentario con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ya existe un comentario con ese código.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Si no existe un con la misma codigo, proceder con la creación
+        // Si no existe un comentario con el mismo código, proceder con la creación
         String IDCliente = CboxIDCliente.getSelectedItem().toString();
         String id_casa = CboxCasa.getSelectedItem().toString();
         String contenido = txtContenido.getText();
         int puntuacion = (int) spnPuntuacion.getValue();
         String puntuacionString = Integer.toString(puntuacion);
 
-        Date fecha_comentario = jcalendarFechaComentario.getDate();
+        Date fecha_comentario = null;
+        if (jcalendarFechaComentario.getDate() != null) {
+            fecha_comentario = jcalendarFechaComentario.getDate();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fecha válida", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         Comentario micomen = new Comentario(ID_comentario, IDCliente, id_casa, contenido, puntuacion, fecha_comentario);
         BaseD.store(micomen); // Almacenar el objeto en la base de datos
@@ -156,14 +162,17 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         while (result.hasNext()) {
             Comentario comen = result.next();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaFormateada = "";
+            if (comen.getFecha_comentario() != null) {
+                fechaFormateada = sdf.format(comen.getFecha_comentario());
+            }
             Object[] row = {
                 comen.getID_comentario(),
                 comen.getIDCliente(),
                 comen.getId_casa(),
                 comen.getContenido(),
                 comen.getPuntuacion(),
-                sdf.format(comen.getFecha_comentario()), //fechaFormateada
-            };
+                fechaFormateada,};
             model.addRow(row);
         }
     }
