@@ -116,7 +116,7 @@ public class Validaciones {
 
     public boolean validarDouble(String numero) {
         numero = numero.replaceAll("\\s", "");
-        return numero.matches("[0-9]+(\\.[0-9]+)?");
+        return numero.matches("\\d{1,3}(\\.\\d+)?");
     }
 
 }
