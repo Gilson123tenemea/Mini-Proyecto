@@ -15,12 +15,12 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author ADMIN_01
  */
 public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
+
     private ObjectContainer BaseD;
     String id_casa = "";
     String IDPropietario = "";
@@ -37,14 +37,12 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     String tiene_cocina = "";
     String ubicacion = "";
     String otros_detalles = "";
-    
 
-  
     public CRUD_CasaVacacional11(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
         cargarTabla();
-        
+
     }
 
     /**
@@ -246,15 +244,23 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         tabla_casaVacacional.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Casa", "ID Propiedad", "Carro", "Equipamiento", "Pisos", "Habitaciones", "Baños", "Picina", "Jardin", "WIFI", "TV", "Cocina", "ubicacion"
+                "ID Casa", "Nombre", "Cedula Propietario", "Tipo Carro", "N° Pisos", "N° Baños", "Capacidad maxima", "N° Habitaciones", "Piscina", "WIFI", "Cocina", "Jardín", "TV", "Ubicación", "Otros Detalles"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, false, false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabla_casaVacacional);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 800, 130));
@@ -351,7 +357,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     }//GEN-LAST:event_CbxFiltrarbsuqueActionPerformed
 
     private void BtnBuscarFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarFiltroActionPerformed
-       try {
+        try {
             // Obtener el criterio seleccionado del JComboBox
             String criterioSeleccionado = CbxFiltrarbsuque.getSelectedItem().toString();
 
@@ -365,17 +371,17 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_BtnBuscarFiltroActionPerformed
     private void crearCasa() {
-    if (!validarCampos()) {
-           return;
-       }
-    String IDcas = txtIDCASA.getText();
-    
-    ObjectSet<CasaVacacional> result = BaseD.queryByExample(new CasaVacacional(id_casa,null,null, null, 0, 0, 0, 0, null,null,null,null,null,null,null));
+        if (!validarCampos()) {
+            return;
+        }
+        String IDcas = txtIDCASA.getText();
+
+        ObjectSet<CasaVacacional> result = BaseD.queryByExample(new CasaVacacional(id_casa, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
         if (!result.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ya existe una casa vacacional con el id", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String Idpropie = txtIDPROPIEDAD.getSelectedItem().toString();
         String nombre = txtnombreCasa.getText();
         String carro = CboxtipoCarro.getSelectedItem().toString();
@@ -383,46 +389,73 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         int capacidad = (int) spnmaximo.getValue();
         int habitaciones = (int) spnhabitaciones.getValue();
         int baños = (int) spnbanos.getValue();
-        String picina = cboxpicina.getSelectedIcon().toString();
-        String jardin = cboxjardin.getSelectedIcon().toString();
-        String wifi = cboxwifi.getSelectedIcon().toString();
-        String tv = cboxTV.getSelectedIcon().toString();
-        String cocina = cbxcocina.getSelectedIcon().toString();
+        //String picina = cboxpicina.getSelectedIcon().toString();
+        String picina = "";
+        if (cboxpicina.isSelected()) {
+            picina = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
+        } else {
+            picina = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
+        }
+        String jardin = "";
+        if (cboxjardin.isSelected()) {
+            jardin = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
+        } else {
+            jardin = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
+        }
+        String wifi = "";
+        if (cboxwifi.isSelected()) {
+            wifi = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
+        } else {
+            wifi = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
+        }
+        String tv = "";
+        if (cboxTV.isSelected()) {
+            tv = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
+        } else {
+            tv = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
+        }
+        String cocina = "";
+        if (cbxcocina.isSelected()) {
+            cocina = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
+        } else {
+            cocina = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
+        }
         String nacionalidad = cbxnacionalidad_crudcasa.getSelectedItem().toString();
         String detalles = txtdetallescasa.getText();
-        
-       // CasaVacacional micasavaca = new CasaVacacional (IDcas, Idpropie, equipamiento, pisis, capacidad, habitaciones, baños, picina, jardin, wifi, tv, cocina, nacionalidad, detalles);
-             CasaVacacional micasa = new CasaVacacional();
-             micasa.setId_casa(IDcas);
-             micasa.setIDPropietario(Idpropie);
-             micasa.setNombre(nombre);
-             micasa.setCarro(carro);
-             micasa.setNum_pisos(pisos);
-             micasa.setCapacidad_maxima(capacidad);
-             micasa.setNum_habitaciones(habitaciones);
-             micasa.setNum_banos(baños);
-             micasa.setTiene_piscina(picina);
-             micasa.setTiene_jardin(jardin);
-             micasa.setTiene_wifi(wifi);
-             micasa.setTiene_tv(tv);
-             micasa.setTiene_cocina(cocina);
-             micasa.setUbicacion(nacionalidad);
-             micasa.setOtros_detalles(detalles);
-              
+
+        // CasaVacacional micasavaca = new CasaVacacional (IDcas, Idpropie, equipamiento, pisis, capacidad, habitaciones, baños, picina, jardin, wifi, tv, cocina, nacionalidad, detalles);
+        CasaVacacional micasa = new CasaVacacional();
+        micasa.setId_casa(IDcas);
+        micasa.setIDPropietario(Idpropie);
+        micasa.setNombre(nombre);
+        micasa.setCarro(carro);
+        micasa.setNum_pisos(pisos);
+        micasa.setCapacidad_maxima(capacidad);
+        micasa.setNum_habitaciones(habitaciones);
+        micasa.setNum_banos(baños);
+        micasa.setTiene_piscina(picina);
+        micasa.setTiene_jardin(jardin);
+        micasa.setTiene_wifi(wifi);
+        micasa.setTiene_tv(tv);
+        micasa.setTiene_cocina(cocina);
+        micasa.setUbicacion(nacionalidad);
+        micasa.setOtros_detalles(detalles);
+
         BaseD.store(micasa); // Almacenar el objeto en la base de datos
 
         JOptionPane.showMessageDialog(null, "Cliente creado exitosamente.");
         limpiarCampos();
         cargarTabla();
     }
+
     private void consultarcasavacaional() {
-        
-         String IDcas = txtIDCASA.getText();
-          Query query = BaseD.query();
-          query.constrain(CasaVacacional.class);
-          query.descend("id_casa").constrain(IDcas);
-          ObjectSet<CasaVacacional> result = query.execute();
-          if (!result.isEmpty()) {
+
+        String IDcas = txtIDCASA.getText();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(IDcas);
+        ObjectSet<CasaVacacional> result = query.execute();
+        if (!result.isEmpty()) {
             CasaVacacional casa = result.next();
             mostrarCasaVacacional(casa);
         } else {
@@ -430,40 +463,40 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             limpiarCampos();
         }
     }
-    
+
     private void modificarCasaVacacional() {
         if (!validarCampos()) {
             return;
         }
         String IDcas = txtIDCASA.getText();
-          Query query = BaseD.query();
-          query.constrain(CasaVacacional.class);
-          query.descend("id_casa").constrain(IDcas);
-          ObjectSet<CasaVacacional> result = query.execute();
-          if (!result.isEmpty()) {
-             CasaVacacional casa = new CasaVacacional(); 
-             casa.setIDPropietario(txtIDPROPIEDAD.getSelectedItem().toString());
-             casa.setNombre(txtnombreCasa.getText());
-             casa.setCarro(CboxtipoCarro.getSelectedItem().toString());
-             casa.setNum_pisos((int) spnpisos.getValue());
-             casa.setCapacidad_maxima((int) spnmaximo.getValue());
-             casa.setNum_habitaciones((int) spnhabitaciones.getValue());
-             casa.setNum_banos((int) spnbanos.getValue());
-             casa.setTiene_piscina(cboxpicina.getSelectedIcon().toString());
-             casa.setTiene_jardin(cboxjardin.getSelectedIcon().toString());
-             casa.setTiene_wifi(cboxwifi.getSelectedIcon().toString());
-             casa.setTiene_tv(cboxTV.getSelectedIcon().toString());
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(IDcas);
+        ObjectSet<CasaVacacional> result = query.execute();
+        if (!result.isEmpty()) {
+            CasaVacacional casa = new CasaVacacional();
+            casa.setIDPropietario(txtIDPROPIEDAD.getSelectedItem().toString());
+            casa.setNombre(txtnombreCasa.getText());
+            casa.setCarro(CboxtipoCarro.getSelectedItem().toString());
+            casa.setNum_pisos((int) spnpisos.getValue());
+            casa.setCapacidad_maxima((int) spnmaximo.getValue());
+            casa.setNum_habitaciones((int) spnhabitaciones.getValue());
+            casa.setNum_banos((int) spnbanos.getValue());
+            casa.setTiene_piscina(cboxpicina.getSelectedIcon().toString());
+            casa.setTiene_jardin(cboxjardin.getSelectedIcon().toString());
+            casa.setTiene_wifi(cboxwifi.getSelectedIcon().toString());
+            casa.setTiene_tv(cboxTV.getSelectedIcon().toString());
             casa.setTiene_cocina(cbxcocina.getSelectedIcon().toString());
             casa.setUbicacion(cbxnacionalidad_crudcasa.getSelectedItem().toString());
             casa.setOtros_detalles(txtdetallescasa.getText());
-            
+
             BaseD.store(casa); // Actualizar el objeto en la base de datos
             JOptionPane.showMessageDialog(null, "Casa Vacacional modificado exitosamente.");
             limpiarCampos();
             cargarTabla();
 
         } else {
-              JOptionPane.showMessageDialog(null, "No se encontró una casa vacacional con el ID ingresado.");
+            JOptionPane.showMessageDialog(null, "No se encontró una casa vacacional con el ID ingresado.");
         }
     }
 
@@ -483,13 +516,13 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         cbxcocina.setText(casa.getTiene_cocina());
         cbxnacionalidad_crudcasa.setSelectedItem(casa.getUbicacion());
         txtdetallescasa.setText(casa.getOtros_detalles());
-        
+
     }
-    
-     public boolean validarCampos() {
-          Validaciones miValidaciones = new Validaciones();
-          boolean ban_confirmar = true;
-          
+
+    public boolean validarCampos() {
+        Validaciones miValidaciones = new Validaciones();
+        boolean ban_confirmar = true;
+
         if (txtIDCASA.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el id de la casa");
             ban_confirmar = false;
@@ -497,7 +530,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "ID incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
+
         if (txtIDPROPIEDAD.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Elija la cedula del propietario");
             ban_confirmar = false;
@@ -505,7 +538,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "ID incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
+
         if (txtnombreCasa.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el nombre de la casa");
             ban_confirmar = false;
@@ -513,9 +546,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Nombre incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
-        
-        
+
         if (CboxtipoCarro.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Elija un tipo de Vehiculo");
             ban_confirmar = false;
@@ -523,7 +554,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vehiculo incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
+
         if (cbxnacionalidad_crudcasa.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Ingrese la ubicacion de la casa");
             ban_confirmar = false;
@@ -533,7 +564,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 ban_confirmar = false;
             }
         }
-        
+
         if (txtdetallescasa.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese algun detalle");
             ban_confirmar = false;
@@ -541,12 +572,11 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Detalle incorrecta. Ingrese de nuevo");
             ban_confirmar = false;
         }
-          
-         
+
         return ban_confirmar;
-         
-     }
-     
+
+    }
+
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) tabla_casaVacacional.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
@@ -555,39 +585,42 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             CasaVacacional casa = result.next();
             Object[] row = {
                 casa.getId_casa(),
-                casa.getIDPropietario(),
                 casa.getNombre(),
+                casa.getIDPropietario(),
                 casa.getCarro(),
-                
                 casa.getNum_pisos(),
-                casa.getTiene_jardin(),
+                casa.getNum_banos(),
+                casa.getCapacidad_maxima(),
+                casa.getNum_habitaciones(),
+                casa.getTiene_piscina(),
                 casa.getTiene_wifi(),
-                casa.getTiene_tv(),
                 casa.getTiene_cocina(),
+                casa.getTiene_jardin(),
+                casa.getTiene_tv(),
                 casa.getUbicacion(),
-                casa.getOtros_detalles()     
+                casa.getOtros_detalles()
             };
             model.addRow(row);
         }
     }
-    
+
     private void filtrarCasaVacacional(String criterio, String valorBusqueda) {
         DefaultTableModel model = (DefaultTableModel) tabla_casaVacacional.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
-        
+
         ObjectSet<CasaVacacional> result;
         if (criterio.equals("id_casa")) {
-            result = BaseD.queryByExample(new CasaVacacional(id_casa,null,null, null, 0, 0, 0, 0, null,null,null,null,null,null,null));
+            result = BaseD.queryByExample(new CasaVacacional(id_casa, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
         } else if (criterio.equals("IDPropietario")) {
-            result = BaseD.queryByExample(new CasaVacacional(null, IDPropietario,null, null, 0, 0, 0, 0, null,null,null,null,null,null,null));
+            result = BaseD.queryByExample(new CasaVacacional(null, IDPropietario, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
         } else if (criterio.equals("otros_detalles")) {
-            CasaVacacional filtro = new CasaVacacional(null, null, null,null, 0, 0, 0, 0, null,null,null,null,null,null,otros_detalles);
+            CasaVacacional filtro = new CasaVacacional(null, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, otros_detalles);
             result = BaseD.queryByExample(filtro);
         } else {
             // Criterio inválido, no se realiza la búsqueda
             return;
         }
-        
+
         while (result.hasNext()) {
             CasaVacacional casa = result.next();
             Object[] row = {
@@ -605,12 +638,12 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 casa.getTiene_tv(),
                 casa.getTiene_cocina(),
                 casa.getUbicacion(),
-                casa.getOtros_detalles()     
+                casa.getOtros_detalles()
             };
             model.addRow(row);
         }
     }
-    
+
     private void habilitarCamposBusqueda(String criterioSeleccionado) {
         deshabilitarParametros();
         if (criterioSeleccionado.equals("id_casa")) {
@@ -618,42 +651,42 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         } else if (criterioSeleccionado.equals("IDPropietario")) {
             txtIDPROPIEDAD.setEnabled(true);
         } else if (criterioSeleccionado.equals("nombre")) {
-            txtnombreCasa.setEnabled(true);  
+            txtnombreCasa.setEnabled(true);
         }
-          
+
     }
-    
-     private String obtenerValorBusqueda(String criterioSeleccionado) {
-         String valorBusqueda = "";
-         if (criterioSeleccionado.equals("id_casa")) {
+
+    private String obtenerValorBusqueda(String criterioSeleccionado) {
+        String valorBusqueda = "";
+        if (criterioSeleccionado.equals("id_casa")) {
             valorBusqueda = txtIDCASA.getText();
         } else if (criterioSeleccionado.equals("IDPropietario")) {
             valorBusqueda = txtIDPROPIEDAD.getSelectedItem().toString();
         } else if (criterioSeleccionado.equals("nombre")) {
             valorBusqueda = txtnombreCasa.getText();
-            
+
         }
 
         return valorBusqueda;
     }
-     
+
     private void eliminarCasas() {
         String IDcas = txtIDCASA.getText();
-          Query query = BaseD.query();
-          query.constrain(CasaVacacional.class);
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
         query.descend("id_casa").constrain(IDcas);
         ObjectSet<CasaVacacional> result = query.execute();
         if (!result.isEmpty()) {
             CasaVacacional casa = result.next();
             BaseD.delete(casa);
             JOptionPane.showMessageDialog(null, "Casa Vacacional eliminado exitosamente.");
-           limpiarCampos();
+            limpiarCampos();
             cargarTabla();
-          }else {
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontró una casa vacacional con el ID ingresada.");
         }
     }
-    
+
     public void habilitarParametros() {
         txtIDCASA.setEnabled(true);
         txtIDPROPIEDAD.setEnabled(true);
@@ -672,9 +705,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         txtdetallescasa.setEnabled(true);
 
     }
-    
-     
-    
+
     public void deshabilitarParametros() {
         txtIDCASA.setEnabled(false);
         txtIDPROPIEDAD.setEnabled(false);
@@ -694,7 +725,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     }
 
     private void limpiarCampos() {
-        
+
         txtIDCASA.setText("");
         txtIDPROPIEDAD.setSelectedIndex(0);
         txtnombreCasa.setText("");
@@ -710,7 +741,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         cbxcocina.setSelected(false);
         cbxnacionalidad_crudcasa.setSelectedIndex(0);
         txtdetallescasa.setText("");
-     }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnBuscarFiltro;
