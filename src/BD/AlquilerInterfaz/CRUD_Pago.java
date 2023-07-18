@@ -39,7 +39,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         }
         String ID_pago = txtIDPago.getText();
         // Consultar si ya existe un cliente con el mismo pago
-        ObjectSet<Pago> result = BaseD.queryByExample(new Pago(ID_pago, null, 0, null, 0));
+        ObjectSet<Pago> result = BaseD.queryByExample(new Pago(ID_pago, null, 0, null, null));
         if (!result.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ya existe un pago con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -47,8 +47,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         // Si no existe un con la misma codigo, proceder con la creación
         String id_reservacion = CboxIDReservacion.getSelectedItem().toString();
         double monto = Double.parseDouble(txtMonto.getText());
-        int estado_pago = Integer.parseInt(txtEstadoPago.getText());
-        String estadopagString = Integer.toString(estado_pago);
+        String estado_pago = txtEstadoPago.getText();
 
         Date fecha_pago = jcalendarFechaPago.getDate();
 
@@ -101,7 +100,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
             // Actualizar los campos del pago con los valores ingresados en la interfaz
             pago.setId_reservacion(CboxIDReservacion.getSelectedItem().toString());
             pago.setMonto(Double.parseDouble(txtMonto.getText()));
-            pago.setEstado_pago(Integer.parseInt(txtEstadoPago.getText()));
+            pago.setEstado_pago(txtEstadoPago.getText());
 
             Date fecha_pago = jcalendarFechaPago.getDate();
 
@@ -164,8 +163,8 @@ public class CRUD_Pago extends javax.swing.JPanel {
         if (txtEstadoPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); // Ejemplo: AS-1234
             ban_confirmar = false;
-        } else if (!miValidaciones.ValidarEntero(txtEstadoPago.getText())) {
-            JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
+        } else if (!miValidaciones.ValidarCiudad(txtEstadoPago.getText())) {
+            JOptionPane.showMessageDialog(this, "Estado de pago incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
         return ban_confirmar;
@@ -286,7 +285,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaPago);
 
-        CboxIDReservacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxIDReservacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itemuno", "Itemdos", "Itemtres", "Itemcuatro" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
