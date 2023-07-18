@@ -16,8 +16,8 @@ public class CasaVacacional {
 
     private String id_casa;
     private String IDPropietario;
-    private Vehiculo carro;
-    private String equipamiento_casa;
+    private String nombre;
+    private String carro;
     private int num_pisos;
     private int capacidad_maxima;
     private int num_habitaciones;
@@ -34,11 +34,11 @@ public class CasaVacacional {
     public CasaVacacional() {
     }
 
-    public CasaVacacional(String id_casa, String IDPropietario, Vehiculo carro, String equipamiento_casa, int num_pisos, int capacidad_maxima, int num_habitaciones, int num_banos, String tiene_piscina, String tiene_jardin, String tiene_wifi, String tiene_tv, String tiene_cocina, String ubicacion, String otros_detalles) {
+    public CasaVacacional(String id_casa, String IDPropietario, String nombre, String carro, int num_pisos, int capacidad_maxima, int num_habitaciones, int num_banos, String tiene_piscina, String tiene_jardin, String tiene_wifi, String tiene_tv, String tiene_cocina, String ubicacion, String otros_detalles) {
         this.id_casa = id_casa;
         this.IDPropietario = IDPropietario;
+        this.nombre = nombre;
         this.carro = carro;
-        this.equipamiento_casa = equipamiento_casa;
         this.num_pisos = num_pisos;
         this.capacidad_maxima = capacidad_maxima;
         this.num_habitaciones = num_habitaciones;
@@ -51,6 +51,8 @@ public class CasaVacacional {
         this.ubicacion = ubicacion;
         this.otros_detalles = otros_detalles;
     }
+
+   
 
     public String getId_casa() {
         return id_casa;
@@ -68,20 +70,12 @@ public class CasaVacacional {
         this.IDPropietario = IDPropietario;
     }
 
-    public Vehiculo getCarro() {
+    public String getCarro() {
         return carro;
     }
 
-    public void setCarro(Vehiculo carro) {
+    public void setCarro(String carro) {
         this.carro = carro;
-    }
-
-    public String getEquipamiento_casa() {
-        return equipamiento_casa;
-    }
-
-    public void setEquipamiento_casa(String equipamiento_casa) {
-        this.equipamiento_casa = equipamiento_casa;
     }
 
     public int getNum_pisos() {
@@ -172,11 +166,18 @@ public class CasaVacacional {
         this.otros_detalles = otros_detalles;
     }
 
-    @Override
-    public String toString() {
-        return "CasaVacacional{" + "id_casa=" + id_casa + ", IDPropietario=" + IDPropietario + ", carro=" + carro + ", equipamiento_casa=" + equipamiento_casa + ", num_pisos=" + num_pisos + ", capacidad_maxima=" + capacidad_maxima + ", num_habitaciones=" + num_habitaciones + ", num_banos=" + num_banos + ", tiene_piscina=" + tiene_piscina + ", tiene_jardin=" + tiene_jardin + ", tiene_wifi=" + tiene_wifi + ", tiene_tv=" + tiene_tv + ", tiene_cocina=" + tiene_cocina + ", ubicacion=" + ubicacion + ", otros_detalles=" + otros_detalles + '}';
+    public String getNombre() {
+        return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "CasaVacacional{" + "id_casa=" + id_casa + ", IDPropietario=" + IDPropietario + ", nombre=" + nombre + ", carro=" + carro + ", num_pisos=" + num_pisos + ", capacidad_maxima=" + capacidad_maxima + ", num_habitaciones=" + num_habitaciones + ", num_banos=" + num_banos + ", tiene_piscina=" + tiene_piscina + ", tiene_jardin=" + tiene_jardin + ", tiene_wifi=" + tiene_wifi + ", tiene_tv=" + tiene_tv + ", tiene_cocina=" + tiene_cocina + ", ubicacion=" + ubicacion + ", otros_detalles=" + otros_detalles + '}';
+    }
     
       public void cargarUbicacionCasa() {
         listaCiudades.add("Guayaquil"
