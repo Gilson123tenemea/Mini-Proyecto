@@ -22,6 +22,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     public CRUD_Vehiculo(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarCasas();
     }
 
     public void cargarCasas() {

@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Comentario;
 import BD.AlquilerCasas.Clases.Promocion;
 import BD.AlquilerCasas.Clases.Validaciones;
@@ -16,21 +12,32 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author HP
- */
 public class CRUD_Comentario extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
 
-    /**
-     * Creates new form CRUD_Comentario
-     */
     public CRUD_Comentario(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarCasas();
         cargarTabla();
+    }
+    public void cargarCasas() {
+        cbxCasas.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+
+        ObjectSet<CasaVacacional> casas = query.execute();
+
+        if (casas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+        } else {
+            //System.out.println("Casas registradas:");
+            while (casas.hasNext()) {
+                CasaVacacional casa = casas.next();
+                cbxCasas.addItem(casa.getNombre());
+            }
+        }
     }
     /// metodo para crear promociones
 
@@ -47,7 +54,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         }
         // Si no existe un comentario con el mismo código, proceder con la creación
         String IDCliente = CboxIDCliente.getSelectedItem().toString();
-        String id_casa = CboxCasa.getSelectedItem().toString();
+        String id_casa = cbxCasas.getSelectedItem().toString();
         String contenido = txtContenido.getText();
         int puntuacion = (int) spnPuntuacion.getValue();
         String puntuacionString = Integer.toString(puntuacion);
@@ -109,7 +116,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             Comentario comentario = result.next();
             // Actualizar los campos del propietario con los valores ingresados en la interfaz
             comentario.setIDCliente(CboxIDCliente.getSelectedItem().toString());
-            comentario.setId_casa(CboxCasa.getSelectedItem().toString());
+            comentario.setId_casa(cbxCasas.getSelectedItem().toString());
             comentario.setContenido(txtContenido.getText());
             comentario.setPuntuacion((int) spnPuntuacion.getValue());
             Date fecha_comentario = jcalendarFechaComentario.getDate();
@@ -147,7 +154,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
         txtIDComen.setText("");
         CboxIDCliente.setSelectedIndex(0);
-        CboxCasa.setSelectedIndex(0);
+        cbxCasas.setSelectedIndex(0);
         txtContenido.setText("");
         spnPuntuacion.setValue(0);
         jcalendarFechaComentario.setDate(null);
@@ -198,11 +205,11 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 ban_confirmar = false;
             }
         }
-        if (CboxCasa.getSelectedItem() == null || CboxCasa.getSelectedItem().toString().isEmpty()) {
+        if (cbxCasas.getSelectedItem() == null || cbxCasas.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa");
             ban_confirmar = false;
         } else {
-            if (!miValidaciones.ValidarCiudad(CboxCasa.getSelectedItem().toString())) {
+            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
                 JOptionPane.showMessageDialog(this, "Selección de casa no válida");
                 ban_confirmar = false;
             }
@@ -244,7 +251,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaComentario = new javax.swing.JTable();
         CboxIDCliente = new javax.swing.JComboBox<>();
-        CboxCasa = new javax.swing.JComboBox<>();
+        cbxCasas = new javax.swing.JComboBox<>();
         btnCrear = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -285,7 +292,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
         CboxIDCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
 
-        CboxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
+        cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
 
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
@@ -363,7 +370,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                                     .addComponent(jLabel3))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(CboxCasa, 0, 134, Short.MAX_VALUE)
+                                    .addComponent(cbxCasas, 0, 134, Short.MAX_VALUE)
                                     .addComponent(CboxIDCliente, 0, 134, Short.MAX_VALUE)
                                     .addComponent(txtIDComen)))
                             .addGroup(layout.createSequentialGroup()
@@ -390,7 +397,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(CboxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -437,13 +444,13 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CboxCasa;
     private javax.swing.JComboBox<String> CboxIDCliente;
     private javax.swing.JTable TablaComentario;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> cbxCasas;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

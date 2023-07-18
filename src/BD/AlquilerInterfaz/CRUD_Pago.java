@@ -26,7 +26,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
 
-    public CRUD_Pago() {
+    public CRUD_Pago(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
         cargarTabla();

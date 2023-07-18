@@ -71,7 +71,7 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="CboxCasa" pref="134" max="32767" attributes="0"/>
+                                  <Component id="cbxCasas" pref="134" max="32767" attributes="0"/>
                                   <Component id="CboxIDCliente" pref="134" max="32767" attributes="0"/>
                                   <Component id="txtIDComen" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -108,7 +108,7 @@
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CboxCasa" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxCasas" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -260,7 +260,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="CboxCasa">
+    <Component class="javax.swing.JComboBox" name="cbxCasas">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="3">

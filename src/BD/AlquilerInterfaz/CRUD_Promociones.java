@@ -1,15 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerInterfaz;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import BD.AlquilerCasas.Clases.CalendarioDisponibilidad;
+import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Promocion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
@@ -19,25 +10,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.lang.Integer;
-import java.text.ParseException;
-
-/**
- *
- * @author USER
- */
 public class CRUD_Promociones extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
-
-    /**
-     * Creates new form CRUD_Promociones
-     */
     public CRUD_Promociones(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarCasas();
         cargarTabla();
+    }
+    public void cargarCasas() {
+        CboxCasas.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
 
+        ObjectSet<CasaVacacional> casas = query.execute();
+
+        if (casas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+        } else {
+            //System.out.println("Casas registradas:");
+            while (casas.hasNext()) {
+                CasaVacacional casa = casas.next();
+                CboxCasas.addItem(casa.getNombre());
+            }
+        }
     }
 /// metodo para crear promociones
 

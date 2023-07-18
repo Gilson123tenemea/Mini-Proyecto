@@ -22,12 +22,12 @@ public class dashboard extends javax.swing.JFrame {
      * Creates new form dashboard
      */
     //COLOCAR LA DIRECCION DE LA BASE DE DATOS
-    public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    //public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+    //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
+    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
     //public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Stiven Carpio
     //public static String direccionBD = "C:\\Users\\PC01\\Documents\\GitHub\\AlquilerInterfaz.yap";
     //public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";
-    
+
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
     public dashboard() {
@@ -422,15 +422,15 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void btncasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncasaActionPerformed
-        ShowJPanel(new CRUD_CasaVacacional11(baseD)); 
+        ShowJPanel(new CRUD_CasaVacacional11(baseD));
     }//GEN-LAST:event_btncasaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       ShowJPanel(new CRUD_Vehiculo(baseD));
+        ShowJPanel(new CRUD_Vehiculo(baseD));
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ShowJPanel(new CRUD_Actividades());
+        ShowJPanel(new CRUD_Actividades(baseD));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -439,7 +439,7 @@ public class dashboard extends javax.swing.JFrame {
 
     private void btnpagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpagoActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CRUD_Pago());
+        ShowJPanel(new CRUD_Pago(baseD));
     }//GEN-LAST:event_btnpagoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -449,12 +449,12 @@ public class dashboard extends javax.swing.JFrame {
 
     private void btnreservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreservarActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CRUD_Rerservaciones());
+        ShowJPanel(new CRUD_Rerservaciones(baseD));
     }//GEN-LAST:event_btnreservarActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        ShowJPanel(new CRUD_Contrato());
+        ShowJPanel(new CRUD_Contrato(baseD));
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
