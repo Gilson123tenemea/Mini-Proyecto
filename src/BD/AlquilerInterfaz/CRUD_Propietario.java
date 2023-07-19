@@ -5,10 +5,12 @@ import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class CRUD_Propietario extends javax.swing.JPanel {
@@ -19,17 +21,10 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         this.BaseD = BaseD; // Asignar la instancia pasada como parámetro
         initComponents();
         cargarTabla();
-        // Cerrar la base de datos cuando se presiona la x
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                cerrarBaseDatos();
-            }
-        });
+        limpiarCampos();
     }
 
-    // Método para validar los campos de la interfaz
-    public boolean validarCampos() {
+    public boolean validarCampos() {// Método para validar los campos de la interfaz
         Validaciones miValidaciones = new Validaciones();
         boolean ban_confirmar = true;
 
@@ -72,11 +67,16 @@ public class CRUD_Propietario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Correo incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
+        // Validar la nacionalidad
         if (cbxNacionalidad.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Ingrese la nacionalidad del cliente");
             ban_confirmar = false;
         } else {
-            if (!miValidaciones.ValidarCiudad(cbxNacionalidad.getSelectedItem().toString())) {
+            int indiceSeleccionado = cbxNacionalidad.getSelectedIndex();
+            if (indiceSeleccionado == 0) {
+                JOptionPane.showMessageDialog(this, "Seleccione una nacionalidad válida");
+                ban_confirmar = false;
+            } else if (!miValidaciones.ValidarCiudad(cbxNacionalidad.getSelectedItem().toString())) {
                 JOptionPane.showMessageDialog(this, "Nacionalidad inválida");
                 ban_confirmar = false;
             }
@@ -84,8 +84,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         return ban_confirmar;
     }
 
-    // Método para crear un nuevo propietario
-    private void crearPropietario() {
+    private void crearPropietario() {// Método para crear un nuevo propietario
         if (!validarCampos()) {
             return;
         }
@@ -99,7 +98,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
             return;
         }
 
-        // Si no existe un propietario con la misma cédula, proceder con la creación
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
         String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
@@ -122,24 +120,25 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         cargarTabla();
     }
 
-    // Método para consultar un propietario por su cédula
     private void consultarPropietario() {
         String cedula = txtCedula.getText();
         Query query = BaseD.query();
         query.constrain(Propietario.class);
         query.descend("CedulaPropietario").constrain(cedula);
         ObjectSet<Propietario> result = query.execute();
+
         if (!result.isEmpty()) {
-            Propietario propietario = result.next();
+            Propietario propietario = result.get(0);
             mostrarPropietario(propietario);
+            txtCedula.setEnabled(false);
+            btnCrear.setEnabled(false);
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró un propietario con la cédula ingresada.");
             limpiarCampos();
         }
     }
 
-    // Método para modificar un propietario existente
-    private void modificarPropietario() {
+    private void modificarPropietario() {// Método para modificar un propietario existente
         if (!validarCampos()) {
             return;
         }
@@ -170,65 +169,126 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         }
     }
 
-    // Método para eliminar un propietario existente
     private void eliminarPropietario() {
-        String cedula = txtCedula.getText();
-        Query query = BaseD.query();
-        query.constrain(Propietario.class);
-        query.descend("CedulaPropietario").constrain(cedula);
-        ObjectSet<Propietario> result = query.execute();
-        if (!result.isEmpty()) {
-            Propietario propietario = result.next();
-            BaseD.delete(propietario); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "Propietario eliminado exitosamente.");
-            limpiarCampos();
-            cargarTabla();
+        String cedula = txtCedula.getText().trim();
+        if (cedula.isEmpty()) {
+            List<Integer> filasSeleccionadas = obtenerFilasSeleccionadas(TablaPropietarios); 
+            if (filasSeleccionadas.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún propietario para eliminar.");
+                return;
+            }
+
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres eliminar los propietarios seleccionados?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            DefaultTableModel modelo = (DefaultTableModel) TablaPropietarios.getModel(); 
+            for (int fila : filasSeleccionadas) {
+                cedula = modelo.getValueAt(fila, 0).toString(); // Obtener la cédula de la fila seleccionada
+                Query query = BaseD.query();
+                query.constrain(Propietario.class);
+                query.descend("CedulaPropietario").constrain(cedula);
+                ObjectSet<Propietario> result = query.execute();
+                if (!result.isEmpty()) {
+                    Propietario propietario = result.next();
+                    BaseD.delete(propietario); // Eliminar el objeto de la base de datos
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Propietarios seleccionados eliminados exitosamente.");
         } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un propietario con la cédula ingresada.");
+            Query query = BaseD.query();
+            query.constrain(Propietario.class);
+            query.descend("CedulaPropietario").constrain(cedula);
+            ObjectSet<Propietario> result = query.execute();
+            if (!result.isEmpty()) {
+                Propietario propietario = result.next();
+                int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres eliminar al propietario con cédula " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    BaseD.delete(propietario); // Eliminar el objeto de la base de datos
+                    JOptionPane.showMessageDialog(null, "Propietario con cédula " + cedula + " eliminado exitosamente.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró un propietario con la cédula ingresada.");
+            }
+        }
+
+        limpiarCampos();
+        cargarTabla();
+    }
+
+    private void cargarDatosTabla() {
+        int filaSeleccionada = TablaPropietarios.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            DefaultTableModel model = (DefaultTableModel) TablaPropietarios.getModel();
+            String cedula = model.getValueAt(filaSeleccionada, 0).toString();
+
+            Query query = BaseD.query();
+            query.constrain(Propietario.class);
+            query.descend("CedulaPropietario").constrain(cedula);
+            ObjectSet<Propietario> result = query.execute();
+
+            if (!result.isEmpty()) {
+                Propietario propietario = result.get(0);
+                txtCedula.setText(propietario.getCedulaPropietario());
+                txtCedula.setEnabled(false);
+                btnCrear.setEnabled(false);
+                mostrarPropietario(propietario);
+            }
         }
     }
 
-    // Método para limpiar los campos de la interfaz
-    private void limpiarCampos() {
+    private List<Integer> obtenerFilasSeleccionadas(JTable tabla) {
+        List<Integer> filasSeleccionadas = new ArrayList<>();
+        int[] filas = tabla.getSelectedRows();
+        for (int fila : filas) {
+            filasSeleccionadas.add(tabla.convertRowIndexToModel(fila));
+        }
+        return filasSeleccionadas;
+    }
+
+    private void limpiarCampos() {// Método para limpiar los campos de la interfaz
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
-        rbtnHombre.setSelected(true);
-        spnEdad.setValue(1);
+        rbtnHombre.setSelected(false);
+        rbtnMujer.setSelected(false);
+        spnEdad.setValue(0);
         txtCelular.setText("");
         txtCorreo.setText("");
         cbxNacionalidad.setSelectedIndex(0);
         dchFechaNacimiento.setDate(null);
     }
 
-    // Método para cargar la tabla con los propietarios existentes en la base de datos
-    private void cargarTabla() {
+    private void cargarTabla() {// Método para cargar la tabla con los propietarios existentes en la base de datos
         DefaultTableModel model = (DefaultTableModel) TablaPropietarios.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
         ObjectSet<Propietario> result = BaseD.queryByExample(Propietario.class);
         while (result.hasNext()) {
             Propietario propietario = result.next();
-            String genero = propietario.getGeneroPropietario().equals("H") ? "Hombre" : "Mujer";
+            // Obtener la fecha de nacimiento con el formato día/mes/año
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaNacimiento = dateFormat.format(propietario.getFecha_Naci());
 
             Object[] row = {
                 propietario.getCedulaPropietario(),
                 propietario.getNombrePropietario(),
                 propietario.getApellidoPropietario(),
                 propietario.getEdadPropietario(),
-                genero,
+                propietario.getGeneroPropietario(),
                 propietario.getTelfPropietario(),
                 propietario.getCorreo_propi(),
                 propietario.getNacionalidad_propi(),
-                propietario.getFecha_Naci()
+                fechaNacimiento // Utilizar la fecha de nacimiento formateada
             };
 
             model.addRow(row);
         }
     }
 
-    // Método para mostrar los datos de un propietario en los campos de la interfaz
-    private void mostrarPropietario(Propietario propietario) {
+    private void mostrarPropietario(Propietario propietario) {// Método para mostrar los datos de un propietario en los campos de la interfaz
         txtNombre.setText(propietario.getNombrePropietario());
         txtApellido.setText(propietario.getApellidoPropietario());
         if (propietario.getGeneroPropietario().equals("Hombre")) {
@@ -242,9 +302,8 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         cbxNacionalidad.setSelectedItem(propietario.getNacionalidad_propi());
         dchFechaNacimiento.setDate(propietario.getFecha_Naci());
     }
-    //////////////////////////////////// filtra clientes ///
 
-    private void filtrarPropietriod(String criterio, String valorBusqueda) {
+    private void filtrarPropietrios(String criterio, String valorBusqueda) {
         DefaultTableModel model = (DefaultTableModel) TablaPropietarios.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
@@ -255,7 +314,12 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         } else if (criterio.equals("Nombre")) {
             result = BaseD.queryByExample(new Propietario(null, valorBusqueda, null, null, 0, null, null, null, null));
         } else if (criterio.equals("Genero")) {
-            result = BaseD.queryByExample(new Propietario(null, null, null, valorBusqueda.equals("Hombre") ? "H" : "Mujer", 0, null, null, null, null));
+            if (rbtnHombre.isSelected()) {
+                valorBusqueda = "Hombre"; // Modificar el valor de búsqueda a "H"
+            } else if (rbtnMujer.isSelected()) {
+                valorBusqueda = "Mujer";
+            }
+            result = BaseD.queryByExample(new Propietario(null, null, null, valorBusqueda, 0, null, null, null, null));
         } else {
             // Criterio inválido, no se realiza la búsqueda
             return;
@@ -263,14 +327,14 @@ public class CRUD_Propietario extends javax.swing.JPanel {
 
         while (result.hasNext()) {
             Propietario propietario = result.next();
-            String genero = propietario.getGeneroPropietario().equals("H") ? "Hombre" : "Mujer";
+            //String genero = propietario.getGeneroPropietario().equals("H") ? "Hombre" : "Mujer";
 
             Object[] row = {
                 propietario.getCedulaPropietario(),
                 propietario.getNombrePropietario(),
                 propietario.getApellidoPropietario(),
                 propietario.getEdadPropietario(),
-                genero,
+                propietario.getGeneroPropietario(),
                 propietario.getTelfPropietario(),
                 propietario.getCorreo_propi(),
                 propietario.getNacionalidad_propi(),
@@ -313,7 +377,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 valorBusqueda = "Mujer";
             }
         }
-        // ...
 
         return valorBusqueda;
     }
@@ -328,10 +391,12 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         txtCelular.setEnabled(true);
         txtCorreo.setEnabled(true);
         cbxNacionalidad.setEnabled(true);
+        dchFechaNacimiento.setEnabled(true);
 
     }
 
     public void deshabilitarParametros() {
+        txtCedula.setEnabled(false);
         txtNombre.setEnabled(false);
         txtApellido.setEnabled(false);
         spnEdad.setEnabled(false);
@@ -340,11 +405,8 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         txtCelular.setEnabled(false);
         txtCorreo.setEnabled(false);
         cbxNacionalidad.setEnabled(false);
+        dchFechaNacimiento.setEnabled(false);
 
-    }
-
-    public static void cerrarBaseDatos() {
-        //BaseD.close(); // Cerrar la base de datos
     }
 
     @SuppressWarnings("unchecked")
@@ -406,7 +468,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 btncargardatosActionPerformed(evt);
             }
         });
-        add(btncargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
+        add(btncargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, 40, 40));
 
         jLabel6.setText("Correo:");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, -1, -1));
@@ -419,7 +481,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         jLabel5.setText("Nacionalidad:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
 
-        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Ecuatoriana", "Estadounidense", "Mexicana", "Colombiana", "Argentina", "Española", "Brasileña", "Canadiense", "Peruana", "Francesa", "Alemana", "Italiana", "Inglesa", "China", "Japonesa", "Coreana", "Australiana", "Chilena", "Venezolana", "Suiza" }));
         add(cbxNacionalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, 150, 28));
 
         jLabel3.setText("Apellido:");
@@ -439,11 +501,11 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         jLabel4.setText("Edad:");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
-        spnEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        spnEdad.setModel(new javax.swing.SpinnerNumberModel(18, 18, 100, 1));
         add(spnEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 80, -1));
 
         jLabel8.setText("Sexo:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, 20));
 
         btngrupSexo.add(rbtnHombre);
         rbtnHombre.setText("Hombre");
@@ -452,7 +514,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 rbtnHombreActionPerformed(evt);
             }
         });
-        add(rbtnHombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, -1, -1));
+        add(rbtnHombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, -1, 30));
 
         btngrupSexo.add(rbtnMujer);
         rbtnMujer.setText("mujer");
@@ -461,7 +523,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 rbtnMujerActionPerformed(evt);
             }
         });
-        add(rbtnMujer, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 70, -1));
+        add(rbtnMujer, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 70, 30));
 
         jLabel9.setText("Celular:");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, -1, -1));
@@ -522,9 +584,19 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        TablaPropietarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaPropietariosMouseClicked(evt);
+            }
+        });
+        TablaPropietarios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TablaPropietariosKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(TablaPropietarios);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 780, 220));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 810, 270));
 
         ComboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cedula", "Nombre", "Genero" }));
         ComboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -537,6 +609,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         jLabel10.setText("FILTRO BUSQUEDA");
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, -1, -1));
 
+        btnBuscarFiltro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnBuscarFiltro.setText("Buscar");
         btnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -547,8 +620,6 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
-        txtCedula.setEnabled(false);
-        btnCrear.setEnabled(false);
         consultarPropietario();
     }//GEN-LAST:event_btncargardatosActionPerformed
 
@@ -572,6 +643,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
+        btnCrear.setEnabled(true);
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
@@ -596,7 +668,8 @@ public class CRUD_Propietario extends javax.swing.JPanel {
             String valorBusqueda = obtenerValorBusqueda(criterioSeleccionado);
 
             // Realizar la búsqueda y cargar los resultados en el JTable
-            filtrarPropietriod(criterioSeleccionado, valorBusqueda);
+            filtrarPropietrios(criterioSeleccionado, valorBusqueda);
+            btnCrear.setEnabled(false);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se encontro propietarios con esos parametros");
         }
@@ -609,6 +682,14 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void rbtnMujerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnMujerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtnMujerActionPerformed
+
+    private void TablaPropietariosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TablaPropietariosKeyPressed
+
+    }//GEN-LAST:event_TablaPropietariosKeyPressed
+
+    private void TablaPropietariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaPropietariosMouseClicked
+        cargarDatosTabla();
+    }//GEN-LAST:event_TablaPropietariosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
