@@ -27,9 +27,8 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
                 CboxCasas.addItem(casa.getNombre());
@@ -39,7 +38,8 @@ public class CRUD_Promociones extends javax.swing.JPanel {
 /// metodo para crear promociones
 
     public void crearPromocion() {
-        if (!validarCampos()) {
+        try {
+            if (!validarCampos()) {
             return;
         }
         String Id_promo = txtIDpromo.getText();
@@ -62,6 +62,10 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Promocion creado exitosamente.");
         limpiarCampos();
         cargarTabla();
+        } catch (Exception e) {
+            System.out.println("No se ha seleccionado un casa vacacional del combo box, puede ser que no exista ningun registro");
+        }
+        
     }
 
     /////// busca / consultar por ID
@@ -195,7 +199,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDpromo.setText("");
-        CboxCasas.setSelectedIndex(0);
+//        CboxCasas.setSelectedIndex(0);
         txtDescuento.setText("");
         jcalendarInicio.setDate(null);
         jcalendarFin.setDate(null);
@@ -312,48 +316,51 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtIDpromo, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel6)
-                        .addGap(16, 16, 16)
-                        .addComponent(jcalendarInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(9, 9, 9)
-                .addComponent(jLabel2))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel4)
-                .addGap(56, 56, 56)
-                .addComponent(CboxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(jLabel7)
-                .addGap(35, 35, 35)
-                .addComponent(jcalendarFin, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel5)
-                .addGap(23, 23, 23)
-                .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(btnCrear)
-                .addGap(33, 33, 33)
-                .addComponent(btnConsul)
-                .addGap(27, 27, 27)
-                .addComponent(btnMod)
-                .addGap(19, 19, 19)
-                .addComponent(btnDelete)
-                .addGap(29, 29, 29)
-                .addComponent(btnTodos))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtIDpromo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel6)
+                                .addGap(16, 16, 16)
+                                .addComponent(jcalendarInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel4)
+                        .addGap(40, 40, 40)
+                        .addComponent(CboxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel7)
+                        .addGap(35, 35, 35)
+                        .addComponent(jcalendarFin, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel5)
+                        .addGap(23, 23, 23)
+                        .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(btnCrear)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnConsul)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnMod)
+                        .addGap(19, 19, 19)
+                        .addComponent(btnDelete)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnTodos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,7 +411,8 @@ public class CRUD_Promociones extends javax.swing.JPanel {
                     .addComponent(btnDelete)
                     .addComponent(btnTodos))
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
