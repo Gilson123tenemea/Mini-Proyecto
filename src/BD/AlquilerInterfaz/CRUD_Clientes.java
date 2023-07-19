@@ -9,7 +9,7 @@ import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
 //import static BD.AlquilerInterfaz.CRUD_Propietario.BaseD;
-import static BD.AlquilerInterfaz.CRUD_Propietario.cerrarBaseDatos;
+//import static BD.AlquilerInterfaz.CRUD_Propietario.cerrarBaseDatos;
 //import static BD.AlquilerInterfaz.CalendarioDispo.BaseD;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
