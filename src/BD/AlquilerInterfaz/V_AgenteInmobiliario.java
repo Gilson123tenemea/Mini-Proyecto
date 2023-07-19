@@ -39,7 +39,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            //System.out.println("No hay casas.");
+            JOptionPane.showMessageDialog(this, "No hay casas disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
@@ -112,42 +112,46 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
     // Método para crear un nuevo agente inmobiliario
     private void crearAgenteInmobiliario() {
-        if (!validarCampos()) {
-            return;
+        try {
+            if (!validarCampos()) {
+                return;
+            }
+
+            String cedula = txtCedula.getText();
+
+            // Consultar si ya existe un propietario con la misma cédula
+            ObjectSet<AgenteInmobiliario> result = BaseD.queryByExample(new AgenteInmobiliario(cedula, null, null, null, 0, null, null, null, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un agente inmobiliario con la cédula ingresada.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Si no existe un agente con la misma cédula, proceder con la creación
+            String nombre = txtNombre.getText();
+            String apellido = txtApellido.getText();
+            String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
+            if (rbtnHombre.isSelected()) {
+                genero = "Hombre";
+            } else if (rbtnMujer.isSelected()) {
+                genero = "Mujer";
+            }
+            int edad = (int) spnEdad.getValue();
+            String telefono = txtCelular.getText();
+            String correo = txtCorreo.getText();
+            String nacionalidad = cbxNacionalidad.getSelectedItem().toString();
+            Date fechaNacimiento = dchFechaNacimiento.getDate();
+            //String id_casa = txtIdcasa.getText();
+            String casa = cbxCasa.getSelectedItem().toString();
+
+            AgenteInmobiliario agente = new AgenteInmobiliario(cedula, nombre, apellido, genero, edad, telefono, correo, nacionalidad, fechaNacimiento, casa);
+            BaseD.store(agente); // Almacenar el objeto en la base de datos
+
+            JOptionPane.showMessageDialog(null, "Agente inmobiliario creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Seleccione una casa antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        String cedula = txtCedula.getText();
-
-        // Consultar si ya existe un propietario con la misma cédula
-        ObjectSet<AgenteInmobiliario> result = BaseD.queryByExample(new AgenteInmobiliario(cedula, null, null, null, 0, null, null, null, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un agente inmobiliario con la cédula ingresada.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Si no existe un agente con la misma cédula, proceder con la creación
-        String nombre = txtNombre.getText();
-        String apellido = txtApellido.getText();
-        String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
-        if (rbtnHombre.isSelected()) {
-            genero = "Hombre";
-        } else if (rbtnMujer.isSelected()) {
-            genero = "Mujer";
-        }
-        int edad = (int) spnEdad.getValue();
-        String telefono = txtCelular.getText();
-        String correo = txtCorreo.getText();
-        String nacionalidad = cbxNacionalidad.getSelectedItem().toString();
-        Date fechaNacimiento = dchFechaNacimiento.getDate();
-        //String id_casa = txtIdcasa.getText();
-        String casa = cbxCasa.getSelectedItem().toString();
-
-        AgenteInmobiliario agente = new AgenteInmobiliario(cedula, nombre, apellido, genero, edad, telefono, correo, nacionalidad, fechaNacimiento, casa);
-        BaseD.store(agente); // Almacenar el objeto en la base de datos
-
-        JOptionPane.showMessageDialog(null, "Agente inmobiliario creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
     }
 
     private void consultarAgenteInmobiliario() {
@@ -199,28 +203,27 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }
 
     private void eliminarAgente() {
-    String cedula = txtCedula.getText().trim();
-    Query query = BaseD.query();
-    query.constrain(AgenteInmobiliario.class);
-    query.descend("CedulaAgente").constrain(cedula);
-    ObjectSet<AgenteInmobiliario> result = query.execute();
-    
-    if (!result.isEmpty()) {
-        AgenteInmobiliario agente = result.next();
-        
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este agente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-        
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            BaseD.delete(agente); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "Agente eliminado exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
-    }
-}
+        String cedula = txtCedula.getText().trim();
+        Query query = BaseD.query();
+        query.constrain(AgenteInmobiliario.class);
+        query.descend("CedulaAgente").constrain(cedula);
+        ObjectSet<AgenteInmobiliario> result = query.execute();
 
+        if (!result.isEmpty()) {
+            AgenteInmobiliario agente = result.next();
+
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este agente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                BaseD.delete(agente); // Eliminar el objeto de la base de datos
+                JOptionPane.showMessageDialog(null, "Agente eliminado exitosamente.");
+                limpiarCampos();
+                cargarTabla();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
+        }
+    }
 
     // Otros métodos auxiliares
     private void cargarTabla() {
@@ -251,26 +254,25 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }
 
     private void cargarDatosDesdeTabla() {
-    int filaSeleccionada = jtbTablaInmobiliario.getSelectedRow();
-    if (filaSeleccionada >= 0) {
-        DefaultTableModel model = (DefaultTableModel) jtbTablaInmobiliario.getModel();
-        String cedula = model.getValueAt(filaSeleccionada, 0).toString();
+        int filaSeleccionada = jtbTablaInmobiliario.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            DefaultTableModel model = (DefaultTableModel) jtbTablaInmobiliario.getModel();
+            String cedula = model.getValueAt(filaSeleccionada, 0).toString();
 
-        Query query = BaseD.query();
-        query.constrain(AgenteInmobiliario.class);
-        query.descend("CedulaAgente").constrain(cedula);
-        ObjectSet<AgenteInmobiliario> result = query.execute();
+            Query query = BaseD.query();
+            query.constrain(AgenteInmobiliario.class);
+            query.descend("CedulaAgente").constrain(cedula);
+            ObjectSet<AgenteInmobiliario> result = query.execute();
 
-        if (!result.isEmpty()) {
-            AgenteInmobiliario agente = result.get(0);
-            txtCedula.setText(agente.getCedula());
-            txtCedula.setEnabled(false);
-            btnCrear.setEnabled(false);
-            mostrarAgente(agente);
+            if (!result.isEmpty()) {
+                AgenteInmobiliario agente = result.get(0);
+                txtCedula.setText(agente.getCedula());
+                txtCedula.setEnabled(false);
+                btnCrear.setEnabled(false);
+                mostrarAgente(agente);
+            }
         }
     }
-}
-
 
     private void limpiarCampos() {
         txtCedula.setText("");
@@ -647,10 +649,10 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(5, 5, 5)
-                                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(4, 4, 4)
-                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(75, 75, 75)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel10)
@@ -675,58 +677,60 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel7)
-                .addGap(12, 12, 12)
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel2)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel3)
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel4)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel8))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(3, 3, 3)
-                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(3, 3, 3)
-                        .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel2)
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel3)
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel4)
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel8))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rbtnHombre)
+                                    .addComponent(rbtnMujer)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btncargardatos)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel9)
+                                        .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22)
+                                .addComponent(jLabel5)
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel12)))
                         .addGap(4, 4, 4)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbtnHombre)
-                            .addComponent(rbtnMujer)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btncargardatos)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel9)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel5)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel12))
+                            .addComponent(jLabel11)
+                            .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(14, 14, 14)
                         .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(btnBuscarFiltro)))
-                .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCrear)
@@ -735,7 +739,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                     .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
