@@ -26,6 +26,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         this.BaseD = BaseD;
         initComponents();
         cargarCasas();
+        cargarTabla();
         
     }
 
