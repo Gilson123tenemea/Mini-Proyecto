@@ -24,6 +24,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         cargarClientes();
         cargarTabla();
     }
+
     public void cargarCasas() {
         cbxCasas.removeAllItems();
         Query query = BaseD.query();
@@ -32,15 +33,15 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
                 cbxCasas.addItem(casa.getNombre());
             }
         }
     }
+
     //////////cargar clientes 
     public void cargarClientes() {
         CboxClientes.removeAllItems();
@@ -50,48 +51,53 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         ObjectSet<Cliente> cliente = query.execute();
 
         if (cliente.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay clientes ingresados");
+            JOptionPane.showMessageDialog(this, "No hay clientes ingresados", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
+                CboxClientes.addItem(cli.getNombreCliente() + " - " + cli.getCedula());
             }
         }
     }
     /// metodo para crear promociones
 
     public void crearComentario() {
-        if (!validarCampos()) {
-            return;
-        }
-        String ID_comentario = txtIDComen.getText();
-        // Consultar si ya existe un cliente con el mismo código
-        ObjectSet<Comentario> result = BaseD.queryByExample(new Comentario(ID_comentario, null, null, null, 0, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un comentario con ese código.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        // Si no existe un comentario con el mismo código, proceder con la creación
-        String IDCliente = CboxClientes.getSelectedItem().toString();
-        String id_casa = cbxCasas.getSelectedItem().toString();
-        String contenido = txtContenido.getText();
-        int puntuacion = (int) spnPuntuacion.getValue();
-        String puntuacionString = Integer.toString(puntuacion);
+        try {
+            if (!validarCampos()) {
+                return;
+            }
+            String ID_comentario = txtIDComen.getText();
+            // Consultar si ya existe un cliente con el mismo código
+            ObjectSet<Comentario> result = BaseD.queryByExample(new Comentario(ID_comentario, null, null, null, 0, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un comentario con ese código.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Si no existe un comentario con el mismo código, proceder con la creación
+            String IDCliente = CboxClientes.getSelectedItem().toString();
+            String id_casa = cbxCasas.getSelectedItem().toString();
+            String contenido = txtContenido.getText();
+            int puntuacion = (int) spnPuntuacion.getValue();
+            String puntuacionString = Integer.toString(puntuacion);
 
-        Date fecha_comentario = null;
-        if (jcalendarFechaComentario.getDate() != null) {
-            fecha_comentario = jcalendarFechaComentario.getDate();
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una fecha válida", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            Date fecha_comentario = null;
+            if (jcalendarFechaComentario.getDate() != null) {
+                fecha_comentario = jcalendarFechaComentario.getDate();
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione una fecha válida", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        Comentario micomen = new Comentario(ID_comentario, IDCliente, id_casa, contenido, puntuacion, fecha_comentario);
-        BaseD.store(micomen); // Almacenar el objeto en la base de datos
-        JOptionPane.showMessageDialog(null, "Comentario creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            Comentario micomen = new Comentario(ID_comentario, IDCliente, id_casa, contenido, puntuacion, fecha_comentario);
+            BaseD.store(micomen); // Almacenar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Comentario creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            System.out.println("No se ha seleccionado una casa vacaional del combo box, puede ser que no exista ningun registro");
+
+        }
     }
 
     /////// busca / consultar por ID
@@ -173,8 +179,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDComen.setText("");
-        CboxClientes.setSelectedIndex(0);
-        cbxCasas.setSelectedIndex(0);
+//        CboxClientes.setSelectedIndex(0);
+//        cbxCasas.setSelectedIndex(0);
         txtContenido.setText("");
         spnPuntuacion.setValue(0);
         jcalendarFechaComentario.setDate(null);
@@ -219,23 +225,13 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(CboxClientes.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Selección de cliente no válida");
-                ban_confirmar = false;
-            }
         }
         if (cbxCasas.getSelectedItem() == null || cbxCasas.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa");
             ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-                ban_confirmar = false;
-            }
         }
         if (txtContenido.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor valido");
+            JOptionPane.showMessageDialog(this, "Ingrese un valor en el contenido valido");
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarContenido(txtContenido.getText())) {
             JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
@@ -371,8 +367,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,7 +401,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -422,11 +418,11 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane3)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(24, 24, 24)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -445,8 +441,9 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+
         crearComentario();
-        limpiarCampos();        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
