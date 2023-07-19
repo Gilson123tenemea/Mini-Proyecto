@@ -1,5 +1,6 @@
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Validaciones;
 import BD.AlquilerCasas.Clases.Vehiculo;
@@ -10,18 +11,9 @@ import javax.swing.JOptionPane;
 import com.toedter.calendar.JCalendar;
 import javax.swing.table.DefaultTableModel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author ADMIN_01
- */
 public class CRUD_Vehiculo extends javax.swing.JPanel {
 //FJ
+
     private ObjectContainer BaseD;
     String ID_carro = "";
     String marca = "";
@@ -29,50 +21,73 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     String anio = "";
     String tipoVehiculo = "";
     String casa = "";
-    
-    
+
     public CRUD_Vehiculo(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarCasas();
         cargarTabla();
-        
+
     }
-    
+
+    public void cargarCasas() {
+        CboxCasa.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+
+        ObjectSet<CasaVacacional> casas = query.execute();
+
+        if (casas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            while (casas.hasNext()) {
+                CasaVacacional casa = casas.next();
+                CboxCasa.addItem(casa.getNombre() + " - " + casa.getId_casa());
+            }
+        }
+    }
+
     private void crearVehiculo() {
-        if (!validarCampos()) {
-            return;
+        try {
+            if (!validarCampos()) {
+                return;
+            }
+
+            String ID_carro = txtplacaCarro.getText();
+
+            ObjectSet<Vehiculo> result = BaseD.queryByExample(new Vehiculo(ID_carro, null, null, 0, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un Vehiculo con el numero de placa.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String modelo = txtmodelo.getText();
+            String marca = txtMarca.getText();
+            int anio = AnioVehi.getValue();
+            String tipo = cboxTipoVehiculo.getSelectedItem().toString();
+            String tipocasa = CboxCasa.getSelectedItem().toString();
+
+            Vehiculo micarro = new Vehiculo();
+            micarro.setID_carro(ID_carro);
+            micarro.setModelo(modelo);
+            micarro.setMarca(marca);
+            micarro.setAnio(anio);
+            micarro.setTipoVehiculo(tipo);
+            micarro.setCasa(tipocasa);
+
+            BaseD.store(micarro);
+
+            JOptionPane.showMessageDialog(null, "Vehiculo creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            System.out.println("No se ha seleccionado un propietario o un vehiculo del combo box, puede ser que no exista ningun registro");
+
         }
 
-        String ID_carro = txtplacaCarro.getText();
-        
-        ObjectSet<Vehiculo> result = BaseD.queryByExample(new Vehiculo(ID_carro, null, null, 0, null,null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un Vehiculo con el numero de placa.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        String modelo = txtmodelo.getText();
-        String marca = txtMarca.getText();
-        int anio = AnioVehi.getValue();
-        String tipo = cboxTipoVehiculo.getSelectedItem().toString();
-        String tipocasa = CboxCasa.getSelectedItem().toString();
-        
-        Vehiculo micarro = new Vehiculo ();
-        micarro.setID_carro(ID_carro);
-        micarro.setModelo(modelo);
-        micarro.setMarca(marca);
-        micarro.setAnio(anio);
-        micarro.setTipoVehiculo(tipo);
-        micarro.setCasa(tipocasa);
-        
-        BaseD.store(micarro);
-        
-        JOptionPane.showMessageDialog(null, "Vehiculo creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
     }
-    
-     private void consultarVehiculo() {
+
+    private void consultarVehiculo() {
         String ID_carro = txtplacaCarro.getText();
         Query query = BaseD.query();
         query.constrain(Vehiculo.class);
@@ -85,36 +100,36 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
             limpiarCampos();
         }
-        
 
-     }
-     
-     private void modificarVehiculo() {
-          if (!validarCampos()) {
+    }
+
+    private void modificarVehiculo() {
+        if (!validarCampos()) {
             return;
         }
 
-       String ID_carro = txtplacaCarro.getText();
-       Query query = BaseD.query();
+        String ID_carro = txtplacaCarro.getText();
+        Query query = BaseD.query();
         query.constrain(Vehiculo.class);
         query.descend("ID_carro").constrain(ID_carro);
         ObjectSet<Vehiculo> result = query.execute();
-          if (!result.isEmpty()) {
-             Vehiculo micar = result.next();
-             micar.setMarca(txtMarca.getText());
-             micar.setModelo(txtmodelo.getText());
-             micar.setAnio(AnioVehi.getYear());
-             micar.setTipoVehiculo(cboxTipoVehiculo.getSelectedItem().toString());
-             micar.setCasa(CboxCasa.getSelectedItem().toString());
-             BaseD.store(micar);
-             JOptionPane.showMessageDialog(null, "Vehiculo modificado exitosamente.");
-             limpiarCampos();
+        if (!result.isEmpty()) {
+            Vehiculo micar = result.next();
+            micar.setMarca(txtMarca.getText());
+            micar.setModelo(txtmodelo.getText());
+            micar.setAnio(AnioVehi.getYear());
+            micar.setTipoVehiculo(cboxTipoVehiculo.getSelectedItem().toString());
+            micar.setCasa(CboxCasa.getSelectedItem().toString());
+            BaseD.store(micar);
+            JOptionPane.showMessageDialog(null, "Vehiculo modificado exitosamente.");
+            limpiarCampos();
             cargarTabla();
-             
-          }else {
+
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontró un Vehiculo con la placa ingresada.");
         }
-     }
+    }
+
     private void mostrarVehiculo(Vehiculo carro) {
         txtplacaCarro.setText(carro.getID_carro());
         txtMarca.setText(carro.getMarca());
@@ -122,22 +137,18 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         AnioVehi.setYear(carro.getAnio());
         cboxTipoVehiculo.setSelectedItem(carro.getTipoVehiculo());
         CboxCasa.setSelectedItem(carro.getCasa());
-        
-        
+
     }
- 
+
     public boolean validarCampos() {
         Validaciones miValidaciones = new Validaciones();
         boolean ban_confirmar = true;
-        
-         if (txtplacaCarro.getText().isEmpty()) {
+
+        if (txtplacaCarro.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese la placa del Vehiculo");
             ban_confirmar = false;
-        } else if (!miValidaciones.validarPlaca(txtplacaCarro.getText())) {
-            JOptionPane.showMessageDialog(this, "Placa incorrecta. Ingrese de nuevo");
-            ban_confirmar = false;
         }
-        
+
         if (txtMarca.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese la marca del Vehiculo");
             ban_confirmar = false;
@@ -145,7 +156,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Marca incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-         
+
         if (txtmodelo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese el modelo del Vehiculo");
             ban_confirmar = false;
@@ -153,74 +164,72 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Modelo incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
-        
+
         return ban_confirmar;
-     }
-    
-     private void cargarTabla() {
+    }
+
+    private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) tablaVehiculo.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
         ObjectSet<Vehiculo> result = BaseD.queryByExample(Vehiculo.class);
         while (result.hasNext()) {
             Vehiculo carro = result.next();
-             Object[] row = {
-              carro.getID_carro(),
-              carro.getModelo(),
-              carro.getMarca(),
-              carro.getAnio(),
-              carro.getTipoVehiculo(),
-              carro.getCasa()   
-             };
+            Object[] row = {
+                carro.getID_carro(),
+                carro.getModelo(),
+                carro.getMarca(),
+                carro.getAnio(),
+                carro.getTipoVehiculo(),
+                carro.getCasa()
+            };
             model.addRow(row);
         }
 
-     }
-     
-     
-     private void eliminarVehiculo() {
-         String ID_carro = txtplacaCarro.getText();
-         Query query = BaseD.query();
+    }
+
+    private void eliminarVehiculo() {
+        String ID_carro = txtplacaCarro.getText();
+        Query query = BaseD.query();
         query.constrain(Vehiculo.class);
         query.descend("Cedula").constrain(ID_carro);
         ObjectSet<Vehiculo> result = query.execute();
-         if (!result.isEmpty()) {
-             Vehiculo carro = result.next();
-             BaseD.delete(carro); // Eliminar el objeto de la base de datos
-             JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
+        if (!result.isEmpty()) {
+            Vehiculo carro = result.next();
+            BaseD.delete(carro); // Eliminar el objeto de la base de datos
+            JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
             limpiarCampos();
             cargarTabla();
-         }else {
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
         }
-     }
-     
-     public void habilitarParametros() {
-         txtplacaCarro.setEnabled(true);
-         txtMarca.setEnabled(true);
-         txtmodelo.setEnabled(true);
-         AnioVehi.setEnabled(true);
-         cboxTipoVehiculo.setEnabled(true);
-         CboxCasa.setEnabled(true);
-     }
-     
-     public void deshabilitarParametros() {
-         txtplacaCarro.setEnabled(false);
-         txtMarca.setEnabled(false);
-         txtmodelo.setEnabled(false);
-         AnioVehi.setEnabled(false);
-         cboxTipoVehiculo.setEnabled(false);
-         CboxCasa.setEnabled(false);
-     }
-     
-     private void limpiarCampos() {
-          txtplacaCarro.setText("");
-          txtMarca.setText("");
-          txtmodelo.setText("");
-          AnioVehi.setYear(0);
-          cboxTipoVehiculo.setSelectedIndex(0);
-          CboxCasa.setSelectedIndex(0);
-     }
+    }
+
+    public void habilitarParametros() {
+        txtplacaCarro.setEnabled(true);
+        txtMarca.setEnabled(true);
+        txtmodelo.setEnabled(true);
+        AnioVehi.setEnabled(true);
+        cboxTipoVehiculo.setEnabled(true);
+        CboxCasa.setEnabled(true);
+    }
+
+    public void deshabilitarParametros() {
+        txtplacaCarro.setEnabled(false);
+        txtMarca.setEnabled(false);
+        txtmodelo.setEnabled(false);
+        AnioVehi.setEnabled(false);
+        cboxTipoVehiculo.setEnabled(false);
+        CboxCasa.setEnabled(false);
+    }
+
+    private void limpiarCampos() {
+        txtplacaCarro.setText("");
+        txtMarca.setText("");
+        txtmodelo.setText("");
+        AnioVehi.setYear(0);
+        cboxTipoVehiculo.setSelectedIndex(0);
+        CboxCasa.setSelectedIndex(0);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -297,7 +306,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 cboxTipoVehiculoActionPerformed(evt);
             }
         });
-        jPanel1.add(cboxTipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 130, -1));
+        jPanel1.add(cboxTipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 160, -1));
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnGuardar.setText("GUARDAR");
@@ -351,7 +360,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 770, 110));
 
         CboxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa Verano", "Casa Invierno", "Casa Playa", "Casa Campo" }));
-        jPanel1.add(CboxCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 130, -1));
+        jPanel1.add(CboxCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 160, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
@@ -393,7 +402,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       eliminarVehiculo();
+        eliminarVehiculo();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
