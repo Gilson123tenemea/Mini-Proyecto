@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Cliente;
@@ -11,16 +6,10 @@ import com.db4o.ObjectSet;
 import com.db4o.query.Query;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author HP
- */
 public class CRUD_Factura extends javax.swing.JPanel {
 
       private ObjectContainer BaseD;
-    /**
-     * Creates new form CRUD_Factura
-     */
+
     public CRUD_Factura(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
@@ -41,7 +30,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente());
+                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
             }
         }
     }
