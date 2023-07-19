@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerCasas.Clases;
 
 import static BD.AlquilerCasas.Clases.Cliente.listaCiudades;
 import java.util.ArrayList;
 
-/**
- *
- * @author USER
- */
 public class CasaVacacional {
 
     private String id_casa;
