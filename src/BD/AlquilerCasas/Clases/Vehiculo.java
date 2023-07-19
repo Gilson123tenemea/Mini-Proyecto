@@ -13,14 +13,14 @@ public class Vehiculo {
     private String ID_carro;
     private String marca;
     private String modelo;
-    private String anio;
+    private int anio;
     private String tipoVehiculo;
-    private CasaVacacional casa;
+    private String casa;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String ID_carro, String marca, String modelo, String anio, String tipoVehiculo, CasaVacacional casa) {
+    public Vehiculo(String ID_carro, String marca, String modelo, int anio, String tipoVehiculo, String casa) {
         this.ID_carro = ID_carro;
         this.marca = marca;
         this.modelo = modelo;
@@ -28,6 +28,10 @@ public class Vehiculo {
         this.tipoVehiculo = tipoVehiculo;
         this.casa = casa;
     }
+
+    
+
+    
 
     public String getID_carro() {
         return ID_carro;
@@ -53,13 +57,15 @@ public class Vehiculo {
         this.modelo = modelo;
     }
 
-    public String getAnio() {
+    public int getAnio() {
         return anio;
     }
 
-    public void setAnio(String anio) {
+    public void setAnio(int anio) {
         this.anio = anio;
     }
+
+   
 
     public String getTipoVehiculo() {
         return tipoVehiculo;
@@ -69,13 +75,15 @@ public class Vehiculo {
         this.tipoVehiculo = tipoVehiculo;
     }
 
-    public CasaVacacional getCasa() {
+    public String getCasa() {
         return casa;
     }
 
-    public void setCasa(CasaVacacional casa) {
+    public void setCasa(String casa) {
         this.casa = casa;
     }
+
+    
 
     @Override
     public String toString() {
