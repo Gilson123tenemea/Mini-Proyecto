@@ -12,8 +12,8 @@ public class CRUD_Actividades extends javax.swing.JPanel {
 
     public CRUD_Actividades(ObjectContainer BaseD) {
         this.BaseD = BaseD;
-        cargarCasas();
         initComponents();
+        cargarCasas();
     }
 
     public void cargarCasas() {
