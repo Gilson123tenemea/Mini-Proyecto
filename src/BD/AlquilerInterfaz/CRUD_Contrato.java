@@ -50,7 +50,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente());
+                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
             }
         }
     }
