@@ -2,12 +2,12 @@ package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.AgenteInmobiliario;
 import BD.AlquilerCasas.Clases.CasaVacacional;
-import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -39,9 +39,9 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            System.out.println("No hay casas.");
+            //System.out.println("No hay casas.");
         } else {
-            System.out.println("Casas registradas:");
+            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
                 cbxCasa.addItem(casa.getNombre());
@@ -150,16 +150,16 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         cargarTabla();
     }
 
-    // Métodos para consultar, modificar y eliminar propietarios
     private void consultarAgenteInmobiliario() {
         String cedula = txtCedula.getText();
-        Query query = BaseD.query();
-        query.constrain(AgenteInmobiliario.class);
-        query.descend("CedulaAgente").constrain(cedula);
-        ObjectSet<AgenteInmobiliario> result = query.execute();
+        AgenteInmobiliario ejemplo = new AgenteInmobiliario(cedula, null, null, null, 0, null, null, null, null, null);
+        ObjectSet<AgenteInmobiliario> result = BaseD.queryByExample(ejemplo);
+
         if (!result.isEmpty()) {
-            AgenteInmobiliario agente = result.next();
+            AgenteInmobiliario agente = result.get(0);
             mostrarAgente(agente);
+            txtCedula.setEnabled(false);
+            btnCrear.setEnabled(false);
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró un agente inmobiliario con la cédula ingresada.");
             limpiarCampos();
@@ -187,7 +187,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             agente.setCorreoAgente(txtCorreo.getText());
             agente.setNacionalidadAgente(cbxNacionalidad.getSelectedItem().toString());
             agente.setFecha_NaciAgente(dchFechaNacimiento.getDate());
-            agente.setId_casa(txtIdcasa.getText());
+            agente.setId_casa(cbxCasa.getSelectedItem().toString());
 
             BaseD.store(agente); // Actualizar el objeto en la base de datos
             JOptionPane.showMessageDialog(null, "agente modificado exitosamente.");
@@ -199,21 +199,28 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }
 
     private void eliminarAgente() {
-        String cedula = txtCedula.getText();
-        Query query = BaseD.query();
-        query.constrain(AgenteInmobiliario.class);
-        query.descend("CedulaAgente").constrain(cedula);
-        ObjectSet<AgenteInmobiliario> result = query.execute();
-        if (!result.isEmpty()) {
-            AgenteInmobiliario agente = result.next();
+    String cedula = txtCedula.getText().trim();
+    Query query = BaseD.query();
+    query.constrain(AgenteInmobiliario.class);
+    query.descend("CedulaAgente").constrain(cedula);
+    ObjectSet<AgenteInmobiliario> result = query.execute();
+    
+    if (!result.isEmpty()) {
+        AgenteInmobiliario agente = result.next();
+        
+        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este agente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
             BaseD.delete(agente); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "agente eliminado exitosamente.");
+            JOptionPane.showMessageDialog(null, "Agente eliminado exitosamente.");
             limpiarCampos();
             cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
     }
+}
+
 
     // Otros métodos auxiliares
     private void cargarTabla() {
@@ -223,8 +230,8 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         ObjectSet<AgenteInmobiliario> result = BaseD.queryByExample(AgenteInmobiliario.class);
         while (result.hasNext()) {
             AgenteInmobiliario agente = result.next();
-            //String genero = agente.getGeneroAgente().equals("H") ? "Hombre" : "Mujer";
-
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaNacimiento = dateFormat.format(agente.getFecha_NaciAgente());
             Object[] row = {
                 agente.getCedula(),
                 agente.getNombreAgente(),
@@ -234,7 +241,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                 agente.getCelularAgente(),
                 agente.getCorreoAgente(),
                 agente.getNacionalidadAgente(),
-                agente.getFecha_NaciAgente(),
+                fechaNacimiento,
                 agente.getId_casa()
 
             };
@@ -243,32 +250,27 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         }
     }
 
-    private void cargarDatosSeleccionados() {
-        int filaSeleccionada = jtbTablaInmobiliario.getSelectedRow();
-        if (filaSeleccionada != -1) {
-            String cedula = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 0).toString();
-            String nombre = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 1).toString();
-            String apellido = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 2).toString();
-            String edad = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 3).toString();
-            String genero = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 4).toString();
-            String celular = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 5).toString();
-            String correo = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 6).toString();
-            String nacionalidad = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 7).toString();
-            String fechaNaci = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 8).toString();
-            String nombreCasa = jtbTablaInmobiliario.getValueAt(filaSeleccionada, 9).toString();
+    private void cargarDatosDesdeTabla() {
+    int filaSeleccionada = jtbTablaInmobiliario.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+        DefaultTableModel model = (DefaultTableModel) jtbTablaInmobiliario.getModel();
+        String cedula = model.getValueAt(filaSeleccionada, 0).toString();
 
-            txtCedula.setText(cedula);
-            txtNombre.setText(nombre);
-            txtApellido.setText(apellido);
-            txtApellido.setText(edad);
-            txtApellido.setText(genero);
-            txtApellido.setText(celular);
-            txtApellido.setText(correo);
-            txtApellido.setText(nacionalidad);
-            txtApellido.setText(fechaNaci);
-            txtApellido.setText(nombreCasa);
+        Query query = BaseD.query();
+        query.constrain(AgenteInmobiliario.class);
+        query.descend("CedulaAgente").constrain(cedula);
+        ObjectSet<AgenteInmobiliario> result = query.execute();
+
+        if (!result.isEmpty()) {
+            AgenteInmobiliario agente = result.get(0);
+            txtCedula.setText(agente.getCedula());
+            txtCedula.setEnabled(false);
+            btnCrear.setEnabled(false);
+            mostrarAgente(agente);
         }
     }
+}
+
 
     private void limpiarCampos() {
         txtCedula.setText("");
@@ -280,7 +282,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         txtCorreo.setText("");
         cbxNacionalidad.setSelectedIndex(0);
         dchFechaNacimiento.setDate(null);
-        txtIdcasa.setText("");
+        cbxCasa.setSelectedIndex(0);
     }
 
     private void mostrarAgente(AgenteInmobiliario agente) {
@@ -296,7 +298,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         txtCorreo.setText(agente.getCorreoAgente());
         cbxNacionalidad.setSelectedItem(agente.getNacionalidadAgente());
         dchFechaNacimiento.setDate(agente.getFecha_NaciAgente());
-        txtIdcasa.setText(agente.getId_casa());
+        cbxCasa.setSelectedItem(agente.getId_casa());
     }
 
     private void habilitarParametros() {
@@ -309,7 +311,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         txtCelular.setEnabled(true);
         txtCorreo.setEnabled(true);
         cbxNacionalidad.setEnabled(true);
-        txtIdcasa.setEnabled(true);
+        cbxCasa.setEnabled(true);
     }
 
     private void deshabilitarParametros() {
@@ -322,7 +324,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         txtCelular.setEnabled(false);
         txtCorreo.setEnabled(false);
         cbxNacionalidad.setEnabled(false);
-        txtIdcasa.setEnabled(false);
+        cbxCasa.setEnabled(false);
     }
 
     private void filtrarAgente(String criterio, String valorBusqueda) {
@@ -435,7 +437,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         btnBuscarFiltro = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        txtIdcasa = new javax.swing.JTextField();
         cbxCasa = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -464,7 +465,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
         jLabel5.setText("Nacionalidad:");
 
-        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriana", "Estadounidense", "Mexicana", "Colombiana", "Argentina", "Española", "Brasileña", "Canadiense", "Peruana", "Francesa", "Alemana", "Italiana", "Inglesa", "China", "Japonesa", "Coreana", "Australiana", "Chilena", "Venezolana", "Suiza" }));
 
         jLabel3.setText("Apellido:");
 
@@ -544,7 +545,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Celular", "Correo", "Nacionalidad", "Fecha Nacimiento", "Id casa"
+                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Celular", "Correo", "Nacionalidad", "Fecha Nacimiento", "Nombre casa"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -571,6 +572,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
         jLabel10.setText("FILTRO BUSQUEDA");
 
+        btnBuscarFiltro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnBuscarFiltro.setText("Buscar");
         btnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -578,7 +580,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             }
         });
 
-        jLabel11.setText("Id casa:");
+        jLabel11.setText("Nombre casa:");
 
         cbxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -589,87 +591,97 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel8))))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(rbtnHombre)
-                                .addGap(3, 3, 3)
-                                .addComponent(rbtnMujer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btncargardatos)
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabel9))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(jLabel6))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel5))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addComponent(jLabel12)))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(80, 80, 80)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(btnBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel4)
+                                                    .addComponent(jLabel8))))
+                                        .addGap(12, 12, 12)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(rbtnHombre)
+                                                .addGap(3, 3, 3)
+                                                .addComponent(rbtnMujer, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btncargardatos)
+                                                .addGap(26, 26, 26)
+                                                .addComponent(jLabel9))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(80, 80, 80)
+                                                .addComponent(jLabel6))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(40, 40, 40)
+                                                .addComponent(jLabel5))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(jLabel12)))))
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(90, 90, 90)
+                                        .addComponent(btnBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(5, 5, 5)
+                                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(4, 4, 4)
+                                                .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(75, 75, 75)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10)
+                                            .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(90, 90, 90)
                                 .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)
                                 .addComponent(btnModificar)
                                 .addGap(41, 41, 41)
-                                .addComponent(btnEliminar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(310, 310, 310)
-                                .addComponent(jLabel11)
-                                .addGap(26, 26, 26)
-                                .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIdcasa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnReporte))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                                .addComponent(btnEliminar)
+                                .addGap(73, 73, 73)
+                                .addComponent(btnReporte)))
+                        .addGap(0, 91, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(14, 14, 14)
@@ -695,40 +707,35 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btncargardatos)
-                            .addComponent(jLabel9))
-                        .addComponent(jLabel6)
-                        .addGap(24, 24, 24)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
                         .addComponent(jLabel5)
                         .addGap(14, 14, 14)
                         .addComponent(jLabel12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(14, 14, 14)
                         .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(btnBuscarFiltro)))
-                .addGap(2, 2, 2)
+                .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(txtIdcasa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCrear)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar)
                     .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -739,7 +746,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -747,8 +754,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }//GEN-LAST:event_txtCedulaActionPerformed
 
     private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
-        txtCedula.setEnabled(false);
-        btnCrear.setEnabled(false);
         consultarAgenteInmobiliario();
     }//GEN-LAST:event_btncargardatosActionPerformed
 
@@ -804,7 +809,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarFiltroActionPerformed
 
     private void jtbTablaInmobiliarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbTablaInmobiliarioMouseClicked
-        cargarDatosSeleccionados();
+        cargarDatosDesdeTabla();
     }//GEN-LAST:event_jtbTablaInmobiliarioMouseClicked
 
 
@@ -842,7 +847,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtIdcasa;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
