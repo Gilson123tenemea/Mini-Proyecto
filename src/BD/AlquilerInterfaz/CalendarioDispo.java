@@ -34,12 +34,11 @@ public class CalendarioDispo extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                CBoxCasas.addItem(casa.getNombre());
+                CBoxCasas.addItem(casa.getNombre() + " - " + casa.getId_casa());
             }
         }
     }
@@ -160,44 +159,47 @@ public class CalendarioDispo extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(11, 11, 11)
-                                .addComponent(txtIdcale, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel3)
-                                .addGap(15, 15, 15)
-                                .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CboxFechasDispo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(btncrear)
-                .addGap(23, 23, 23)
-                .addComponent(btnConsul)
-                .addGap(17, 17, 17)
-                .addComponent(btnModi)
-                .addGap(29, 29, 29)
-                .addComponent(btnDelete)
-                .addGap(19, 19, 19)
-                .addComponent(btnTodos))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(11, 11, 11)
+                                        .addComponent(txtIdcale, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(27, 27, 27)
+                                        .addComponent(jLabel3)
+                                        .addGap(15, 15, 15)
+                                        .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CboxFechasDispo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(btncrear)
+                        .addGap(23, 23, 23)
+                        .addComponent(btnConsul)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnModi)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnDelete)
+                        .addGap(19, 19, 19)
+                        .addComponent(btnTodos)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,24 +227,23 @@ public class CalendarioDispo extends javax.swing.JPanel {
                         .addComponent(jLabel4)
                         .addGap(6, 6, 6)
                         .addComponent(CboxFechasDispo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(41, 41, 41)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btncrear)
                     .addComponent(btnConsul)
                     .addComponent(btnModi)
                     .addComponent(btnDelete)
                     .addComponent(btnTodos))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtIdcaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdcaleActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtIdcaleActionPerformed
 
     private void btncrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncrearActionPerformed
-        // TODO add your handling code here:
         crearDisponibilidad();
         limpiarCampos();
     }//GEN-LAST:event_btncrearActionPerformed
@@ -252,58 +253,57 @@ public class CalendarioDispo extends javax.swing.JPanel {
     }//GEN-LAST:event_jCalendar1MousePressed
 
     private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
-        // TODO add your handling code here:
     }//GEN-LAST:event_jCalendar1PropertyChange
 
     private void btnConsulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsulActionPerformed
-        // TODO add your handling code here:
         String id = txtIdcale.getText();
         buscarPorId(id);
     }//GEN-LAST:event_btnConsulActionPerformed
 
     private void btnTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodosActionPerformed
-        // TODO add your handling code here:
         cargarTabla();
     }//GEN-LAST:event_btnTodosActionPerformed
 
     private void btnModiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModiActionPerformed
-        // TODO add your handling code here:
         modificarDisponibilidad();
     }//GEN-LAST:event_btnModiActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
         eliminarDisponibilidad();
     }//GEN-LAST:event_btnDeleteActionPerformed
     /// crear disponibilidad
     public void crearDisponibilidad() {
-        if (!validarCampos()) {
-            return;
-        }
-        String Id_calen = txtIdcale.getText();
-        // Consultar si ya existe un cliente con la misma cédula
-        ObjectSet<CalendarioDisponibilidad> result = BaseD.queryByExample(new CalendarioDisponibilidad(Id_calen, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe una fecha disponible con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        // Si no existe un con la misma codigo, proceder con la creación
-        String casas = CBoxCasas.getSelectedItem().toString();
-        String fechaDispo = CboxFechasDispo.getSelectedItem().toString();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha = null;
-
         try {
-            fecha = dateFormat.parse(fechaDispo);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            if (!validarCampos()) {
+                return;
+            }
+            String Id_calen = txtIdcale.getText();
+            // Consultar si ya existe un cliente con la misma cédula
+            ObjectSet<CalendarioDisponibilidad> result = BaseD.queryByExample(new CalendarioDisponibilidad(Id_calen, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe una fecha disponible con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Si no existe un con la misma codigo, proceder con la creación
+            String casas = CBoxCasas.getSelectedItem().toString();
+            String fechaDispo = CboxFechasDispo.getSelectedItem().toString();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date fecha = null;
 
-        CalendarioDisponibilidad midispo = new CalendarioDisponibilidad(Id_calen, casas, fecha);
-        BaseD.store(midispo); // Almacenar el objeto en la base de datos
-        JOptionPane.showMessageDialog(null, "Casas disponible creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            try {
+                fecha = dateFormat.parse(fechaDispo);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            CalendarioDisponibilidad midispo = new CalendarioDisponibilidad(Id_calen, casas, fecha);
+            BaseD.store(midispo); // Almacenar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Casas disponible creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Seleccione una casa vacacional antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Método para consultar un propietario por su cédula
@@ -440,16 +440,15 @@ public class CalendarioDispo extends javax.swing.JPanel {
             ban_confirmar = false;
         }
 
-        if (CBoxCasas.getSelectedItem() == null || CBoxCasas.getSelectedItem().toString().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione una casa");
-            ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(CBoxCasas.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-                ban_confirmar = false;
-            }
-        }
-
+//        if (CBoxCasas.getSelectedItem() == null || CBoxCasas.getSelectedItem().toString().isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Seleccione una casa");
+//            ban_confirmar = false;
+//        } else {
+//            if (!miValidaciones.ValidarCiudad(CBoxCasas.getSelectedItem().toString())) {
+//                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
+//                ban_confirmar = false;
+//            }
+//        }
         return ban_confirmar;
     }
 
@@ -476,7 +475,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIdcale.setText("");
-        CBoxCasas.setSelectedIndex(0);
+        //CBoxCasas.setSelectedIndex(0);
         CboxFechasDispo.setSelectedIndex(0);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
