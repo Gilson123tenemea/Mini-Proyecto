@@ -28,46 +28,51 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre());
+                cbxCasas.addItem(casa.getNombre() + " - " + casa.getId_casa());
             }
         }
     }
 
     // Métodos auxiliares
     private void crearServicioAdicional() {
-        if (!validarCampos()) {
-            return; // Si hay campos vacíos, se detiene la creación del servicio adicional
+        try {
+            if (!validarCampos()) {
+                return; // Si hay campos vacíos, se detiene la creación del servicio adicional
+            }
+
+            if (!validarCostoAdicional()) {
+                return; // Si el costo adicional no es válido, se detiene la creación del servicio adicional
+            }
+
+            String idServicio = txtIdServicio.getText();
+            String NombreCasa = cbxCasas.getSelectedItem().toString();
+            String nombre = txtNombreServicio.getText();
+            String descripcion = jtpDescripcionServicio.getText();
+            double costoAdicional = Double.parseDouble(txtCostoAdicional.getText());
+
+            // Verificar si ya existe un servicio adicional con la misma ID
+            ObjectSet<ServicioAdicional> resultado = BaseD.queryByExample(new ServicioAdicional(idServicio, null, null, null, 0));
+            if (resultado.hasNext()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un servicio adicional con la misma ID.");
+                return; // Se detiene la creación del servicio adicional
+            }
+
+            ServicioAdicional servicioAdicional = new ServicioAdicional(idServicio, NombreCasa, nombre, descripcion, costoAdicional);
+            BaseD.store(servicioAdicional);
+
+            JOptionPane.showMessageDialog(this, "Se ha creado el servicio adicional correctamente.");
+
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            System.out.println("No se ha seleccionado un casa vacacional del combo box, puede ser que no exista ningun registro");
+
         }
 
-        if (!validarCostoAdicional()) {
-            return; // Si el costo adicional no es válido, se detiene la creación del servicio adicional
-        }
-
-        String idServicio = txtIdServicio.getText();
-        String NombreCasa = cbxCasas.getSelectedItem().toString();
-        String nombre = txtNombreServicio.getText();
-        String descripcion = jtpDescripcionServicio.getText();
-        double costoAdicional = Double.parseDouble(txtCostoAdicional.getText());
-
-        // Verificar si ya existe un servicio adicional con la misma ID
-        ObjectSet<ServicioAdicional> resultado = BaseD.queryByExample(new ServicioAdicional(idServicio, null, null, null, 0));
-        if (resultado.hasNext()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un servicio adicional con la misma ID.");
-            return; // Se detiene la creación del servicio adicional
-        }
-
-        ServicioAdicional servicioAdicional = new ServicioAdicional(idServicio, NombreCasa, nombre, descripcion, costoAdicional);
-        BaseD.store(servicioAdicional);
-
-        JOptionPane.showMessageDialog(this, "Se ha creado el servicio adicional correctamente.");
-
-        limpiarCampos();
-        cargarTabla();
     }
 
     private boolean validarCostoAdicional() {
@@ -350,7 +355,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, 30));
 
         jLabel3.setText("ID CASA:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, -1, 20));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
 
         jLabel4.setText("NOMBRE DEL SERVICIO:");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
@@ -367,7 +372,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
             }
         });
         add(txtNombreServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 190, 30));
-        add(txtIdServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 150, -1));
+        add(txtIdServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 230, -1));
 
         jScrollPane1.setViewportView(jtpDescripcionServicio);
 
@@ -460,7 +465,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 120, -1));
 
         cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 150, -1));
+        add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreServicioActionPerformed
