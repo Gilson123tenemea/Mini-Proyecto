@@ -137,7 +137,7 @@
                                   <Component id="btnCrear" min="-2" pref="110" max="-2" attributes="0"/>
                                   <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
                                   <Component id="btnModificar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="41" pref="41" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                                   <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                                   <Component id="btnReporte" min="-2" max="-2" attributes="0"/>
