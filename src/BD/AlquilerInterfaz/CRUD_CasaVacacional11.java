@@ -50,8 +50,21 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         } else {
             while (propi.hasNext()) {
                 Propietario pro = propi.next();
-                cbxPropietarios.addItem(pro.getNombrePropietario() + " - " + pro.getCedulaPropietario());
+                cbxPropietarios.addItem(pro.getCedulaPropietario());
             }
+        }
+    }
+
+    private void cargarPropietariosDelaCasa(String cedulaPropietario) {
+        Query query = BaseD.query();
+        query.constrain(Propietario.class);
+        query.descend("CedulaPropietario").constrain(cedulaPropietario);
+        ObjectSet<Propietario> ceduladpropietario = query.execute();
+
+        cbxPropietarios.removeAllItems(); // Limpiar los elementos anteriores en el combobox
+
+        for (Propietario propi : ceduladpropietario) {
+            cbxPropietarios.addItem(propi.getCedulaPropietario());
         }
     }
 
@@ -188,7 +201,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Otros Detalles:");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 280, -1, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, -1, -1));
         jPanel1.add(txtIDCASA, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 150, -1));
 
         spnpisos.setModel(new javax.swing.SpinnerNumberModel(2, 1, 4, 1));
@@ -235,7 +248,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 btnGUARDARActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGUARDAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 120, 40));
+        jPanel1.add(btnGUARDAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 120, 40));
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
@@ -244,7 +257,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, 140, 40));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 140, 40));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -253,7 +266,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, 120, 40));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 390, 120, 40));
 
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnReporte.setText("REPORTE");
@@ -262,7 +275,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 btnReporteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 120, 40));
+        jPanel1.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 120, 40));
 
         tabla_casaVacacional.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -285,7 +298,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tabla_casaVacacional);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 800, 130));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 800, 130));
 
         cbxnacionalidad_crudcasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Guayaquil", "Quito", "Cuenca", "Santo Domingo", "Machala", "Durán", "Manta", "Portoviejo", "Loja", "Ambato", "Esmeraldas", "Quevedo", "Riobamba", "Milagro", "Ibarra", "La Libertad", "Babahoyo", "Sangolquí", "Daule", "Latacunga", "Tulcán", "Chone", "Pasaje", "Santa Rosa", "Nueva Loja", "Huaquillas", "El Carmen", "Montecristi", "Samborondón", "Puerto Francisco de Orellana", "Jipijapa", "Santa Elena", "Otavalo", "Cayambe", "Buena Fe", "Ventanas", "Velasco Ibarra", "La Troncal", "El Triunfo", "Salinas", "General Villamil", "Azogues", "Puyo", "Vinces", "La Concordia", "Rosa Zárate", "Balzar", "Naranjal", "Guaranda", "La Maná", "Tena", "San Lorenzo", "Catamayo", "El Guabo", "Pedernales", "Atuntaqui", "Bahía de Caráquez", "Pedro Carbo", "Macas", "Yaguachi", "Calceta", "Arenillas", "Jaramijó", "Valencia", "Machachi", "Shushufindi", "Atacames", "Piñas", "San Gabriel", "Gualaceo", "Cañar", "Cariamanga", "Baños de Agua Santa", "Montalvo", "Macará", "San Miguel de Salcedo", "Zamora", "Puerto Ayora", "La Joya de los Sachas", "Tosagua", "Pelileo", "Puerto López", "San Vicente", "Santa Ana", "Zaruma", "Rocafuerte", "Cotacachi", "Santa Lucía", "Puebloviejo", "Portovelo", "Sucúa", "Simón Bolívar", "Gualaquiza", "Paute", "San Miguel", "Puerto Baquerizo Moreno", "Catacocha", "Palenque", "Alausí", "Santa Isabel", "Biblian", "Valdez (Limones)", "El Tambo", "Quinsaloma", "El Ángel\\n", "Chordeleg", "Saraguro", "Girón", "Pichincha", "Sigsig", "Loreto", "Rioverde", "Zumba", "Bolívar", "Sucre", "Guamote", "Cevallos", "San Fernando", "Santa Clara", "Nabón", "La Victoria", "Guachapala", "Santiago", "Chaguarpamba", "Oña", "Sevilla de Oro", "Olmedo", "Déleg", "El Pan" }));
         jPanel1.add(cbxnacionalidad_crudcasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 190, -1, -1));
@@ -305,7 +318,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 CbxFiltrarbsuqueActionPerformed(evt);
             }
         });
-        jPanel1.add(CbxFiltrarbsuque, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 230, 100, -1));
+        jPanel1.add(CbxFiltrarbsuque, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 300, 100, -1));
 
         BtnBuscarFiltro.setText("BUSCAR");
         BtnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -313,7 +326,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 BtnBuscarFiltroActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnBuscarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, -1, -1));
+        jPanel1.add(BtnBuscarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 330, 110, -1));
 
         CboxtipoCarro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deportivo", "Camioneta", "Carro" }));
         CboxtipoCarro.setToolTipText("");
@@ -328,14 +341,14 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         jPanel1.add(cbxPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 170, -1));
 
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel18.setText("Filtro");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, -1, -1));
+        jLabel18.setText("Filtro de busqueda:");
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, -1, -1));
 
         txtdetallescasa.setColumns(20);
         txtdetallescasa.setRows(5);
         jScrollPane2.setViewportView(txtdetallescasa);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 280, 180, 70));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 220, 230, 70));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -397,14 +410,9 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             if (!validarCampos()) {
                 return;
             }
+
+            // Obtiene los datos de la interfaz de usuario
             String IDcas = txtIDCASA.getText();
-
-            ObjectSet<CasaVacacional> result = BaseD.queryByExample(new CasaVacacional(id_casa, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
-            if (!result.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ya existe una casa vacacional con el id", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             String Idpropie = cbxPropietarios.getSelectedItem().toString();
             String nombre = txtnombreCasa.getText();
             String carro = CboxtipoCarro.getSelectedItem().toString();
@@ -412,41 +420,22 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             int capacidad = (int) spnmaximo.getValue();
             int habitaciones = (int) spnhabitaciones.getValue();
             int baños = (int) spnbanos.getValue();
-            //String picina = cboxpicina.getSelectedIcon().toString();
-            String picina = "";
-            if (cboxpicina.isSelected()) {
-                picina = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
-            } else {
-                picina = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
-            }
-            String jardin = "";
-            if (cboxjardin.isSelected()) {
-                jardin = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
-            } else {
-                jardin = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
-            }
-            String wifi = "";
-            if (cboxwifi.isSelected()) {
-                wifi = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
-            } else {
-                wifi = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
-            }
-            String tv = "";
-            if (cboxTV.isSelected()) {
-                tv = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
-            } else {
-                tv = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
-            }
-            String cocina = "";
-            if (cbxcocina.isSelected()) {
-                cocina = "Sí";  // Si el checkbox está seleccionado, asigna "Sí" a la variable picina
-            } else {
-                cocina = "No";  // Si el checkbox no está seleccionado, asigna "No" a la variable picina
-            }
+            String picina = cboxpicina.isSelected() ? "Sí" : "No";
+            String jardin = cboxjardin.isSelected() ? "Sí" : "No";
+            String wifi = cboxwifi.isSelected() ? "Sí" : "No";
+            String tv = cboxTV.isSelected() ? "Sí" : "No";
+            String cocina = cbxcocina.isSelected() ? "Sí" : "No";
             String nacionalidad = cbxnacionalidad_crudcasa.getSelectedItem().toString();
             String detalles = txtdetallescasa.getText();
 
-            // CasaVacacional micasavaca = new CasaVacacional (IDcas, Idpropie, equipamiento, pisis, capacidad, habitaciones, baños, picina, jardin, wifi, tv, cocina, nacionalidad, detalles);
+            // Verificar si ya existe una casa con el mismo ID
+            ObjectSet<CasaVacacional> result = BaseD.queryByExample(new CasaVacacional(IDcas, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe una casa vacacional con el id", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear una nueva instancia de CasaVacacional y establecer los datos
             CasaVacacional micasa = new CasaVacacional();
             micasa.setId_casa(IDcas);
             micasa.setIDPropietario(Idpropie);
@@ -471,9 +460,9 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             cargarTabla();
 
         } catch (Exception e) {
-            System.out.println("No se ha seleccionado un propietario o un vehiculo del combo box, puede ser que no exista ningun registro");
+            System.out.println("Error al crear la casa.");
+            e.printStackTrace();
         }
-
     }
 
     private void consultarcasavacaional() {
@@ -692,19 +681,35 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     }
 
     private void eliminarCasas() {
-        String IDcas = txtIDCASA.getText();
-        Query query = BaseD.query();
-        query.constrain(CasaVacacional.class);
-        query.descend("id_casa").constrain(IDcas);
-        ObjectSet<CasaVacacional> result = query.execute();
-        if (!result.isEmpty()) {
-            CasaVacacional casa = result.next();
-            BaseD.delete(casa);
-            JOptionPane.showMessageDialog(null, "Casa Vacacional eliminado exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró una casa vacacional con el ID ingresada.");
+        try {
+            String idCasa = txtIDCASA.getText().trim();
+            Query query = BaseD.query();
+            query.constrain(CasaVacacional.class);
+            query.descend("id_casa").constrain(idCasa);
+            ObjectSet<CasaVacacional> result = query.execute();
+
+            if (!result.isEmpty()) {
+                CasaVacacional casa = result.next();
+
+                // Verificar si la casa no tiene un propietario asociado
+                if (casa.getIDPropietario() == null || casa.getIDPropietario().isEmpty()) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar esta casa vacacional con la id: " + idCasa + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        BaseD.delete(casa); // Eliminar el objeto de la base de datos
+                        JOptionPane.showMessageDialog(null, "Casa vacacional eliminada exitosamente.");
+                        limpiarCampos();
+                        cargarTabla();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede eliminar la casa porque está relacionada con un propietario.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró una casa con el id ingresado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al eliminar");
+            e.printStackTrace();
         }
     }
 
@@ -748,9 +753,9 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDCASA.setText("");
-        cbxPropietarios.setSelectedIndex(0);
+        //cbxPropietarios.setSelectedIndex(0);
         txtnombreCasa.setText("");
-        CboxtipoCarro.setSelectedIndex(0);
+        //CboxtipoCarro.setSelectedIndex(0);
         spnpisos.setValue(1);
         spnmaximo.setValue(1);
         spnhabitaciones.setValue(1);
