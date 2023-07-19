@@ -2,7 +2,6 @@ package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Cliente;
-import static BD.AlquilerInterfaz.CRUD_Reservacion.cerrarBaseDatos;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
@@ -51,7 +50,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente());
+                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
             }
         }
     }
@@ -224,7 +223,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
