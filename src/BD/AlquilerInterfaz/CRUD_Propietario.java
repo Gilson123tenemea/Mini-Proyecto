@@ -1,5 +1,6 @@
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
@@ -172,7 +173,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
     private void eliminarPropietario() {
         String cedula = txtCedula.getText().trim();
         if (cedula.isEmpty()) {
-            List<Integer> filasSeleccionadas = obtenerFilasSeleccionadas(TablaPropietarios); 
+            List<Integer> filasSeleccionadas = obtenerFilasSeleccionadas(TablaPropietarios);
             if (filasSeleccionadas.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún propietario para eliminar.");
                 return;
@@ -183,7 +184,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
                 return;
             }
 
-            DefaultTableModel modelo = (DefaultTableModel) TablaPropietarios.getModel(); 
+            DefaultTableModel modelo = (DefaultTableModel) TablaPropietarios.getModel();
             for (int fila : filasSeleccionadas) {
                 cedula = modelo.getValueAt(fila, 0).toString(); // Obtener la cédula de la fila seleccionada
                 Query query = BaseD.query();
@@ -198,25 +199,38 @@ public class CRUD_Propietario extends javax.swing.JPanel {
 
             JOptionPane.showMessageDialog(null, "Propietarios seleccionados eliminados exitosamente.");
         } else {
-            Query query = BaseD.query();
-            query.constrain(Propietario.class);
-            query.descend("CedulaPropietario").constrain(cedula);
-            ObjectSet<Propietario> result = query.execute();
-            if (!result.isEmpty()) {
-                Propietario propietario = result.next();
-                int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres eliminar al propietario con cédula " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-                if (confirmacion == JOptionPane.YES_OPTION) {
-                    BaseD.delete(propietario); // Eliminar el objeto de la base de datos
-                    JOptionPane.showMessageDialog(null, "Propietario con cédula " + cedula + " eliminado exitosamente.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró un propietario con la cédula ingresada.");
-            }
-        }
+        Query query = BaseD.query();
+        query.constrain(Propietario.class);
+        query.descend("CedulaPropietario").constrain(cedula);
+        ObjectSet<Propietario> result = query.execute();
+        if (!result.isEmpty()) {
+            Propietario propietario = result.next();
 
-        limpiarCampos();
-        cargarTabla();
+            // Primero, eliminamos la relación entre el propietario y sus casas vacacionales
+            Query queryCasas = BaseD.query();
+            queryCasas.constrain(CasaVacacional.class);
+            queryCasas.descend("IDPropietario").constrain(cedula);
+            ObjectSet<CasaVacacional> resultCasas = queryCasas.execute();
+            while (resultCasas.hasNext()) {
+                CasaVacacional casa = resultCasas.next();
+                casa.setIDPropietario(null);
+                BaseD.store(casa);
+            }
+
+            // Luego, eliminamos al propietario
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres eliminar al propietario con cédula " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                BaseD.delete(propietario); // Eliminar el objeto de la base de datos
+                JOptionPane.showMessageDialog(null, "Propietario con cédula " + cedula + " eliminado exitosamente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un propietario con la cédula ingresada.");
+        }
     }
+
+    limpiarCampos();
+    cargarTabla();
+}
 
     private void cargarDatosTabla() {
         int filaSeleccionada = TablaPropietarios.getSelectedRow();
