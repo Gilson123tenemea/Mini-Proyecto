@@ -28,6 +28,14 @@ public class Validaciones {
         }
         return ban;
     }
+    public boolean validarPlaca(String cadena) {
+    cadena = cadena.trim();
+    boolean ban = false;
+    if (cadena.matches("[A-Z]{3}-[0-9]{4}")) {
+        ban = true;
+    }
+    return ban;
+    }
 
     public boolean ValidarNomApe(String cadena) {
         cadena = cadena.trim();
