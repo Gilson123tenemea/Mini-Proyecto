@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerInterfaz;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import BD.AlquilerCasas.Clases.CalendarioDisponibilidad;
+
 import BD.AlquilerCasas.Clases.Pago;
+import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -19,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.lang.Integer;
-import java.text.ParseException;
 
 public class CRUD_Pago extends javax.swing.JPanel {
 
@@ -29,7 +19,24 @@ public class CRUD_Pago extends javax.swing.JPanel {
     public CRUD_Pago(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarReservaciones();
         cargarTabla();
+    }
+    public void cargarReservaciones() {
+        cbxReservaciones.removeAllItems();
+        Query query = BaseD.query();
+        query.constrain(Reservacion.class);
+
+        ObjectSet<Reservacion> reserv = query.execute();
+
+        if (reserv.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay reservaciones ingresadas");
+        } else {
+            while (reserv.hasNext()) {
+                Reservacion res = reserv.next();
+                cbxReservaciones.addItem(res.getId_reservacion());
+            }
+        }
     }
 
     /// metodo para crear pagos
@@ -45,7 +52,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
             return;
         }
         // Si no existe un con la misma codigo, proceder con la creación
-        String id_reservacion = CboxIDReservacion.getSelectedItem().toString();
+        String id_reservacion = cbxReservaciones.getSelectedItem().toString();
         double monto = Double.parseDouble(txtMonto.getText());
         String estado_pago = txtEstadoPago.getText();
 
@@ -98,7 +105,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         if (!result.isEmpty()) {
             Pago pago = result.next();
             // Actualizar los campos del pago con los valores ingresados en la interfaz
-            pago.setId_reservacion(CboxIDReservacion.getSelectedItem().toString());
+            pago.setId_reservacion(cbxReservaciones.getSelectedItem().toString());
             pago.setMonto(Double.parseDouble(txtMonto.getText()));
             pago.setEstado_pago(txtEstadoPago.getText());
 
@@ -144,11 +151,11 @@ public class CRUD_Pago extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Codigo incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        if (CboxIDReservacion.getSelectedItem() == null || CboxIDReservacion.getSelectedItem().toString().isEmpty()) {
+        if (cbxReservaciones.getSelectedItem() == null || cbxReservaciones.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una reservacion");
             ban_confirmar = false;
         } else {
-            if (!miValidaciones.ValidarCiudad(CboxIDReservacion.getSelectedItem().toString())) {
+            if (!miValidaciones.ValidarCiudad(cbxReservaciones.getSelectedItem().toString())) {
                 JOptionPane.showMessageDialog(this, "Selección de reservacion no válida");
                 ban_confirmar = false;
             }
@@ -175,7 +182,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDPago.setText("");
-        CboxIDReservacion.setSelectedIndex(0);
+        cbxReservaciones.setSelectedIndex(0);
         txtMonto.setText("");
         txtEstadoPago.setText("");
         jcalendarFechaPago.setDate(null);
@@ -221,7 +228,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaPago = new javax.swing.JTable();
-        CboxIDReservacion = new javax.swing.JComboBox<>();
+        cbxReservaciones = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -285,7 +292,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaPago);
 
-        CboxIDReservacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itemuno", "Itemdos", "Itemtres", "Itemcuatro" }));
+        cbxReservaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itemuno", "Itemdos", "Itemtres", "Itemcuatro" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -302,7 +309,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtIDPago, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                             .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                            .addComponent(CboxIDReservacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(cbxReservaciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -345,7 +352,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(CboxIDReservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbxReservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -395,12 +402,12 @@ public class CRUD_Pago extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CboxIDReservacion;
     private javax.swing.JTable TablaPago;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> cbxReservaciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

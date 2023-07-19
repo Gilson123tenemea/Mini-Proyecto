@@ -33,7 +33,7 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtIDPago" alignment="0" pref="118" max="32767" attributes="0"/>
                           <Component id="txtMonto" alignment="0" pref="118" max="32767" attributes="0"/>
-                          <Component id="CboxIDReservacion" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cbxReservaciones" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -89,7 +89,7 @@
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="CboxIDReservacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxReservaciones" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -253,7 +253,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JComboBox" name="CboxIDReservacion">
+    <Component class="javax.swing.JComboBox" name="cbxReservaciones">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
