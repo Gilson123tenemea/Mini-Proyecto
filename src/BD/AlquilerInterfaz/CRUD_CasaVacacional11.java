@@ -55,16 +55,24 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         }
     }
 
-    private void cargarPropietariosDelaCasa(String cedulaPropietario) {
+    private void mostrarDatosPropietarioSeleccionado() {
+        String cedulaSeleccionada = cbxPropietarios.getSelectedItem().toString();
         Query query = BaseD.query();
         query.constrain(Propietario.class);
-        query.descend("CedulaPropietario").constrain(cedulaPropietario);
-        ObjectSet<Propietario> ceduladpropietario = query.execute();
+        query.descend("CedulaPropietario").constrain(cedulaSeleccionada);
+        ObjectSet<Propietario> result = query.execute();
 
-        cbxPropietarios.removeAllItems(); // Limpiar los elementos anteriores en el combobox
+        if (!result.isEmpty()) {
+            Propietario propietario = result.next();
+            String mensaje = "Cédula: " + propietario.getCedulaPropietario() + "\n"
+                    + "Nombre: " + propietario.getNombrePropietario() + "\n"
+                    + "Apellido: " + propietario.getApellidoPropietario() + "\n"
+                    + "Teléfono: " + propietario.getTelfPropietario() + "\n"
+                    + "Correo: " + propietario.getCorreo_propi();
 
-        for (Propietario propi : ceduladpropietario) {
-            cbxPropietarios.addItem(propi.getCedulaPropietario());
+            JOptionPane.showMessageDialog(this, mensaje, "Datos del Propietario", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un propietario con la cédula seleccionada.", "Propietario no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -133,6 +141,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtdetallescasa = new javax.swing.JTextArea();
+        btnVerPropietarios = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -144,15 +153,15 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("ID Casa: ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Propietarios:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Placa de carro:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
@@ -177,32 +186,32 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Tiene Picina:");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 110, 30));
 
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Tiene Jardin:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 70, -1, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, 110, 30));
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Tiene WIFI:");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, -1, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 100, 30));
 
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Tiene TV:");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, -1, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 90, 30));
 
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Tiene Cocina: ");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, -1, -1));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 120, 30));
 
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Ubicacion:");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 190, -1, -1));
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 180, 100, 30));
 
         jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Otros Detalles:");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, -1, -1));
-        jPanel1.add(txtIDCASA, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 150, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 130, 30));
+        jPanel1.add(txtIDCASA, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 170, -1));
 
         spnpisos.setModel(new javax.swing.SpinnerNumberModel(2, 1, 4, 1));
         jPanel1.add(spnpisos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 60, -1));
@@ -219,27 +228,27 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         cboxpicina.setBackground(new java.awt.Color(255, 255, 255));
         cboxpicina.setForeground(new java.awt.Color(0, 0, 0));
         cboxpicina.setText("SI");
-        jPanel1.add(cboxpicina, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 70, -1, -1));
+        jPanel1.add(cboxpicina, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 80, 40));
 
         cboxjardin.setBackground(new java.awt.Color(255, 255, 255));
         cboxjardin.setForeground(new java.awt.Color(0, 0, 0));
         cboxjardin.setText("SI");
-        jPanel1.add(cboxjardin, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 70, -1, -1));
+        jPanel1.add(cboxjardin, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 80, 40));
 
         cboxwifi.setBackground(new java.awt.Color(255, 255, 255));
         cboxwifi.setForeground(new java.awt.Color(0, 0, 0));
         cboxwifi.setText("SI");
-        jPanel1.add(cboxwifi, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 110, -1, -1));
+        jPanel1.add(cboxwifi, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 80, 40));
 
         cboxTV.setBackground(new java.awt.Color(255, 255, 255));
         cboxTV.setForeground(new java.awt.Color(0, 0, 0));
         cboxTV.setText("SI");
-        jPanel1.add(cboxTV, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 110, -1, -1));
+        jPanel1.add(cboxTV, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 80, 40));
 
         cbxcocina.setBackground(new java.awt.Color(255, 255, 255));
         cbxcocina.setForeground(new java.awt.Color(0, 0, 0));
         cbxcocina.setText("SI");
-        jPanel1.add(cbxcocina, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 150, -1, -1));
+        jPanel1.add(cbxcocina, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 80, 40));
 
         btnGUARDAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnGUARDAR.setText("GUARDAR");
@@ -301,7 +310,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 800, 130));
 
         cbxnacionalidad_crudcasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Guayaquil", "Quito", "Cuenca", "Santo Domingo", "Machala", "Durán", "Manta", "Portoviejo", "Loja", "Ambato", "Esmeraldas", "Quevedo", "Riobamba", "Milagro", "Ibarra", "La Libertad", "Babahoyo", "Sangolquí", "Daule", "Latacunga", "Tulcán", "Chone", "Pasaje", "Santa Rosa", "Nueva Loja", "Huaquillas", "El Carmen", "Montecristi", "Samborondón", "Puerto Francisco de Orellana", "Jipijapa", "Santa Elena", "Otavalo", "Cayambe", "Buena Fe", "Ventanas", "Velasco Ibarra", "La Troncal", "El Triunfo", "Salinas", "General Villamil", "Azogues", "Puyo", "Vinces", "La Concordia", "Rosa Zárate", "Balzar", "Naranjal", "Guaranda", "La Maná", "Tena", "San Lorenzo", "Catamayo", "El Guabo", "Pedernales", "Atuntaqui", "Bahía de Caráquez", "Pedro Carbo", "Macas", "Yaguachi", "Calceta", "Arenillas", "Jaramijó", "Valencia", "Machachi", "Shushufindi", "Atacames", "Piñas", "San Gabriel", "Gualaceo", "Cañar", "Cariamanga", "Baños de Agua Santa", "Montalvo", "Macará", "San Miguel de Salcedo", "Zamora", "Puerto Ayora", "La Joya de los Sachas", "Tosagua", "Pelileo", "Puerto López", "San Vicente", "Santa Ana", "Zaruma", "Rocafuerte", "Cotacachi", "Santa Lucía", "Puebloviejo", "Portovelo", "Sucúa", "Simón Bolívar", "Gualaquiza", "Paute", "San Miguel", "Puerto Baquerizo Moreno", "Catacocha", "Palenque", "Alausí", "Santa Isabel", "Biblian", "Valdez (Limones)", "El Tambo", "Quinsaloma", "El Ángel\\n", "Chordeleg", "Saraguro", "Girón", "Pichincha", "Sigsig", "Loreto", "Rioverde", "Zumba", "Bolívar", "Sucre", "Guamote", "Cevallos", "San Fernando", "Santa Clara", "Nabón", "La Victoria", "Guachapala", "Santiago", "Chaguarpamba", "Oña", "Sevilla de Oro", "Olmedo", "Déleg", "El Pan" }));
-        jPanel1.add(cbxnacionalidad_crudcasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 190, -1, -1));
+        jPanel1.add(cbxnacionalidad_crudcasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 180, 240, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
@@ -310,7 +319,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, -1, -1));
 
         CbxFiltrarbsuque.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Casa", "ID Propiedad", "Nombre", " " }));
         CbxFiltrarbsuque.addActionListener(new java.awt.event.ActionListener() {
@@ -318,8 +327,9 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                 CbxFiltrarbsuqueActionPerformed(evt);
             }
         });
-        jPanel1.add(CbxFiltrarbsuque, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 300, 100, -1));
+        jPanel1.add(CbxFiltrarbsuque, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 336, 100, 30));
 
+        BtnBuscarFiltro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         BtnBuscarFiltro.setText("BUSCAR");
         BtnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,25 +340,33 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         CboxtipoCarro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deportivo", "Camioneta", "Carro" }));
         CboxtipoCarro.setToolTipText("");
-        jPanel1.add(CboxtipoCarro, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 170, -1));
+        jPanel1.add(CboxtipoCarro, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, -1));
 
         jLabel17.setForeground(new java.awt.Color(0, 0, 0));
         jLabel17.setText("Nombre:");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
-        jPanel1.add(txtnombreCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 150, -1));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, -1));
+        jPanel1.add(txtnombreCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 170, -1));
 
         cbxPropietarios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0150698017", "0150989755", "0984501255", "0156598521" }));
-        jPanel1.add(cbxPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 130, 170, -1));
+        jPanel1.add(cbxPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 170, -1));
 
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Filtro de busqueda:");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, -1, -1));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, -1, -1));
 
         txtdetallescasa.setColumns(20);
         txtdetallescasa.setRows(5);
         jScrollPane2.setViewportView(txtdetallescasa);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 220, 230, 70));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 210, 270, 90));
+
+        btnVerPropietarios.setText("Ver");
+        btnVerPropietarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerPropietariosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVerPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -405,6 +423,10 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontraron casas vacaionales con esos parametros");
         }
     }//GEN-LAST:event_BtnBuscarFiltroActionPerformed
+
+    private void btnVerPropietariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPropietariosActionPerformed
+        mostrarDatosPropietarioSeleccionado();
+    }//GEN-LAST:event_btnVerPropietariosActionPerformed
     private void crearCasa() {
         try {
             if (!validarCampos()) {
@@ -702,7 +724,21 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                         cargarTabla();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se puede eliminar la casa porque está relacionada con un propietario.");
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta casa, ya que esta relacionada con un propietarios\n primero elimina el propietario correspondiente");
+
+                    BaseD.store(casa); // Actualizar la casa en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
+                    //Version 2, para eliminar la relaciona, sin tener que ir a eliminar el propietario desde su crud
+//                    // La casa tiene un propietario asociado, mostrar mensaje de confirmación adicional
+//                    int confirmacionPropietario = JOptionPane.showConfirmDialog(null, "Esta casa está asociada a un propietario. ¿Deseas eliminar primero la relación entre la casa y el propietario?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+//                    if (confirmacionPropietario == JOptionPane.YES_OPTION) {
+//                    //Eliminamos la relación entre la casa y el propietario
+//                        casa.setIDPropietario(null); // Establecer el IDPropietario como nulo para eliminar la asociación
+//                        BaseD.store(casa); // Actualizar la casa en la base de datos
+//                        JOptionPane.showMessageDialog(null, "Relación entre la casa y el propietario eliminada.");
+//                        limpiarCampos();
+//                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró una casa con el id ingresado.");
@@ -777,6 +813,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     private javax.swing.JButton btnGUARDAR;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnReporte;
+    private javax.swing.JButton btnVerPropietarios;
     private javax.swing.JCheckBox cboxTV;
     private javax.swing.JCheckBox cboxjardin;
     private javax.swing.JCheckBox cboxpicina;
