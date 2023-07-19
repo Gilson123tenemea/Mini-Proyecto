@@ -39,15 +39,42 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay casas disponibles", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasa.addItem(casa.getNombre());
+                cbxCasa.addItem(casa.getId_casa());
             }
         }
     }
+    private void cargarCasasDelAgente(String cedulaAgente) {
+    Query query = BaseD.query();
+    query.constrain(CasaVacacional.class);
+    query.descend("IDPropietario").constrain(cedulaAgente);
+    ObjectSet<CasaVacacional> casasDelAgente = query.execute();
+
+    cbxCasa.removeAllItems(); // Limpiar los elementos anteriores en el combobox
+
+    for (CasaVacacional casa : casasDelAgente) {
+        cbxCasa.addItem(casa.getId_casa()); // Asumiendo que getId_casa() devuelve la ID de la casa
+    }
+}
+
+    private void crearCasa() {
+    try {
+        if (!validarCampos()) {
+            return;
+        }
+        String IDcas = cbxCasa.getSelectedItem().toString();
+        String idagente = txtCedula.getText();
+
+        cargarCasasDelAgente(idagente); // Cargar las casas del agente seleccionado en el combobox
+
+        // Resto del código para crear la casa...
+    } catch (Exception e) {
+        System.out.println("No se ha seleccionado un propietario o un vehiculo del combo box, puede ser que no exista ningun registro");
+    }
+}
 
     // Método para validar los campos de la interfaz
     public boolean validarCampos() {
@@ -150,7 +177,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             limpiarCampos();
             cargarTabla();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Seleccione una casa antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione una casa vacacional antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -203,15 +230,22 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }
 
     private void eliminarAgente() {
-        String cedula = txtCedula.getText().trim();
-        Query query = BaseD.query();
-        query.constrain(AgenteInmobiliario.class);
-        query.descend("CedulaAgente").constrain(cedula);
-        ObjectSet<AgenteInmobiliario> result = query.execute();
+    String cedula = txtCedula.getText().trim();
+    Query query = BaseD.query();
+    query.constrain(AgenteInmobiliario.class);
+    query.descend("Cedula").constrain(cedula);
+    ObjectSet<AgenteInmobiliario> result = query.execute();
 
-        if (!result.isEmpty()) {
-            AgenteInmobiliario agente = result.next();
+    if (!result.isEmpty()) {
+        AgenteInmobiliario agente = result.next();
 
+        // Obtener la ID de la casa seleccionada en el cbxCasas
+        String idCasaSeleccionada = cbxCasa.getSelectedItem().toString();
+
+        // Realizar la validación para verificar si el agente está relacionado con la casa seleccionada
+        if (agente.getId_casa().contains(idCasaSeleccionada)) {
+            JOptionPane.showMessageDialog(null, "No se puede eliminar el agente porque está relacionado con la casa seleccionada.");
+        } else {
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este agente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
             if (confirmacion == JOptionPane.YES_OPTION) {
@@ -220,10 +254,13 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                 limpiarCampos();
                 cargarTabla();
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
     }
+}
+
+
 
     // Otros métodos auxiliares
     private void cargarTabla() {
@@ -261,7 +298,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
             Query query = BaseD.query();
             query.constrain(AgenteInmobiliario.class);
-            query.descend("CedulaAgente").constrain(cedula);
+            query.descend("Cedula").constrain(cedula);
             ObjectSet<AgenteInmobiliario> result = query.execute();
 
             if (!result.isEmpty()) {
@@ -282,9 +319,9 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         spnEdad.setValue(1);
         txtCelular.setText("");
         txtCorreo.setText("");
-        cbxNacionalidad.setSelectedIndex(0);
+        //cbxNacionalidad.setSelectedIndex(0);
         dchFechaNacimiento.setDate(null);
-        cbxCasa.setSelectedIndex(0);
+        //cbxCasa.setSelectedIndex(0);
     }
 
     private void mostrarAgente(AgenteInmobiliario agente) {
@@ -780,6 +817,17 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+//        // <editor-fold desc="Validacionte agente con id casa">
+//            CasaVacacional casa = new CasaVacacional();
+//            String idcasa = cbxCasa.getSelectedItem().toString();
+//            casa.setId_casa(idcasa);
+//            ObjectSet<CasaVacacional> resul = BaseD.queryByExample(casa);
+//            if (!resul.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, "No se puede eliminar el agente inmobiliario porque tiene una casa vacacional", "Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//            //Fin validacion
+//            // </editor-fold>
         eliminarAgente();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
