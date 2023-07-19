@@ -6,6 +6,7 @@
 package BD.AlquilerCasas.Clases;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  *
@@ -13,21 +14,23 @@ import java.time.LocalDateTime;
  */
 public class Actividades {
     private String ID_actividades;
-    private CasaVacacional casa;
+    private String casa;
     private String tipoActividad;
     private double costoAdicional;
-    private LocalDateTime fechaHora;
+    private Date fechaHora;
 
     public Actividades() {
     }
 
-    public Actividades(String ID_actividades, CasaVacacional casa, String tipoActividad, double costoAdicional, LocalDateTime fechaHora) {
+    public Actividades(String ID_actividades, String casa, String tipoActividad, double costoAdicional, Date fechaHora) {
         this.ID_actividades = ID_actividades;
         this.casa = casa;
         this.tipoActividad = tipoActividad;
         this.costoAdicional = costoAdicional;
         this.fechaHora = fechaHora;
     }
+
+    
 
     public String getID_actividades() {
         return ID_actividades;
@@ -37,13 +40,15 @@ public class Actividades {
         this.ID_actividades = ID_actividades;
     }
 
-    public CasaVacacional getCasa() {
+    public String getCasa() {
         return casa;
     }
 
-    public void setCasa(CasaVacacional casa) {
+    public void setCasa(String casa) {
         this.casa = casa;
     }
+
+   
 
     public String getTipoActividad() {
         return tipoActividad;
@@ -61,13 +66,15 @@ public class Actividades {
         this.costoAdicional = costoAdicional;
     }
 
-    public LocalDateTime getFechaHora() {
+    public Date getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
+    public void setFechaHora(Date fechaHora) {
         this.fechaHora = fechaHora;
     }
+
+    
 
     @Override
     public String toString() {
