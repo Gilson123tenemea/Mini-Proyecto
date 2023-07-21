@@ -1,18 +1,14 @@
 package BD.AlquilerInterfaz;
 
-import BD.AlquilerCasas.Clases.CasaVacacional;
-import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Validaciones;
 import BD.AlquilerCasas.Clases.Vehiculo;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
 import javax.swing.JOptionPane;
-import com.toedter.calendar.JCalendar;
 import javax.swing.table.DefaultTableModel;
 
 public class CRUD_Vehiculo extends javax.swing.JPanel {
-//FJ
 
     private ObjectContainer BaseD;
     String ID_carro = "";
@@ -25,26 +21,8 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     public CRUD_Vehiculo(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
-        cargarCasas();
         cargarTabla();
 
-    }
-
-    public void cargarCasas() {
-        CboxCasa.removeAllItems();
-        Query query = BaseD.query();
-        query.constrain(CasaVacacional.class);
-
-        ObjectSet<CasaVacacional> casas = query.execute();
-
-        if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            while (casas.hasNext()) {
-                CasaVacacional casa = casas.next();
-                CboxCasa.addItem(casa.getNombre() + " - " + casa.getId_casa());
-            }
-        }
     }
 
     private void crearVehiculo() {
@@ -55,7 +33,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
 
             String ID_carro = txtplacaCarro.getText();
 
-            ObjectSet<Vehiculo> result = BaseD.queryByExample(new Vehiculo(ID_carro, null, null, 0, null, null));
+            ObjectSet<Vehiculo> result = BaseD.queryByExample(new Vehiculo(ID_carro, null, null, 0, null));
             if (!result.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ya existe un Vehiculo con el numero de placa.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -65,7 +43,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             String marca = txtMarca.getText();
             int anio = AnioVehi.getValue();
             String tipo = cboxTipoVehiculo.getSelectedItem().toString();
-            String tipocasa = CboxCasa.getSelectedItem().toString();
 
             Vehiculo micarro = new Vehiculo();
             micarro.setID_carro(ID_carro);
@@ -73,7 +50,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             micarro.setMarca(marca);
             micarro.setAnio(anio);
             micarro.setTipoVehiculo(tipo);
-            micarro.setCasa(tipocasa);
 
             BaseD.store(micarro);
 
@@ -119,7 +95,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             micar.setModelo(txtmodelo.getText());
             micar.setAnio(AnioVehi.getYear());
             micar.setTipoVehiculo(cboxTipoVehiculo.getSelectedItem().toString());
-            micar.setCasa(CboxCasa.getSelectedItem().toString());
             BaseD.store(micar);
             JOptionPane.showMessageDialog(null, "Vehiculo modificado exitosamente.");
             limpiarCampos();
@@ -136,7 +111,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         txtmodelo.setText(carro.getModelo());
         AnioVehi.setYear(carro.getAnio());
         cboxTipoVehiculo.setSelectedItem(carro.getTipoVehiculo());
-        CboxCasa.setSelectedItem(carro.getCasa());
 
     }
 
@@ -146,6 +120,9 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
 
         if (txtplacaCarro.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese la placa del Vehiculo");
+            ban_confirmar = false;
+        } else if (!miValidaciones.validarPlaca(txtplacaCarro.getText())) {
+            JOptionPane.showMessageDialog(this, "Placa incorrecto. Ingrese de nuevo(ABC-1234)");
             ban_confirmar = false;
         }
 
@@ -179,9 +156,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 carro.getModelo(),
                 carro.getMarca(),
                 carro.getAnio(),
-                carro.getTipoVehiculo(),
-                carro.getCasa()
-            };
+                carro.getTipoVehiculo(),};
             model.addRow(row);
         }
 
@@ -210,7 +185,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         txtmodelo.setEnabled(true);
         AnioVehi.setEnabled(true);
         cboxTipoVehiculo.setEnabled(true);
-        CboxCasa.setEnabled(true);
     }
 
     public void deshabilitarParametros() {
@@ -219,7 +193,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         txtmodelo.setEnabled(false);
         AnioVehi.setEnabled(false);
         cboxTipoVehiculo.setEnabled(false);
-        CboxCasa.setEnabled(false);
     }
 
     private void limpiarCampos() {
@@ -228,14 +201,8 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         txtmodelo.setText("");
         AnioVehi.setYear(0);
         cboxTipoVehiculo.setSelectedIndex(0);
-        CboxCasa.setSelectedIndex(0);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -247,7 +214,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         txtplacaCarro = new javax.swing.JTextField();
         txtMarca = new javax.swing.JTextField();
         txtmodelo = new javax.swing.JTextField();
@@ -259,7 +225,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         tbnReporte = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVehiculo = new javax.swing.JTable();
-        CboxCasa = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -289,10 +254,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Tipo de Vehiculo: ");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, -1, -1));
-
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Casa: ");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, -1, 20));
         jPanel1.add(txtplacaCarro, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 130, -1));
         jPanel1.add(txtMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 130, -1));
         jPanel1.add(txtmodelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 130, -1));
@@ -300,13 +261,13 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         AnioVehi.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.add(AnioVehi, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 60, -1));
 
-        cboxTipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Carros Deportivos", "Camiones", "Motocicletas ", "Carros pequeños", " ", " " }));
+        cboxTipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Furgoneta", "Camion", "Camioneta", "Auto", "Caravana", "Yate", "Bote" }));
         cboxTipoVehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboxTipoVehiculoActionPerformed(evt);
             }
         });
-        jPanel1.add(cboxTipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 160, -1));
+        jPanel1.add(cboxTipoVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 80, 190, 30));
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnGuardar.setText("GUARDAR");
@@ -315,7 +276,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 btnGuardarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 120, 40));
+        jPanel1.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, 120, 40));
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
@@ -324,7 +285,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, 40));
+        jPanel1.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, -1, 40));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -333,7 +294,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 120, 40));
+        jPanel1.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 270, 120, 40));
 
         tbnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         tbnReporte.setText("REPORTE");
@@ -342,25 +303,22 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
                 tbnReporteActionPerformed(evt);
             }
         });
-        jPanel1.add(tbnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 310, 120, 40));
+        jPanel1.add(tbnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 270, 120, 40));
 
         tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Placa", "Marca", "Modelo", "Año", "Tipo Vehiculo", "Casa"
+                "Placa", "Marca", "Modelo", "Año", "Tipo Vehiculo"
             }
         ));
         jScrollPane1.setViewportView(tablaVehiculo);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 770, 110));
-
-        CboxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa Verano", "Casa Invierno", "Casa Playa", "Casa Campo" }));
-        jPanel1.add(CboxCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 160, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 810, 250));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
@@ -379,7 +337,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -414,7 +372,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JYearChooser AnioVehi;
-    private javax.swing.JComboBox<String> CboxCasa;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
@@ -426,7 +383,6 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaVehiculo;

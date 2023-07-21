@@ -1,6 +1,5 @@
 package BD.AlquilerInterfaz;
 
-
 import BD.AlquilerCasas.Clases.Pago;
 import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
@@ -22,6 +21,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         cargarReservaciones();
         cargarTabla();
     }
+
     public void cargarReservaciones() {
         cbxReservaciones.removeAllItems();
         Query query = BaseD.query();
@@ -30,7 +30,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         ObjectSet<Reservacion> reserv = query.execute();
 
         if (reserv.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay reservaciones ingresadas");
+            JOptionPane.showMessageDialog(this, "No hay reservaciones ingresadas", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             while (reserv.hasNext()) {
                 Reservacion res = reserv.next();
@@ -41,28 +41,33 @@ public class CRUD_Pago extends javax.swing.JPanel {
 
     /// metodo para crear pagos
     public void crearPago() {
-        if (!validarCampos()) {
-            return;
-        }
-        String ID_pago = txtIDPago.getText();
-        // Consultar si ya existe un cliente con el mismo pago
-        ObjectSet<Pago> result = BaseD.queryByExample(new Pago(ID_pago, null, 0, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un pago con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        // Si no existe un con la misma codigo, proceder con la creación
-        String id_reservacion = cbxReservaciones.getSelectedItem().toString();
-        double monto = Double.parseDouble(txtMonto.getText());
-        String estado_pago = txtEstadoPago.getText();
+        try {
+            if (!validarCampos()) {
+                return;
+            }
+            String ID_pago = txtIDPago.getText();
+            // Consultar si ya existe un cliente con el mismo pago
+            ObjectSet<Pago> result = BaseD.queryByExample(new Pago(ID_pago, null, 0, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un pago con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Si no existe un con la misma codigo, proceder con la creación
+            String id_reservacion = cbxReservaciones.getSelectedItem().toString();
+            double monto = Double.parseDouble(txtMonto.getText());
+            String estado_pago = txtEstadoPago.getText();
 
-        Date fecha_pago = jcalendarFechaPago.getDate();
+            Date fecha_pago = jcalendarFechaPago.getDate();
 
-        Pago mipago = new Pago(ID_pago, id_reservacion, monto, fecha_pago, estado_pago);
-        BaseD.store(mipago); // Almacenar el objeto en la base de datos
-        JOptionPane.showMessageDialog(null, "Pago creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            Pago mipago = new Pago(ID_pago, id_reservacion, monto, fecha_pago, estado_pago);
+            BaseD.store(mipago); // Almacenar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Pago creado exitosamente.");
+            cargarTabla();
+            limpiarCampos();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Se debe escoger una id de reservacion antes de crear.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /////// busca / consultar por ID
@@ -148,27 +153,28 @@ public class CRUD_Pago extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ingrese un codigo valido"); // Ejemplo: AS-1234
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarId(txtIDPago.getText())) {
-            JOptionPane.showMessageDialog(this, "Codigo incorrecto. Ingrese de nuevo");
+            JOptionPane.showMessageDialog(this, "ID incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
         if (cbxReservaciones.getSelectedItem() == null || cbxReservaciones.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una reservacion");
             ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(cbxReservaciones.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Selección de reservacion no válida");
-                ban_confirmar = false;
-            }
         }
+//        else {
+//            if (!miValidaciones.ValidarCiudad(cbxReservaciones.getSelectedItem().toString())) {
+//                JOptionPane.showMessageDialog(this, "Selección de reservacion no válida");
+//                ban_confirmar = false;
+//            }
+//        }
         if (txtMonto.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); // Ejemplo: AS-1234
+            JOptionPane.showMessageDialog(this, "Ingrese un valor valido");
             ban_confirmar = false;
         } else if (!miValidaciones.validarDouble(txtMonto.getText())) {
-            JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
+            JOptionPane.showMessageDialog(this, "Monto incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
         if (txtEstadoPago.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); // Ejemplo: AS-1234
+            JOptionPane.showMessageDialog(this, "Ingrese un valor valido");
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarCiudad(txtEstadoPago.getText())) {
             JOptionPane.showMessageDialog(this, "Estado de pago incorrecto. Ingrese de nuevo");
@@ -182,7 +188,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txtIDPago.setText("");
-        cbxReservaciones.setSelectedIndex(0);
+        //cbxReservaciones.setSelectedIndex(0);
         txtMonto.setText("");
         txtEstadoPago.setText("");
         jcalendarFechaPago.setDate(null);
@@ -383,7 +389,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         crearPago();
-        limpiarCampos();        // TODO add your handling code here:
+        //limpiarCampos();        // TODO add your handling code here:
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed

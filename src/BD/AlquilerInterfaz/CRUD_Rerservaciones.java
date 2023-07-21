@@ -20,13 +20,15 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     public CRUD_Rerservaciones(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarTabla();
         cargarCasas();
         cargarClientes();
         //cerrarBaseDatos();
     }
     
     private void crearReservacion() {
-        if (!validarCampos()) {
+        try {
+            if (!validarCampos()) {
             return;
         }
 
@@ -51,6 +53,10 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Reservacion creada exitosamente.");
         limpiarCampos();
         cargarTabla();
+        } catch (Exception e) {
+            System.out.println("Error: No se puede crear una reservacion, puede que no existas casas vacacionales\n o puede que tambien no exista clientes");
+        }
+        
     }
     
     
@@ -58,7 +64,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         String id = txt_id.getText();
         Query query = BaseD.query();
         query.constrain(Reservacion.class);
-        query.descend("ID").constrain(id); // id que esta en la clase
+        query.descend("id_reservacion").constrain(id); // id que esta en la clase
         ObjectSet<Reservacion> result = query.execute();
         if (!result.isEmpty()) {
             Reservacion reservacion = result.next();
@@ -173,8 +179,8 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txt_id.setText("");
-        cbxCasas.setSelectedIndex(0);
-        CboxClientes.setSelectedIndex(0);
+        //cbxCasas.setSelectedIndex(0);
+        //CboxClientes.setSelectedIndex(0);
         jDateLlegada.setDate(null);
         jDateSalida.setDate(null);
     }
@@ -220,12 +226,12 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre());
+                cbxCasas.addItem(casa.getId_casa());
             }
         }
     }
@@ -238,12 +244,12 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         ObjectSet<Cliente> cliente = query.execute();
 
         if (cliente.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay clientes ingresados");
+            JOptionPane.showMessageDialog(this, "No hay clientes ingresados", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
+                CboxClientes.addItem(cli.getCedula());
             }
         }
     }

@@ -38,7 +38,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
         } else {
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                CBoxCasas.addItem(casa.getNombre() + " - " + casa.getId_casa());
+                CBoxCasas.addItem(casa.getId_casa());
             }
         }
     }
@@ -82,6 +82,11 @@ public class CalendarioDispo extends javax.swing.JPanel {
         jLabel3.setText("ID CASA:");
 
         CBoxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa Verano", "Casa Invierno", "Casa Playa", "Casa Campo" }));
+        CBoxCasas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CBoxCasasActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("FECHAS DISPONIBLES:");
 
@@ -271,6 +276,10 @@ public class CalendarioDispo extends javax.swing.JPanel {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         eliminarDisponibilidad();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void CBoxCasasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBoxCasasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CBoxCasasActionPerformed
     /// crear disponibilidad
     public void crearDisponibilidad() {
         try {

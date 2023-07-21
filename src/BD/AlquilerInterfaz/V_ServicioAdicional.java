@@ -32,7 +32,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         } else {
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre() + " - " + casa.getId_casa());
+                cbxCasas.addItem(casa.getId_casa());
             }
         }
     }

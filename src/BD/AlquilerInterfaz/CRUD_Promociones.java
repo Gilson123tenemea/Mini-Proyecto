@@ -31,7 +31,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         } else {
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                CboxCasas.addItem(casa.getNombre());
+                CboxCasas.addItem(casa.getId_casa());
             }
         }
     }

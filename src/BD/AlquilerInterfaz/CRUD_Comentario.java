@@ -37,7 +37,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         } else {
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre());
+                cbxCasas.addItem(casa.getId_casa());
             }
         }
     }
@@ -56,7 +56,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente() + " - " + cli.getCedula());
+                CboxClientes.addItem(cli.getCedula());
             }
         }
     }
@@ -79,7 +79,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             String id_casa = cbxCasas.getSelectedItem().toString();
             String contenido = txtContenido.getText();
             int puntuacion = (int) spnPuntuacion.getValue();
-            String puntuacionString = Integer.toString(puntuacion);
+            //String puntuacionString = Integer.toString(puntuacion);
 
             Date fecha_comentario = null;
             if (jcalendarFechaComentario.getDate() != null) {
@@ -95,7 +95,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             limpiarCampos();
             cargarTabla();
         } catch (Exception e) {
-            System.out.println("No se ha seleccionado una casa vacaional del combo box, puede ser que no exista ningun registro");
+            System.out.println("Error: No se ha seleccionado una casa o un cliente, puede ser que no exista ningun registro");
 
         }
     }

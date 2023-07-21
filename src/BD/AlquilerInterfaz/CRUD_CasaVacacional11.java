@@ -1,5 +1,6 @@
 package BD.AlquilerInterfaz;
 
+import BD.AlquilerCasas.Clases.AgenteInmobiliario;
 import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Propietario;
 import BD.AlquilerCasas.Clases.Validaciones;
@@ -88,7 +89,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         } else {
             while (vehic.hasNext()) {
                 Vehiculo veh = vehic.next();
-                CboxtipoCarro.addItem(veh.getTipoVehiculo() + " - " + veh.getID_carro());
+                CboxtipoCarro.addItem(veh.getID_carro());
             }
         }
     }
@@ -702,6 +703,64 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         return valorBusqueda;
     }
 
+//    private void eliminarCasas() {
+//        try {
+//            String idCasa = txtIDCASA.getText().trim();
+//            Query query = BaseD.query();
+//            query.constrain(CasaVacacional.class);
+//            query.descend("id_casa").constrain(idCasa);
+//            ObjectSet<CasaVacacional> result = query.execute();
+//
+//            if (!result.isEmpty()) {
+//                CasaVacacional casa = result.next();
+//                //ss
+//                // Primero, eliminamos la relación 
+//                Query queryAgente = BaseD.query();
+//                queryAgente.constrain(AgenteInmobiliario.class);
+//                queryAgente.descend("id_casa").constrain(idCasa);
+//                ObjectSet<AgenteInmobiliario> resultAgentes = queryAgente.execute();
+//                while (resultAgentes.hasNext()) {
+//                    AgenteInmobiliario agente = resultAgentes.next();
+//                    agente.setCedula(null);
+//                    BaseD.store(agente);
+//                }
+//                //ss
+//                // Verificar si la casa no tiene un propietario asociado
+//                if (casa.getIDPropietario() == null || casa.getIDPropietario().isEmpty()) {
+//                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar esta casa vacacional con la id: " + idCasa + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+//
+//                    if (confirmacion == JOptionPane.YES_OPTION) {
+//                        BaseD.delete(casa); // Eliminar el objeto de la base de datos
+//                        JOptionPane.showMessageDialog(null, "Casa vacacional eliminada exitosamente.");
+//                        limpiarCampos();
+//                        cargarTabla();
+//                    }
+//                } else {
+//                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta casa, ya que esta relacionada con un propietarios\n primero elimina el propietario correspondiente");
+//
+//                    BaseD.store(casa); // Actualizar la casa en la base de datos
+//                    limpiarCampos();
+//                    cargarTabla();
+//
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(null, "No se encontró una casa con el id ingresado.");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error al eliminar");
+//            e.printStackTrace();
+//        }
+//    }
+    //Version 2, para eliminar la relaciona, sin tener que ir a eliminar el propietario desde su crud
+//                    // La casa tiene un propietario asociado, mostrar mensaje de confirmación adicional
+//                    int confirmacionPropietario = JOptionPane.showConfirmDialog(null, "Esta casa está asociada a un propietario. ¿Deseas eliminar primero la relación entre la casa y el propietario?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+//                    if (confirmacionPropietario == JOptionPane.YES_OPTION) {
+//                    //Eliminamos la relación entre la casa y el propietario
+//                        casa.setIDPropietario(null); // Establecer el IDPropietario como nulo para eliminar la asociación
+//                        BaseD.store(casa); // Actualizar la casa en la base de datos
+//                        JOptionPane.showMessageDialog(null, "Relación entre la casa y el propietario eliminada.");
+//                        limpiarCampos();
+    //                    }
     private void eliminarCasas() {
         try {
             String idCasa = txtIDCASA.getText().trim();
@@ -712,6 +771,17 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
             if (!result.isEmpty()) {
                 CasaVacacional casa = result.next();
+
+                // Primero, eliminamos la relación con los agentes
+                Query queryAgente = BaseD.query();
+                queryAgente.constrain(AgenteInmobiliario.class);
+                queryAgente.descend("id_casa").constrain(idCasa);
+                ObjectSet<AgenteInmobiliario> resultAgentes = queryAgente.execute();
+                while (resultAgentes.hasNext()) {
+                    AgenteInmobiliario agente = resultAgentes.next();
+                    agente.setId_casa(null); // Eliminamos la referencia de la casa en el agente
+                    BaseD.store(agente);
+                }
 
                 // Verificar si la casa no tiene un propietario asociado
                 if (casa.getIDPropietario() == null || casa.getIDPropietario().isEmpty()) {
@@ -724,21 +794,10 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
                         cargarTabla();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta casa, ya que esta relacionada con un propietarios\n primero elimina el propietario correspondiente");
-
-                    BaseD.store(casa); // Actualizar la casa en la base de datos
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta casa, ya que está relacionada con un propietario.\nPrimero elimina el propietario correspondiente.");
+                    // No eliminamos la casa, ya que está asociada a un propietario
                     limpiarCampos();
                     cargarTabla();
-                    //Version 2, para eliminar la relaciona, sin tener que ir a eliminar el propietario desde su crud
-//                    // La casa tiene un propietario asociado, mostrar mensaje de confirmación adicional
-//                    int confirmacionPropietario = JOptionPane.showConfirmDialog(null, "Esta casa está asociada a un propietario. ¿Deseas eliminar primero la relación entre la casa y el propietario?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-//                    if (confirmacionPropietario == JOptionPane.YES_OPTION) {
-//                    //Eliminamos la relación entre la casa y el propietario
-//                        casa.setIDPropietario(null); // Establecer el IDPropietario como nulo para eliminar la asociación
-//                        BaseD.store(casa); // Actualizar la casa en la base de datos
-//                        JOptionPane.showMessageDialog(null, "Relación entre la casa y el propietario eliminada.");
-//                        limpiarCampos();
-//                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró una casa con el id ingresado.");

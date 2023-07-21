@@ -16,18 +16,17 @@ public class CRUD_Actividades extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
     String ID_actividades = "";
-    String casa = "" ;
+    String casa = "";
     String tipoActividad = "";
-    double costoAdicional = 0 ;
+    double costoAdicional = 0;
     Date fechaHora = null;
-    
 
     public CRUD_Actividades(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
         cargarCasas();
         cargarTabla();
-        
+
     }
 
     public void cargarCasas() {
@@ -38,101 +37,105 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre());
+                cbxCasas.addItem(casa.getId_casa());
             }
         }
     }
 
-     private void crearActividades() {
-         if (!validarCampos()) {
+    private void crearActividades() {
+        try {
+            if (!validarCampos()) {
             return;
         }
-      String ID_actividades = txtidActividades.getText();
-      
-      ObjectSet<Actividades> result = BaseD.queryByExample(new Actividades(ID_actividades, null, null, 0,null));
+        String ID_actividades = txtidActividades.getText();
+
+        ObjectSet<Actividades> result = BaseD.queryByExample(new Actividades(ID_actividades, null, null, 0, null));
         if (!result.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ya existe una actividad con el id ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         String casa = cbxCasas.getSelectedItem().toString();
         String tipoActividad = CboxTipoActividades.getSelectedItem().toString();
         double costoAdicional = (double) spnCosotosAdicionales.getValue();
-        Date fechaHora = DateFechaActiviti.getDate ();
-        
-        Actividades misacti = new Actividades ();
-        
+        Date fechaHora = DateFechaActiviti.getDate();
+
+        Actividades misacti = new Actividades();
+
         misacti.setID_actividades(ID_actividades);
         misacti.setCasa(casa);
         misacti.setTipoActividad(tipoActividad);
         misacti.setCostoAdicional(costoAdicional);
         misacti.setFechaHora(fechaHora);
-    
+
         BaseD.store(misacti); // Almacenar el objeto en la base de datos
         JOptionPane.showMessageDialog(null, "Actividad creado exitosamente.");
         limpiarCampos();
         cargarTabla();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Seleccione una casa vacacional antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
 
-     }
-     
-     private void consultarActtividad() {
-         
-         String ID_actividades = txtidActividades.getText();
-         Query query = BaseD.query();
+    }
+
+    private void consultarActtividad() {
+
+        String ID_actividades = txtidActividades.getText();
+        Query query = BaseD.query();
         query.constrain(Actividades.class);
         query.descend("ID_actividades").constrain(ID_actividades); // Cedula que esta en la clase
         ObjectSet<Actividades> result = query.execute();
         if (!result.isEmpty()) {
             Actividades activi = result.next();
             mostrarActivifafes(activi);
-            
-        }else {
+
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
             limpiarCampos();
         }
-     }
-     
+    }
+
     private void modificarActividad() {
-          if (!validarCampos()) {
+        if (!validarCampos()) {
             return;
         }
         String ID_actividades = txtidActividades.getText();
         Query query = BaseD.query();
         query.constrain(Actividades.class);
-        query.descend("ID_actividades").constrain(ID_actividades); 
+        query.descend("ID_actividades").constrain(ID_actividades);
         ObjectSet<Actividades> result = query.execute();
-         if (!result.isEmpty()) {
-             Actividades acti = result.next();
-             acti.setCasa(cbxCasas.getSelectedItem().toString());
-             acti.setID_actividades(CboxTipoActividades.getSelectedItem().toString());
-             acti.setCostoAdicional((double)spnCosotosAdicionales.getValue());
-             acti.setFechaHora(DateFechaActiviti.getDate());
-             
-             BaseD.store(acti);
-              JOptionPane.showMessageDialog(null, "Actividad modificado exitosamente.");
+        if (!result.isEmpty()) {
+            Actividades acti = result.next();
+            acti.setCasa(cbxCasas.getSelectedItem().toString());
+            acti.setID_actividades(CboxTipoActividades.getSelectedItem().toString());
+            acti.setCostoAdicional((double) spnCosotosAdicionales.getValue());
+            acti.setFechaHora(DateFechaActiviti.getDate());
+
+            BaseD.store(acti);
+            JOptionPane.showMessageDialog(null, "Actividad modificado exitosamente.");
             limpiarCampos();
             cargarTabla();
-         }
+        }
 
-          
-      }
-     
-     private void mostrarActivifafes(Actividades activi) {
-         
-         txtidActividades.setText(activi.getID_actividades());
-         cbxCasas.setSelectedItem(activi.getCasa());
-         CboxTipoActividades.setSelectedItem(activi.getTipoActividad());
-         spnCosotosAdicionales.setValue(activi.getCostoAdicional());
-         DateFechaActiviti.setDate(activi.getFechaHora());
-         
-     }
-     
-     public boolean validarCampos() {
+    }
+
+    private void mostrarActivifafes(Actividades activi) {
+
+        txtidActividades.setText(activi.getID_actividades());
+        cbxCasas.setSelectedItem(activi.getCasa());
+        CboxTipoActividades.setSelectedItem(activi.getTipoActividad());
+        spnCosotosAdicionales.setValue(activi.getCostoAdicional());
+        DateFechaActiviti.setDate(activi.getFechaHora());
+
+    }
+
+    public boolean validarCampos() {
         Validaciones miValidaciones = new Validaciones();
         boolean ban_confirmar = true;
         if (txtidActividades.getText().isEmpty()) {
@@ -142,17 +145,17 @@ public class CRUD_Actividades extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Cédula incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-        
-        if (cbxCasas.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(this, "Ingrese el tipo de casa");
-            ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Casa inválida");
-                ban_confirmar = false;
-            }
-        }
-        
+
+//        if (cbxCasas.getSelectedItem() == null) {
+//            JOptionPane.showMessageDialog(this, "Ingrese el tipo de casa");
+//            ban_confirmar = false;
+//        } else {
+//            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
+//                JOptionPane.showMessageDialog(this, "Casa inválida");
+//                ban_confirmar = false;
+//            }
+//        }
+
         if (CboxTipoActividades.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Ingrese el tipo actividad");
             ban_confirmar = false;
@@ -164,70 +167,70 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         }
 
         return ban_confirmar;
-           
-       }
-     
-      private void cargarTabla() {
+
+    }
+
+    private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) tablaactivi.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
         ObjectSet<Actividades> result = BaseD.queryByExample(Actividades.class);
         while (result.hasNext()) {
-            Actividades acti =result.next();
+            Actividades acti = result.next();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Object[] row = {
-              acti.getID_actividades(),
-              acti.getClass(),
-              acti.getTipoActividad(),
-              acti.getCostoAdicional(),
-              sdf.format(acti.getFechaHora())
+                acti.getID_actividades(),
+                acti.getClass(),
+                acti.getTipoActividad(),
+                acti.getCostoAdicional(),
+                sdf.format(acti.getFechaHora())
             };
             model.addRow(row);
         }
 
-      }
-      
-       private void eliminaractividades() {
+    }
+
+    private void eliminaractividades() {
         String ID_actividades = txtidActividades.getText();
         Query query = BaseD.query();
         query.constrain(Actividades.class);
         query.descend("ID_actividades").constrain(ID_actividades); // Cedula que esta en la clase
         ObjectSet<Actividades> result = query.execute();
-         if (!result.isEmpty()) {
+        if (!result.isEmpty()) {
             Actividades act = result.next();
             BaseD.delete(act); // Eliminar el objeto de la base de datos
             JOptionPane.showMessageDialog(null, "Actividad eliminado exitosamente.");
             limpiarCampos();
             cargarTabla();
-         }else {
+        } else {
             JOptionPane.showMessageDialog(null, "No se encontró una actividad con el id ingresada.");
         }
-           
-       }
-       
-       public void habilitarParametros() {
-           txtidActividades.setEnabled(true);
-           cbxCasas.setEnabled(true);
-           CboxTipoActividades.setEnabled(true);
-           spnCosotosAdicionales.setEnabled(true);
-           DateFechaActiviti.setEnabled(true);
-       }
-       
-        public void deshabilitarParametros() {
-           txtidActividades.setEnabled(false);
-           cbxCasas.setEnabled(false);
-           CboxTipoActividades.setEnabled(false);
-           spnCosotosAdicionales.setEnabled(false);
-           DateFechaActiviti.setEnabled(false);
-        }
-        
-         private void limpiarCampos() {
-            txtidActividades.setText("");
-            cbxCasas.setSelectedIndex(0);
-            CboxTipoActividades.setSelectedIndex(0);
-            spnCosotosAdicionales.setValue(1);
-            DateFechaActiviti.setDate(null);
-         }
-       
+
+    }
+
+    public void habilitarParametros() {
+        txtidActividades.setEnabled(true);
+        cbxCasas.setEnabled(true);
+        CboxTipoActividades.setEnabled(true);
+        spnCosotosAdicionales.setEnabled(true);
+        DateFechaActiviti.setEnabled(true);
+    }
+
+    public void deshabilitarParametros() {
+        txtidActividades.setEnabled(false);
+        cbxCasas.setEnabled(false);
+        CboxTipoActividades.setEnabled(false);
+        spnCosotosAdicionales.setEnabled(false);
+        DateFechaActiviti.setEnabled(false);
+    }
+
+    private void limpiarCampos() {
+        txtidActividades.setText("");
+        //cbxCasas.setSelectedIndex(0);
+        CboxTipoActividades.setSelectedIndex(0);
+        spnCosotosAdicionales.setValue(1);
+        DateFechaActiviti.setDate(null);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -383,7 +386,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
     }//GEN-LAST:event_ComboHoraActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-       crearActividades();
+        crearActividades();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodificarActionPerformed

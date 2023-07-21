@@ -1,37 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerCasas.Clases;
 
-/**
- *
- * @author USER
- */
 public class Vehiculo {
+
     private String ID_carro;
     private String marca;
     private String modelo;
     private int anio;
     private String tipoVehiculo;
-    private String casa;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String ID_carro, String marca, String modelo, int anio, String tipoVehiculo, String casa) {
+    public Vehiculo(String ID_carro, String marca, String modelo, int anio, String tipoVehiculo) {
         this.ID_carro = ID_carro;
         this.marca = marca;
         this.modelo = modelo;
         this.anio = anio;
         this.tipoVehiculo = tipoVehiculo;
-        this.casa = casa;
     }
-
-    
-
-    
 
     public String getID_carro() {
         return ID_carro;
@@ -65,8 +51,6 @@ public class Vehiculo {
         this.anio = anio;
     }
 
-   
-
     public String getTipoVehiculo() {
         return tipoVehiculo;
     }
@@ -75,20 +59,9 @@ public class Vehiculo {
         this.tipoVehiculo = tipoVehiculo;
     }
 
-    public String getCasa() {
-        return casa;
-    }
-
-    public void setCasa(String casa) {
-        this.casa = casa;
-    }
-
-    
-
     @Override
     public String toString() {
-        return "Vehiculo{" + "ID_carro=" + ID_carro + ", marca=" + marca + ", modelo=" + modelo + ", anio=" + anio + ", tipoVehiculo=" + tipoVehiculo + ", casa=" + casa + '}';
+        return "Vehiculo{" + "ID_carro=" + ID_carro + ", marca=" + marca + ", modelo=" + modelo + ", anio=" + anio + ", tipoVehiculo=" + tipoVehiculo + '}';
     }
-    
-    
+
 }

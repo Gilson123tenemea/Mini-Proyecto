@@ -35,7 +35,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         } else {
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasa.addItem(casa.getId_casa() + " - " + casa.getNombre());
+                cbxCasa.addItem(casa.getId_casa());
             }
         }
     }
@@ -68,7 +68,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 //            System.out.println("No se ha seleccionado un propietario o un vehiculo del combo box, puede ser que no exista ningun registro");
 //        }
 //    }
-
     // Método para validar los campos de la interfaz
     public boolean validarCampos() {
         Validaciones validaciones = new Validaciones();
@@ -233,13 +232,9 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             if (!result.isEmpty()) {
                 AgenteInmobiliario agente = result.next();
 
-                // Obtener la ID de la casa seleccionada en el cbxCasas
-                String idCasaSeleccionada = cbxCasa.getSelectedItem().toString();
-
                 // Realizar la validación para verificar si el agente está relacionado con la casa seleccionada
-                if (agente.getId_casa().contains(idCasaSeleccionada)) {
-                    JOptionPane.showMessageDialog(null, "No se puede eliminar el agente porque está relacionado con la casa seleccionada.");
-                } else {
+                if (agente.getId_casa() == null || agente.getId_casa().isEmpty()) {
+                    //JOptionPane.showMessageDialog(null, "No se puede eliminar el agente porque está relacionado con la casa seleccionada.");
                     int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este agente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
                     if (confirmacion == JOptionPane.YES_OPTION) {
@@ -248,17 +243,26 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                         limpiarCampos();
                         cargarTabla();
                     }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar este agente, ya que esta relacionada con una casa vacacional\n primero elimina la casa correspondiente");
+
+                    BaseD.store(agente); // Actualizar la casa en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró un agente con la cédula ingresada.");
+                JOptionPane.showMessageDialog(null, "No se encontró una agente con la cedula ingresada.");
+
             }
         } catch (Exception e) {
             System.out.println("Error al eliminar porque no hay casas");
+            e.printStackTrace();
         }
 
     }
-
     // Otros métodos auxiliares
+
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jtbTablaInmobiliario.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos

@@ -19,39 +19,45 @@ public class CRUD_Contrato extends javax.swing.JPanel {
     public CRUD_Contrato(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
+        cargarTabla();
         cargarCasas();
         cargarClientes();
     }
 
     private void crearContrato() {
-        if (!validarCampos()) {
-            return;
+        try {
+            if (!validarCampos()) {
+                return;
+            }
+
+            String id = txtID.getText();
+
+            // Consultar si ya existe un contrato con el mismo id
+            ObjectSet<Contrato> result = BaseD.queryByExample(new Contrato(id, null, null, null, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe un contrato con el id ingresado", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Si no existe un contrato con el mismo id , proceder con la creación
+            String casas = cbxCasas.getSelectedItem().toString();
+            String clientes = CboxClientes.getSelectedItem().toString();
+            Date fechaLlegada = jDateLlegada.getDate();
+            Date fechaSalida = jDateSalida.getDate();
+            String condiciones = txareaTeryCon.getText();
+
+            Contrato mi_cont = new Contrato(id, casas, clientes, fechaLlegada, fechaSalida, condiciones);
+            BaseD.store(mi_cont); // Almacenar el objeto en la base de datos
+
+            JOptionPane.showMessageDialog(null, "Contrato creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
+        } catch (Exception e) {
+            System.out.println("Error: No se puede crear un contrato, puede que no exista un cliente o una casa vacacional");
         }
 
-        String id = txtID.getText();
-
-        // Consultar si ya existe un contrato con el mismo id
-        ObjectSet<Contrato> result = BaseD.queryByExample(new Contrato(id, null, null, null, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe un contrato con el id ingresado", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Si no existe un contrato con el mismo id , proceder con la creación
-        String casas = cbxCasas.getSelectedItem().toString();
-        String clientes = CboxClientes.getSelectedItem().toString();
-        Date fechaLlegada = jDateLlegada.getDate();
-        Date fechaSalida = jDateSalida.getDate();
-        String condiciones = txareaTeryCon.getText();
-
-        Contrato mi_cont = new Contrato(id, casas, clientes, fechaLlegada, fechaSalida, condiciones);
-        BaseD.store(mi_cont); // Almacenar el objeto en la base de datos
-
-        JOptionPane.showMessageDialog(null, "Contrato creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
     }
-    
+
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jTableContrato.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
@@ -67,12 +73,12 @@ public class CRUD_Contrato extends javax.swing.JPanel {
                 sdf.format(contrato.getFecha_inicio()),
                 sdf.format(contrato.getFecha_fin()),
                 contrato.getTerminosCondiciones()
-                
+
             };
             model.addRow(row);
         }
     }
-    
+
     private void consultarContarto() {
         String id = txtID.getText();
         Query query = BaseD.query();
@@ -87,7 +93,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             limpiarCampos();
         }
     }
-    
+
     private void mostrarContrato(Contrato contrato) {
         txtID.setText(contrato.getID_contrato());
         cbxCasas.setSelectedItem(contrato.getId_casa());
@@ -96,7 +102,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         jDateSalida.setDate(contrato.getFecha_fin());
         txareaTeryCon.setText(contrato.getTerminosCondiciones());
     }
-    
+
     private void modificarContrato() {
         if (!validarCampos()) {
             return;
@@ -113,7 +119,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             contrato.setId_casa(cbxCasas.getSelectedItem().toString());
             contrato.setIDCliente(CboxClientes.getSelectedItem().toString());
             contrato.setFecha_inicio(jDateLlegada.getDate());
-            contrato.setFecha_fin(jDateSalida.getDate());    
+            contrato.setFecha_fin(jDateSalida.getDate());
             contrato.setTerminosCondiciones(txareaTeryCon.getText());
 
             BaseD.store(contrato); // Actualizar el objeto en la base de datos
@@ -124,7 +130,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró un contrato con el id ingresado.");
         }
     }
-    
+
     private void eliminarContrato() {
         String id = txtID.getText();
         Query query = BaseD.query();
@@ -141,7 +147,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró un contrato con el id ingresado.");
         }
     }
-    
+
     public boolean validarCampos() {// Método para validar los campos de la interfaz
         Validaciones miValidaciones = new Validaciones();
         boolean ban_confirmar = true;
@@ -163,7 +169,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
 //                ban_confirmar = false;
 //            }
 //        }
-        
+
         if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
@@ -173,20 +179,20 @@ public class CRUD_Contrato extends javax.swing.JPanel {
 //                ban_confirmar = false;
 //            }
 //        }
-        
+
         if (jDateLlegada.getDate() == null || jDateLlegada.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
             ban_confirmar = false;
         }
-        
+
         if (jDateSalida.getDate() == null || jDateSalida.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
             ban_confirmar = false;
         }
-        
+
         return ban_confirmar;
     }
-    
+
     public void habilitarParametros() {
         txtID.setEnabled(true);
         cbxCasas.setEnabled(true);
@@ -204,17 +210,17 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         jDateSalida.setEnabled(false);
         txareaTeryCon.setEnabled(false);
     }
-    
+
     private void limpiarCampos() {
 
         txtID.setText("");
-        cbxCasas.setSelectedIndex(0);
-        CboxClientes.setSelectedIndex(0);
+        //cbxCasas.setSelectedIndex(0);
+        //CboxClientes.setSelectedIndex(0);
         jDateLlegada.setDate(null);
         jDateSalida.setDate(null);
         txareaTeryCon.setText("");
     }
-    
+
     public void cargarCasas() {
         cbxCasas.removeAllItems();
         Query query = BaseD.query();
@@ -223,12 +229,12 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         ObjectSet<CasaVacacional> casas = query.execute();
 
         if (casas.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay casas vacacionales");
+            JOptionPane.showMessageDialog(this, "No hay casas vacacionales disponibles", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             //System.out.println("Casas registradas:");
             while (casas.hasNext()) {
                 CasaVacacional casa = casas.next();
-                cbxCasas.addItem(casa.getNombre());
+                cbxCasas.addItem(casa.getId_casa());
             }
         }
     }
@@ -247,10 +253,11 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             //System.out.println("clientes registradas:");
             while (cliente.hasNext()) {
                 Cliente cli = cliente.next();
-                CboxClientes.addItem(cli.getNombreCliente()+ " - " + cli.getCedula());
+                CboxClientes.addItem(cli.getCedula());
             }
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

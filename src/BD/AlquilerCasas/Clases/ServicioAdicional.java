@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerCasas.Clases;
 
-/**
- *
- * @author USER
- */
 public class ServicioAdicional {
     private String ID_servicio;
     private String id_casa;
