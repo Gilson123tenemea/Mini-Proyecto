@@ -1,6 +1,7 @@
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Cliente;
+import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -248,7 +249,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                                         .addGap(44, 44, 44))))
                             .addComponent(spnEdad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtcelu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(77, Short.MAX_VALUE))
+                        .addContainerGap(64, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addContainerGap())))
@@ -294,7 +295,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                         .addComponent(jLabel4)
                         .addComponent(jLabel12))
                     .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
@@ -315,8 +316,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                     .addComponent(btneliminar)
                     .addComponent(btnreport, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -481,12 +482,10 @@ public class CRUD_Clientes extends javax.swing.JPanel {
 
 
     private void btnmodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodActionPerformed
-        // TODO add your handling code here:
         modificarCliente();
     }//GEN-LAST:event_btnmodActionPerformed
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
-        // TODO add your handling code here:
         eliminarCliente();
     }//GEN-LAST:event_btneliminarActionPerformed
 
@@ -515,7 +514,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getCorreo(),
                 cliente.getNacionalidad(),
                 sdf.format(cliente.getFecha_Naci())
-                
+
             };
             model.addRow(row);
         }
@@ -553,7 +552,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getCorreo(),
                 cliente.getNacionalidad(),
                 sdf.format(cliente.getFecha_Naci())
-                
+
             };
             model.addRow(row);
         }
@@ -629,18 +628,36 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Método para eliminar un cliente existente
+
     private void eliminarCliente() {
-        String cedula = txtCedula.getText();
+        String cedula = txtCedula.getText().trim();
         Query query = BaseD.query();
         query.constrain(Cliente.class);
         query.descend("Cedula").constrain(cedula);
         ObjectSet<Cliente> result = query.execute();
+
         if (!result.isEmpty()) {
             Cliente cliente = result.next();
-            BaseD.delete(cliente); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
-            limpiarCampos();
-            cargarTabla();
+
+            // Primero, eliminamos la relación con las reservaciones
+            Query queryReservacion = BaseD.query();
+            queryReservacion.constrain(Reservacion.class);
+            queryReservacion.descend("IDCliente").constrain(cedula);
+            ObjectSet<Reservacion> resultReservacion = queryReservacion.execute();
+            while (resultReservacion.hasNext()) {
+                Reservacion reservacion = resultReservacion.next();
+                reservacion.setIDCliente(null); // Eliminamos la referencia del cliente en la reservacion
+                BaseD.store(reservacion);
+            }
+
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este cliente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                BaseD.delete(cliente); // Eliminar el objeto de la base de datos
+                JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
+                limpiarCampos();
+                cargarTabla();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró un cliente con la cédula ingresada.");
         }
