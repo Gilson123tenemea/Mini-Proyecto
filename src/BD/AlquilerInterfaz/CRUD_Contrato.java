@@ -135,7 +135,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         String id = txtID.getText();
         Query query = BaseD.query();
         query.constrain(Contrato.class);
-        query.descend("Id").constrain(id);
+        query.descend("ID_contrato").constrain(id);
         ObjectSet<Contrato> result = query.execute();
         if (!result.isEmpty()) {
             Contrato contrato = result.next();
@@ -491,29 +491,24 @@ public class CRUD_Contrato extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        // TODO add your handling code here:
         crearContrato();
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
         modificarContrato();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
         eliminarContrato();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        // TODO add your handling code here:
         consultarContarto();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
