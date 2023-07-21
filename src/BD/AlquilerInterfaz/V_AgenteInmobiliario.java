@@ -817,17 +817,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-//        // <editor-fold desc="Validacionte agente con id casa">
-//            CasaVacacional casa = new CasaVacacional();
-//            String idcasa = cbxCasa.getSelectedItem().toString();
-//            casa.setId_casa(idcasa);
-//            ObjectSet<CasaVacacional> resul = BaseD.queryByExample(casa);
-//            if (!resul.isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "No se puede eliminar el agente inmobiliario porque tiene una casa vacacional", "Error", JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-//            //Fin validacion
-//            // </editor-fold>
         eliminarAgente();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
