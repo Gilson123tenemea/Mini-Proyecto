@@ -3,6 +3,7 @@ package BD.AlquilerCasas.Clases;
 import java.util.Date;
 
 public class CalendarioDisponibilidad {
+
     private String ID_calendario;
     private String id_casa;
     private Date fechas_disponibles;
@@ -44,6 +45,5 @@ public class CalendarioDisponibilidad {
     public String toString() {
         return "CalendarioDisponibilidad{" + "ID_calendario=" + ID_calendario + ", id_casa=" + id_casa + ", fechas_disponibles=" + fechas_disponibles + '}';
     }
-    
-    
+
 }

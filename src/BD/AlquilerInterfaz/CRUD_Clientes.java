@@ -1,6 +1,8 @@
 package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Cliente;
+import BD.AlquilerCasas.Clases.Comentario;
+import BD.AlquilerCasas.Clases.Contrato;
 import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
@@ -69,18 +71,25 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Cedula:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 50, -1, -1));
 
         jLabel2.setText("Nombre:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 90, -1, -1));
 
         jLabel6.setText("Correo:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(459, 52, -1, -1));
 
         jLabel3.setText("Apellido:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 132, -1, -1));
 
         jLabel4.setText("Edad:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 177, -1, -1));
 
         jLabel8.setText("Sexo:");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, -1, -1));
 
         btngrupSexo.add(rbtnHombre);
         rbtnHombre.setText("Hombre");
@@ -89,17 +98,24 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 rbtnHombreActionPerformed(evt);
             }
         });
+        add(rbtnHombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, -1, -1));
 
         jLabel9.setText("Celular:");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 80, -1, -1));
 
         btngrupSexo.add(rbtnMujer);
         rbtnMujer.setText("mujer");
+        add(rbtnMujer, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, -1, -1));
 
         jLabel5.setText("Nacionalidad:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
 
         cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        add(cbxNacionalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 120, 160, 28));
 
         jLabel12.setText("Fecha Nacimiento:");
+        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, -1, -1));
+        add(dchFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 132, 30));
 
         btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
         btnCrear.setText("GUARDAR");
@@ -108,6 +124,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btnCrearActionPerformed(evt);
             }
         });
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, -1, -1));
 
         btnmod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnmod.setText("MODIFICAR");
@@ -116,6 +133,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btnmodActionPerformed(evt);
             }
         });
+        add(btnmod, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 290, -1, 40));
 
         btneliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btneliminar.setText("ELIMINAR");
@@ -124,6 +142,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btneliminarActionPerformed(evt);
             }
         });
+        add(btneliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 290, -1, -1));
 
         jTablePersona.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,6 +165,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTablePersona);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 352, 814, 240));
+
         btnreport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnreport.setText("REPORTE");
         btnreport.addActionListener(new java.awt.event.ActionListener() {
@@ -153,8 +174,21 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btnreportActionPerformed(evt);
             }
         });
+        add(btnreport, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, -1, 33));
 
         spnEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        add(spnEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 172, 79, -1));
+        add(txtcelu, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 160, 30));
+        add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 46, 160, -1));
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 85, 160, 27));
+        add(txtApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 127, 160, 27));
+        add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(524, 46, 160, 29));
 
         btncargardatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btncargardatos.addActionListener(new java.awt.event.ActionListener() {
@@ -162,9 +196,11 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btncargardatosActionPerformed(evt);
             }
         });
+        add(btncargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 70, 40));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("REGISTRO DE CLIENTE");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 6, -1, -1));
 
         ComboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cedula", "Nombre", "Genero" }));
         ComboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -172,153 +208,19 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 ComboBoxFiltroActionPerformed(evt);
             }
         });
+        add(ComboBoxFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, 123, -1));
 
+        btnBuscarFiltro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnBuscarFiltro.setText("Buscar");
         btnBuscarFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarFiltroActionPerformed(evt);
             }
         });
+        add(btnBuscarFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 230, -1, -1));
 
         jLabel10.setText("FILTRO BUSQUEDA");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(4, 4, 4)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(23, 23, 23)
-                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(247, 247, 247))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(btncargardatos)))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnCrear)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(rbtnHombre)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbtnMujer)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(393, 393, 393)
-                                        .addComponent(btnBuscarFiltro))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnmod)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btneliminar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnreport)
-                                        .addGap(44, 44, 44))))
-                            .addComponent(spnEdad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtcelu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(64, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btncargardatos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(38, 38, 38)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(spnEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel12))
-                    .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(rbtnHombre)
-                        .addComponent(rbtnMujer)
-                        .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10)
-                        .addComponent(btnBuscarFiltro))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtcelu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrear)
-                    .addComponent(btnmod, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btneliminar)
-                    .addComponent(btnreport, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 210, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbtnHombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnHombreActionPerformed
@@ -501,9 +403,11 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
         ObjectSet<Cliente> result = BaseD.queryByExample(Cliente.class);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         while (result.hasNext()) {
             Cliente cliente = result.next();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
             Object[] row = {
                 cliente.getCedula(),
                 cliente.getNombreCliente(),
@@ -513,14 +417,13 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getCelular(),
                 cliente.getCorreo(),
                 cliente.getNacionalidad(),
-                sdf.format(cliente.getFecha_Naci())
-
+                cliente.getFecha_Naci() != null ? sdf.format(cliente.getFecha_Naci()) : null // Verificar si la fecha no es null antes de formatearla
             };
             model.addRow(row);
         }
     }
-    //////////////////////////////////// filtra clientes ///
 
+    //////////////////////////////////// filtra clientes ///
     private void filtrarClientes(String criterio, String valorBusqueda) {
         DefaultTableModel model = (DefaultTableModel) jTablePersona.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
@@ -590,6 +493,10 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_btnBuscarFiltroActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
     private void habilitarCamposBusqueda(String criterioSeleccionado) {
         // Deshabilitar todos los campos de búsqueda
         deshabilitarParametros();
@@ -648,6 +555,26 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 Reservacion reservacion = resultReservacion.next();
                 reservacion.setIDCliente(null); // Eliminamos la referencia del cliente en la reservacion
                 BaseD.store(reservacion);
+            }
+            // Segundo, eliminamos la relación con el contrato
+            Query queryContrato = BaseD.query();
+            queryContrato.constrain(Contrato.class);
+            queryContrato.descend("IDCliente").constrain(cedula);
+            ObjectSet<Contrato> resultContrato = queryContrato.execute();
+            while (resultContrato.hasNext()) {
+                Contrato contrato = resultContrato.next();
+                contrato.setIDCliente(null); // Eliminamos la referencia del cliente en el contrato
+                BaseD.store(contrato);
+            }
+            // Tercero, eliminamos la relación con el comentario
+            Query queryComentario = BaseD.query();
+            queryComentario.constrain(Comentario.class);
+            queryComentario.descend("IDCliente").constrain(cedula);
+            ObjectSet<Comentario> resultComentario = queryComentario.execute();
+            while (resultComentario.hasNext()) {
+                Comentario comentario = resultComentario.next();
+                comentario.setIDCliente(null); // Eliminamos la referencia del cliente en el comentario
+                BaseD.store(comentario);
             }
 
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este cliente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);

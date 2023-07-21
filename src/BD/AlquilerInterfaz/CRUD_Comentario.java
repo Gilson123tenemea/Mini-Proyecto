@@ -3,7 +3,6 @@ package BD.AlquilerInterfaz;
 import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Comentario;
-import BD.AlquilerCasas.Clases.Promocion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -42,7 +41,6 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         }
     }
 
-    //////////cargar clientes 
     public void cargarClientes() {
         CboxClientes.removeAllItems();
         Query query = BaseD.query();
@@ -159,20 +157,38 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 // Método para eliminar un comentario existente
 
     private void eliminarComentario() {
-        String ID_comentario = txtIDComen.getText();
-        Query query = BaseD.query();
-        query.constrain(Comentario.class);
-        query.descend("ID_comentario").constrain(ID_comentario);
-        ObjectSet<Comentario> result = query.execute();
-        if (!result.isEmpty()) {
-            Comentario comentario = result.next();
-            BaseD.delete(comentario); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "El registro del comentario se elimino exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró ningun comentario con el ID ingresado.");
+        try {
+            String idcomentario = txtIDComen.getText();
+            Query query = BaseD.query();
+            query.constrain(Comentario.class);
+            query.descend("ID_comentario").constrain(idcomentario);
+            ObjectSet<Comentario> result = query.execute();
+            if (!result.isEmpty()) {
+
+                Comentario comentario = result.next();
+
+                if (comentario.getIDCliente() == null || comentario.getIDCliente().isEmpty()) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este comentario con la id: " + idcomentario + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        BaseD.delete(comentario); // Eliminar el objeto de la base de datos
+                        JOptionPane.showMessageDialog(null, "Comentario eliminado exitosamente.");
+                        limpiarCampos();
+                        cargarTabla();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar este contrato, ya que esta relacionada con un cliente\n primero elimina el cliente");
+                    BaseD.store(comentario); // Actualizar la casa en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró ningun comentario con el ID ingresado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: puede que no existan clientes");
+            e.printStackTrace();
         }
+
     }
 
     // Método para limpiar los campos de la interfaz
@@ -276,6 +292,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         txtContenido = new javax.swing.JTextArea();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(810, 600));
 
         jLabel1.setText("ID COMENTARIO:");

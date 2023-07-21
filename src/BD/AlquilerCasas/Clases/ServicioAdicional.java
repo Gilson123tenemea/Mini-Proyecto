@@ -1,6 +1,7 @@
 package BD.AlquilerCasas.Clases;
 
 public class ServicioAdicional {
+
     private String ID_servicio;
     private String id_casa;
     private String nombre;
@@ -62,6 +63,5 @@ public class ServicioAdicional {
     public String toString() {
         return "ServicioAdicional{" + "ID_servicio=" + ID_servicio + ", id_casa=" + id_casa + ", nombre=" + nombre + ", descripcionSer=" + descripcionSer + ", costoAdicional=" + costoAdicional + '}';
     }
-    
-    
+
 }

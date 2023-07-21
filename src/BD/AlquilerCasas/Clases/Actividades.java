@@ -1,9 +1,9 @@
 package BD.AlquilerCasas.Clases;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Actividades {
+
     private String ID_actividades;
     private String casa;
     private String tipoActividad;
@@ -21,8 +21,6 @@ public class Actividades {
         this.fechaHora = fechaHora;
     }
 
-    
-
     public String getID_actividades() {
         return ID_actividades;
     }
@@ -38,8 +36,6 @@ public class Actividades {
     public void setCasa(String casa) {
         this.casa = casa;
     }
-
-   
 
     public String getTipoActividad() {
         return tipoActividad;
@@ -65,12 +61,9 @@ public class Actividades {
         this.fechaHora = fechaHora;
     }
 
-    
-
     @Override
     public String toString() {
         return "Actividades{" + "ID_actividades=" + ID_actividades + ", casa=" + casa + ", tipoActividad=" + tipoActividad + ", costoAdicional=" + costoAdicional + ", fechaHora=" + fechaHora + '}';
     }
-    
-    
+
 }

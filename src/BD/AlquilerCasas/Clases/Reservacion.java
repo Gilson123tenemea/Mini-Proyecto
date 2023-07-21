@@ -3,10 +3,11 @@ package BD.AlquilerCasas.Clases;
 import java.util.Date;
 
 public class Reservacion {
+
     private String id_reservacion;
     private String id_casa;
     private String IDCliente;
-    private Date  fecha_inicio;
+    private Date fecha_inicio;
     private Date fecha_fin;
 
     public Reservacion() {
@@ -64,6 +65,5 @@ public class Reservacion {
     public String toString() {
         return "Reservacion{" + "id_reservacion=" + id_reservacion + ", id_casa=" + id_casa + ", IDCliente=" + IDCliente + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + '}';
     }
-    
-    
+
 }

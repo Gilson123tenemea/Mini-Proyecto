@@ -2,7 +2,6 @@ package BD.AlquilerInterfaz;
 
 import BD.AlquilerCasas.Clases.Actividades;
 import BD.AlquilerCasas.Clases.CasaVacacional;
-import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -50,37 +49,36 @@ public class CRUD_Actividades extends javax.swing.JPanel {
     private void crearActividades() {
         try {
             if (!validarCampos()) {
-            return;
-        }
-        String ID_actividades = txtidActividades.getText();
+                return;
+            }
+            String ID_actividades = txtidActividades.getText();
 
-        ObjectSet<Actividades> result = BaseD.queryByExample(new Actividades(ID_actividades, null, null, 0, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe una actividad con el id ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            ObjectSet<Actividades> result = BaseD.queryByExample(new Actividades(ID_actividades, null, null, 0, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe una actividad con el id ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        String casa = cbxCasas.getSelectedItem().toString();
-        String tipoActividad = CboxTipoActividades.getSelectedItem().toString();
-        double costoAdicional = (double) spnCosotosAdicionales.getValue();
-        Date fechaHora = DateFechaActiviti.getDate();
+            String casa = cbxCasas.getSelectedItem().toString();
+            String tipoActividad = CboxTipoActividades.getSelectedItem().toString();
+            double costoAdicional = (double) spnCosotosAdicionales.getValue();
+            Date fechaHora = DateFechaActiviti.getDate();
 
-        Actividades misacti = new Actividades();
+            Actividades misacti = new Actividades();
 
-        misacti.setID_actividades(ID_actividades);
-        misacti.setCasa(casa);
-        misacti.setTipoActividad(tipoActividad);
-        misacti.setCostoAdicional(costoAdicional);
-        misacti.setFechaHora(fechaHora);
+            misacti.setID_actividades(ID_actividades);
+            misacti.setCasa(casa);
+            misacti.setTipoActividad(tipoActividad);
+            misacti.setCostoAdicional(costoAdicional);
+            misacti.setFechaHora(fechaHora);
 
-        BaseD.store(misacti); // Almacenar el objeto en la base de datos
-        JOptionPane.showMessageDialog(null, "Actividad creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            BaseD.store(misacti); // Almacenar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Actividad creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa vacacional antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
 
     }
 
@@ -145,17 +143,6 @@ public class CRUD_Actividades extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Cédula incorrecto. Ingrese de nuevo");
             ban_confirmar = false;
         }
-
-//        if (cbxCasas.getSelectedItem() == null) {
-//            JOptionPane.showMessageDialog(this, "Ingrese el tipo de casa");
-//            ban_confirmar = false;
-//        } else {
-//            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Casa inválida");
-//                ban_confirmar = false;
-//            }
-//        }
-
         if (CboxTipoActividades.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Ingrese el tipo actividad");
             ban_confirmar = false;

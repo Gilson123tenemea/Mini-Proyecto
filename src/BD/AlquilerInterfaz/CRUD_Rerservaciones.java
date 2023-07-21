@@ -22,7 +22,6 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         cargarTabla();
         cargarCasas();
         cargarClientes();
-        //cerrarBaseDatos();
     }
 
     private void crearReservacion() {
@@ -96,22 +95,12 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         if (cbxCasas.getSelectedItem() == null || cbxCasas.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa");
             ban_confirmar = false;
-        } //else {
-//            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-//                ban_confirmar = false;
-//            }
-//        }
+        }
 
         if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
-        } //else {
-//            if (!miValidaciones.ValidarCiudad(CboxClientes.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de Cliente no válida");
-//                ban_confirmar = false;
-//            }
-//        }
+        }
 
         if (jDateLlegada.getDate() == null || jDateLlegada.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
@@ -175,8 +164,6 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     private void limpiarCampos() {
 
         txt_id.setText("");
-        //cbxCasas.setSelectedIndex(0);
-        //CboxClientes.setSelectedIndex(0);
         jDateLlegada.setDate(null);
         jDateSalida.setDate(null);
     }
@@ -268,10 +255,6 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                 CboxClientes.addItem(cli.getCedula());
             }
         }
-    }
-
-    public static void cerrarBaseDatos() {
-        //BaseD.close(); // Cerrar la base de datos
     }
 
     @SuppressWarnings("unchecked")

@@ -35,7 +35,7 @@ public class Validaciones {
     }
 
     public boolean ValidarId(String cadena) {
-        return cadena.matches("[A-Z]{2}-\\d{4}"); // Ejemplo: AS-1234
+        return cadena.matches("[A-Z]{3}-\\d{3}"); // Ejemplo: ASS-123
     }
 
     public boolean ValidarCiudad(String ciudad) {

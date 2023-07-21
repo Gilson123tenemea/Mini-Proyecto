@@ -3,6 +3,7 @@ package BD.AlquilerCasas.Clases;
 import java.util.Date;
 
 public class Reporte {
+
     private String ID_reporte;
     private Date fechaGeneracion;
     private Date fechaInicio;
@@ -134,6 +135,5 @@ public class Reporte {
     public String toString() {
         return "Reporte{" + "ID_reporte=" + ID_reporte + ", fechaGeneracion=" + fechaGeneracion + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", propietario=" + propietario + ", cliente=" + cliente + ", casa=" + casa + ", precioAlquiler=" + precioAlquiler + ", pagosRealizados=" + pagosRealizados + ", saldoPendiente=" + saldoPendiente + ", estadoCasa=" + estadoCasa + ", comentarios=" + comentarios + '}';
     }
-    
-    
+
 }

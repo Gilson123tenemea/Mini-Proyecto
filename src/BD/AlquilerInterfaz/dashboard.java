@@ -9,7 +9,7 @@ public class dashboard extends javax.swing.JFrame {
 
     //Direccion de la base de datos
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz.yap";//Isaac Villa
+    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz1.yap";//Isaac Villa
     //public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Stiven Carpio
     //public static String direccionBD = "C:\\Users\\PC01\\Documents\\GitHub\\AlquilerInterfaz.yap";
     //public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";
@@ -320,7 +320,7 @@ public class dashboard extends javax.swing.JFrame {
         );
 
         titulo.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        titulo.setText("ALQUILER DE CASAS VACACIONALES M2B");
+        titulo.setText("ALQUILER DE CASAS VACACIONALES \"KAME HOUSE\"");
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,7 +329,7 @@ public class dashboard extends javax.swing.JFrame {
         Contenido.setLayout(ContenidoLayout);
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 830, Short.MAX_VALUE)
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,12 +344,12 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(BgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BgLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 366, Short.MAX_VALUE))
-                    .addGroup(BgLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(BgLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(BgLayout.createSequentialGroup()
                 .addGap(190, 190, 190)
                 .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

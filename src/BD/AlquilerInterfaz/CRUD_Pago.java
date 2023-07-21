@@ -160,12 +160,6 @@ public class CRUD_Pago extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Seleccione una reservacion");
             ban_confirmar = false;
         }
-//        else {
-//            if (!miValidaciones.ValidarCiudad(cbxReservaciones.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de reservacion no válida");
-//                ban_confirmar = false;
-//            }
-//        }
         if (txtMonto.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un valor valido");
             ban_confirmar = false;
@@ -384,26 +378,25 @@ public class CRUD_Pago extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtMontoActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         crearPago();
-        //limpiarCampos();        // TODO add your handling code here:
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String id = txtIDPago.getText();
-        buscarPorId(id);         // TODO add your handling code here:
+        buscarPorId(id);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         modificarPago();
-        limpiarCampos();        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminarPago();        // TODO add your handling code here:
+        eliminarPago(); 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 

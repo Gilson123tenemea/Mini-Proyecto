@@ -13,7 +13,6 @@ public class Propietario {
     private String correo_propi;
     private String nacionalidad_propi;
     private Date fecha_Naci;
-    //private String CiudadPropietario;
 
     public Propietario() {
     }
@@ -29,8 +28,6 @@ public class Propietario {
         this.nacionalidad_propi = nacionalidad_propi;
         this.fecha_Naci = fecha_Naci;
     }
-
-   
 
     public String getCedulaPropietario() {
         return CedulaPropietario;
@@ -108,6 +105,5 @@ public class Propietario {
     public String toString() {
         return "Propietario{" + "CedulaPropietario=" + CedulaPropietario + ", NombrePropietario=" + NombrePropietario + ", ApellidoPropietario=" + ApellidoPropietario + ", GeneroPropietario=" + GeneroPropietario + ", EdadPropietario=" + EdadPropietario + ", TelfPropietario=" + TelfPropietario + ", correo_propi=" + correo_propi + ", nacionalidad_propi=" + nacionalidad_propi + ", fecha_Naci=" + fecha_Naci + '}';
     }
-    
 
 }

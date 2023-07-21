@@ -449,15 +449,6 @@ public class CalendarioDispo extends javax.swing.JPanel {
             ban_confirmar = false;
         }
 
-//        if (CBoxCasas.getSelectedItem() == null || CBoxCasas.getSelectedItem().toString().isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Seleccione una casa");
-//            ban_confirmar = false;
-//        } else {
-//            if (!miValidaciones.ValidarCiudad(CBoxCasas.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-//                ban_confirmar = false;
-//            }
-//        }
         return ban_confirmar;
     }
 
@@ -482,9 +473,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
 
     // Método para limpiar los campos de la interfaz
     private void limpiarCampos() {
-
         txtIdcale.setText("");
-        //CBoxCasas.setSelectedIndex(0);
         CboxFechasDispo.setSelectedIndex(0);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

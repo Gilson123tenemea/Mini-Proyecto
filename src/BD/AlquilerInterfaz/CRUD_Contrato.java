@@ -40,13 +40,13 @@ public class CRUD_Contrato extends javax.swing.JPanel {
             }
 
             // Si no existe un contrato con el mismo id , proceder con la creación
-            String casas = cbxCasas.getSelectedItem().toString();
             String clientes = CboxClientes.getSelectedItem().toString();
+            String casas = cbxCasas.getSelectedItem().toString();
             Date fechaLlegada = jDateLlegada.getDate();
             Date fechaSalida = jDateSalida.getDate();
             String condiciones = txareaTeryCon.getText();
 
-            Contrato mi_cont = new Contrato(id, casas, clientes, fechaLlegada, fechaSalida, condiciones);
+            Contrato mi_cont = new Contrato(id, clientes, casas, fechaLlegada, fechaSalida, condiciones);
             BaseD.store(mi_cont); // Almacenar el objeto en la base de datos
 
             JOptionPane.showMessageDialog(null, "Contrato creado exitosamente.");
@@ -83,7 +83,7 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         String id = txtID.getText();
         Query query = BaseD.query();
         query.constrain(Contrato.class);
-        query.descend("ID").constrain(id); // id que esta en la clase
+        query.descend("ID_contrato").constrain(id); // id que esta en la clase
         ObjectSet<Contrato> result = query.execute();
         if (!result.isEmpty()) {
             Contrato contrato = result.next();
@@ -96,8 +96,8 @@ public class CRUD_Contrato extends javax.swing.JPanel {
 
     private void mostrarContrato(Contrato contrato) {
         txtID.setText(contrato.getID_contrato());
-        cbxCasas.setSelectedItem(contrato.getId_casa());
         CboxClientes.setSelectedItem(contrato.getIDCliente());
+        cbxCasas.setSelectedItem(contrato.getId_casa());
         jDateLlegada.setDate(contrato.getFecha_inicio());
         jDateSalida.setDate(contrato.getFecha_fin());
         txareaTeryCon.setText(contrato.getTerminosCondiciones());
@@ -132,20 +132,38 @@ public class CRUD_Contrato extends javax.swing.JPanel {
     }
 
     private void eliminarContrato() {
-        String id = txtID.getText();
-        Query query = BaseD.query();
-        query.constrain(Contrato.class);
-        query.descend("ID_contrato").constrain(id);
-        ObjectSet<Contrato> result = query.execute();
-        if (!result.isEmpty()) {
-            Contrato contrato = result.next();
-            BaseD.delete(contrato); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "Contarto eliminado exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un contrato con el id ingresado.");
+        try {
+            String id = txtID.getText();
+            Query query = BaseD.query();
+            query.constrain(Contrato.class);
+            query.descend("ID_contrato").constrain(id);
+            ObjectSet<Contrato> result = query.execute();
+            if (!result.isEmpty()) {
+
+                Contrato contrato = result.next();
+
+                if (contrato.getIDCliente() == null || contrato.getIDCliente().isEmpty()) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este contrato con la id: " + id + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        BaseD.delete(contrato); // Eliminar el objeto de la base de datos
+                        JOptionPane.showMessageDialog(null, "Contrato eliminado exitosamente.");
+                        limpiarCampos();
+                        cargarTabla();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta contrato, ya que esta relacionada con un cliente\n primero elimina el cliente");
+                    BaseD.store(contrato); // Actualizar el contrato en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró un contrato con el id ingresado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: No se puede eliminar el contrato ya que puede que no exista clientes");
+            e.printStackTrace();
         }
+
     }
 
     public boolean validarCampos() {// Método para validar los campos de la interfaz
@@ -163,22 +181,12 @@ public class CRUD_Contrato extends javax.swing.JPanel {
         if (cbxCasas.getSelectedItem() == null || cbxCasas.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa");
             ban_confirmar = false;
-        } //else {
-//            if (!miValidaciones.ValidarCiudad(cbxCasas.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-//                ban_confirmar = false;
-//            }
-//        }
+        }
 
         if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
-        } //else {
-//            if (!miValidaciones.ValidarCiudad(CboxClientes.getSelectedItem().toString())) {
-//                JOptionPane.showMessageDialog(this, "Selección de Cliente no válida");
-//                ban_confirmar = false;
-//            }
-//        }
+        }
 
         if (jDateLlegada.getDate() == null || jDateLlegada.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
@@ -404,39 +412,43 @@ public class CRUD_Contrato extends javax.swing.JPanel {
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnReporte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnIngresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(39, 39, 39)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(328, 328, 328)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 395, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,11 +459,13 @@ public class CRUD_Contrato extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateLlegada, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(38, 38, 38)
@@ -470,12 +484,8 @@ public class CRUD_Contrato extends javax.swing.JPanel {
                     .addComponent(btnConsultar))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel7)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(95, 95, 95)
+                        .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,10 +493,15 @@ public class CRUD_Contrato extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnEliminar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnModificar)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                                .addComponent(btnModificar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BD.AlquilerCasas.Clases;
 
 import java.util.Date;
 
-/**
- *
- * @author USER
- */
 public class Pago {
+
     private String ID_pago;
     private String id_reservacion;
     private double monto;
-    private Date  fecha_pago;
+    private Date fecha_pago;
     private String estado_pago;
 
     public Pago() {
@@ -73,6 +65,5 @@ public class Pago {
     public String toString() {
         return "Pago{" + "ID_pago=" + ID_pago + ", id_reservacion=" + id_reservacion + ", monto=" + monto + ", fecha_pago=" + fecha_pago + ", estado_pago=" + estado_pago + '}';
     }
-    
-    
+
 }

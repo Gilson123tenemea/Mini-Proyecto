@@ -20,7 +20,7 @@ public class CasaVacacional {
     private String tiene_cocina;
     private String ubicacion;
     private String otros_detalles;
-     public static ArrayList<String> listaUbicacion = new ArrayList<>();
+    public static ArrayList<String> listaUbicacion = new ArrayList<>();
 
     public CasaVacacional() {
     }
@@ -42,8 +42,6 @@ public class CasaVacacional {
         this.ubicacion = ubicacion;
         this.otros_detalles = otros_detalles;
     }
-
-   
 
     public String getId_casa() {
         return id_casa;
@@ -169,8 +167,8 @@ public class CasaVacacional {
     public String toString() {
         return "CasaVacacional{" + "id_casa=" + id_casa + ", IDPropietario=" + IDPropietario + ", nombre=" + nombre + ", carro=" + carro + ", num_pisos=" + num_pisos + ", capacidad_maxima=" + capacidad_maxima + ", num_habitaciones=" + num_habitaciones + ", num_banos=" + num_banos + ", tiene_piscina=" + tiene_piscina + ", tiene_jardin=" + tiene_jardin + ", tiene_wifi=" + tiene_wifi + ", tiene_tv=" + tiene_tv + ", tiene_cocina=" + tiene_cocina + ", ubicacion=" + ubicacion + ", otros_detalles=" + otros_detalles + '}';
     }
-    
-      public void cargarUbicacionCasa() {
+
+    public void cargarUbicacionCasa() {
         listaCiudades.add("Guayaquil"
                 + "Quito"
                 + "Cuenca"

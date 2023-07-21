@@ -11,9 +11,9 @@ public class Cliente {
     private String GeneroCliente;
     private int EdadCliente;
     private String correo;
-     private String celular;
-        private String nacionalidad;
-        private Date fecha_Naci;
+    private String celular;
+    private String nacionalidad;
+    private Date fecha_Naci;
     public static ArrayList<String> listaCiudades = new ArrayList<>();
 
     public Cliente() {
@@ -30,10 +30,6 @@ public class Cliente {
         this.nacionalidad = nacionalidad;
         this.fecha_Naci = fecha_Naci;
     }
-
-   
-
-    
 
     public String getCedula() {
         return Cedula;
@@ -90,7 +86,6 @@ public class Cliente {
     public void setCelular(String celular) {
         this.celular = celular;
     }
-    
 
     public static ArrayList<String> getListaCiudades() {
         return listaCiudades;
@@ -121,11 +116,7 @@ public class Cliente {
         return "Cliente{" + "Cedula=" + Cedula + ", NombreCliente=" + NombreCliente + ", ApellidoCliente=" + ApellidoCliente + ", GeneroCliente=" + GeneroCliente + ", EdadCliente=" + EdadCliente + ", correo=" + correo + ", celular=" + celular + ", nacionalidad=" + nacionalidad + ", fecha_Naci=" + fecha_Naci + '}';
     }
 
-
-
-     
-
-        public void cargarCiudad() {
+    public void cargarCiudad() {
         listaCiudades.add("Guayaquil"
                 + "Quito"
                 + "Cuenca"

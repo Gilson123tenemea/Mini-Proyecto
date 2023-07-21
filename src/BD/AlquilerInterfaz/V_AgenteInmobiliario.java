@@ -6,7 +6,6 @@ import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -40,34 +39,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         }
     }
 
-//    private void cargarCasasDelAgente(String cedulaAgente) {
-//        Query query = BaseD.query();
-//        query.constrain(CasaVacacional.class);
-//        query.descend("IDPropietario").constrain(cedulaAgente);
-//        ObjectSet<CasaVacacional> casasDelAgente = query.execute();
-//
-//        cbxCasa.removeAllItems(); // Limpiar los elementos anteriores en el combobox
-//
-//        for (CasaVacacional casa : casasDelAgente) {
-//            cbxCasa.addItem(casa.getId_casa() + " - " + casa.getNombre()); // Asumiendo que getId_casa() devuelve la ID de la casa
-//        }
-//    }
-//
-//    private void crearCasa() {
-//        try {
-//            if (!validarCampos()) {
-//                return;
-//            }
-//            String IDcas = cbxCasa.getSelectedItem().toString();
-//            String idagente = txtCedula.getText();
-//
-//            cargarCasasDelAgente(idagente); // Cargar las casas del agente seleccionado en el combobox
-//
-//            // Resto del código para crear la casa...
-//        } catch (Exception e) {
-//            System.out.println("No se ha seleccionado un propietario o un vehiculo del combo box, puede ser que no exista ningun registro");
-//        }
-//    }
     // Método para validar los campos de la interfaz
     public boolean validarCampos() {
         Validaciones validaciones = new Validaciones();

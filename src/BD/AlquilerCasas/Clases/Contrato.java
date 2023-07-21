@@ -3,10 +3,11 @@ package BD.AlquilerCasas.Clases;
 import java.util.Date;
 
 public class Contrato {
+
     private String ID_contrato;
     private String IDCliente;
     private String id_casa;
-    private Date  fecha_inicio;
+    private Date fecha_inicio;
     private Date fecha_fin;
     private String terminosCondiciones;
 
@@ -74,6 +75,5 @@ public class Contrato {
     public String toString() {
         return "Contrato{" + "ID_contrato=" + ID_contrato + ", IDCliente=" + IDCliente + ", id_casa=" + id_casa + ", fecha_inicio=" + fecha_inicio + ", fecha_fin=" + fecha_fin + ", terminosCondiciones=" + terminosCondiciones + '}';
     }
-    
-    
+
 }
