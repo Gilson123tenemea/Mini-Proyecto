@@ -16,7 +16,6 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
 
-    
     public CRUD_Rerservaciones(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
@@ -25,41 +24,40 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         cargarClientes();
         //cerrarBaseDatos();
     }
-    
+
     private void crearReservacion() {
         try {
             if (!validarCampos()) {
-            return;
-        }
+                return;
+            }
 
-        String id = txt_id.getText();
+            String id = txt_id.getText();
 
-        // Consultar si ya existe una reservacion con el mismo id
-        ObjectSet<Reservacion> result = BaseD.queryByExample(new Reservacion(id, null, null, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe una reservacion con el id ingresado", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+            // Consultar si ya existe una reservacion con el mismo id
+            ObjectSet<Reservacion> result = BaseD.queryByExample(new Reservacion(id, null, null, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe una reservacion con el id ingresado", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        // Si no existe una reservacion con el mismo id , proceder con la creación
-        String casas = cbxCasas.getSelectedItem().toString();
-        String clientes = CboxClientes.getSelectedItem().toString();
-        Date fechaLlegada = jDateLlegada.getDate();
-        Date fechaSalida = jDateSalida.getDate();
+            // Si no existe una reservacion con el mismo id , proceder con la creación
+            String casas = cbxCasas.getSelectedItem().toString();
+            String clientes = CboxClientes.getSelectedItem().toString();
+            Date fechaLlegada = jDateLlegada.getDate();
+            Date fechaSalida = jDateSalida.getDate();
 
-        Reservacion mi_reserv = new Reservacion(id, casas, clientes, fechaLlegada, fechaSalida);
-        BaseD.store(mi_reserv); // Almacenar el objeto en la base de datos
+            Reservacion mi_reserv = new Reservacion(id, casas, clientes, fechaLlegada, fechaSalida);
+            BaseD.store(mi_reserv); // Almacenar el objeto en la base de datos
 
-        JOptionPane.showMessageDialog(null, "Reservacion creada exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            JOptionPane.showMessageDialog(null, "Reservacion creada exitosamente.");
+            limpiarCampos();
+            cargarTabla();
         } catch (Exception e) {
             System.out.println("Error: No se puede crear una reservacion, puede que no existas casas vacacionales\n o puede que tambien no exista clientes");
         }
-        
+
     }
-    
-    
+
     private void consultarReservaciones() {
         String id = txt_id.getText();
         Query query = BaseD.query();
@@ -74,7 +72,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             limpiarCampos();
         }
     }
-    
+
     private void mostrarReservacion(Reservacion reservacion) {
         txt_id.setText(reservacion.getId_reservacion());
         cbxCasas.setSelectedItem(reservacion.getId_casa());
@@ -82,7 +80,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         jDateLlegada.setDate(reservacion.getFecha_inicio());
         jDateSalida.setDate(reservacion.getFecha_fin());
     }
-    
+
     public boolean validarCampos() {
         Validaciones miValidaciones = new Validaciones();
         boolean ban_confirmar = true;
@@ -104,7 +102,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
 //                ban_confirmar = false;
 //            }
 //        }
-        
+
         if (CboxClientes.getSelectedItem() == null || CboxClientes.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente");
             ban_confirmar = false;
@@ -114,21 +112,21 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
 //                ban_confirmar = false;
 //            }
 //        }
-        
+
         if (jDateLlegada.getDate() == null || jDateLlegada.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
             ban_confirmar = false;
         }
-        
+
         if (jDateSalida.getDate() == null || jDateSalida.getDate().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una fecha");
             ban_confirmar = false;
         }
-        
+
         return ban_confirmar;
 
     }
-    
+
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) jTableReservaciones.getModel();
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
@@ -142,13 +140,11 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                 reservacion.getId_casa(),
                 reservacion.getIDCliente(),
                 sdf.format(reservacion.getFecha_inicio()),
-                sdf.format(reservacion.getFecha_fin()),
-                
-            };
+                sdf.format(reservacion.getFecha_fin()),};
             model.addRow(row);
         }
     }
-    
+
     private void modificarReservacion() {
         if (!validarCampos()) {
             return;
@@ -165,7 +161,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             reservacion.setId_casa(cbxCasas.getSelectedItem().toString());
             reservacion.setIDCliente(CboxClientes.getSelectedItem().toString());
             reservacion.setFecha_inicio(jDateLlegada.getDate());
-            reservacion.setFecha_fin(jDateSalida.getDate());          
+            reservacion.setFecha_fin(jDateSalida.getDate());
 
             BaseD.store(reservacion); // Actualizar el objeto en la base de datos
             JOptionPane.showMessageDialog(null, "Reservacion modificada exitosamente.");
@@ -175,7 +171,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró una reservacion con el id ingresado.");
         }
     }
-    
+
     private void limpiarCampos() {
 
         txt_id.setText("");
@@ -184,24 +180,43 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         jDateLlegada.setDate(null);
         jDateSalida.setDate(null);
     }
-    
+
     private void eliminarReservacion() {
-        String id = txt_id.getText();
-        Query query = BaseD.query();
-        query.constrain(Reservacion.class);
-        query.descend("Id").constrain(id);
-        ObjectSet<Reservacion> result = query.execute();
-        if (!result.isEmpty()) {
-            Reservacion reservacion = result.next();
-            BaseD.delete(reservacion); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "Reservacion eliminada exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró una reservacion con el id ingresado.");
+        try {
+            String id = txt_id.getText();
+            Query query = BaseD.query();
+            query.constrain(Reservacion.class);
+            query.descend("id_reservacion").constrain(id);//El id_reservacion deber ser igual al de la variable de la clase Reservacion
+            ObjectSet<Reservacion> result = query.execute();
+            if (!result.isEmpty()) {
+
+                Reservacion reservacion = result.next();
+
+                if (reservacion.getIDCliente() == null || reservacion.getIDCliente().isEmpty()) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar esta reservacion conn la id: " + id + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        BaseD.delete(reservacion); // Eliminar el objeto de la base de datos
+                        JOptionPane.showMessageDialog(null, "Reservacion eliminado exitosamente.");
+                        limpiarCampos();
+                        cargarTabla();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta reservacion, ya que esta relacionada con un cliente\n primero elimina el cliente");
+                    BaseD.store(reservacion); // Actualizar la casa en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró una reservacion con la id ingresada.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al eliminar una reservacion, porque no hay clientes");
+            e.printStackTrace();
         }
+
     }
-    
+
     public void habilitarParametros() {
         txt_id.setEnabled(true);
         cbxCasas.setEnabled(true);
@@ -217,7 +232,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         jDateLlegada.setEnabled(false);
         jDateSalida.setEnabled(false);
     }
-    
+
     public void cargarCasas() {
         cbxCasas.removeAllItems();
         Query query = BaseD.query();
@@ -235,6 +250,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             }
         }
     }
+
     //////////cargar clientes 
     public void cargarClientes() {
         CboxClientes.removeAllItems();
@@ -253,6 +269,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             }
         }
     }
+
     public static void cerrarBaseDatos() {
         //BaseD.close(); // Cerrar la base de datos
     }
@@ -424,7 +441,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jDateSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 130, Short.MAX_VALUE))
+                        .addGap(0, 141, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel8)
@@ -466,8 +483,8 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                     .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReporte))
                 .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -476,7 +493,6 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
         modificarReservacion();
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -485,19 +501,16 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     }//GEN-LAST:event_CboxClientesActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
         eliminarReservacion();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         consultarReservaciones();
     }//GEN-LAST:event_jButton2ActionPerformed
 
