@@ -76,6 +76,27 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró un propietario con la cédula seleccionada.", "Propietario no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    private void mostrarDatosVehiculoSeleccionado() {
+        String placaSeleccionada = CboxtipoCarro.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(Vehiculo.class);
+        query.descend("ID_carro").constrain(placaSeleccionada);
+        ObjectSet<Vehiculo> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Vehiculo carro = result.next();
+            String mensaje = "Placa: " + carro.getID_carro() + "\n"
+                    + "Marca: " + carro.getMarca() + "\n"
+                    + "Modelo: " + carro.getModelo() + "\n"
+                    + "Año: " + carro.getAnio() + "\n"
+                    + "Tipo De Vehiculo: " + carro.getTipoVehiculo();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos del Vehiculo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un vehiculo con la placa seleccionado.", "Vehiculo no encontrado", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     public void cargarVehiculos() {
         CboxtipoCarro.removeAllItems();
@@ -143,73 +164,58 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtdetallescasa = new javax.swing.JTextArea();
         btnVerPropietarios = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("REGISTROS DE CASAS DE VACACIONES");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("ID Casa: ");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Propietarios:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Placa de carro:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Equipamiento de la Casa");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, -1, -1));
 
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Numero de Pisos:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
 
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Capacidad Maxima: ");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250, -1, -1));
 
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Numero de Habitaciones:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, -1, -1));
 
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Numero de Baños:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, -1, -1));
 
-        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Tiene Picina:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 60, 110, 30));
 
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Tiene Jardin:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 60, 110, 30));
 
-        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Tiene WIFI:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 100, 100, 30));
 
-        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Tiene TV:");
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 90, 30));
 
-        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Tiene Cocina: ");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 120, 30));
 
-        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Ubicacion:");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 180, 100, 30));
 
-        jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Otros Detalles:");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 130, 30));
         jPanel1.add(txtIDCASA, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 170, -1));
@@ -227,27 +233,22 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         jPanel1.add(spnbanos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 60, -1));
 
         cboxpicina.setBackground(new java.awt.Color(255, 255, 255));
-        cboxpicina.setForeground(new java.awt.Color(0, 0, 0));
         cboxpicina.setText("SI");
         jPanel1.add(cboxpicina, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 80, 40));
 
         cboxjardin.setBackground(new java.awt.Color(255, 255, 255));
-        cboxjardin.setForeground(new java.awt.Color(0, 0, 0));
         cboxjardin.setText("SI");
         jPanel1.add(cboxjardin, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 80, 40));
 
         cboxwifi.setBackground(new java.awt.Color(255, 255, 255));
-        cboxwifi.setForeground(new java.awt.Color(0, 0, 0));
         cboxwifi.setText("SI");
         jPanel1.add(cboxwifi, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 80, 40));
 
         cboxTV.setBackground(new java.awt.Color(255, 255, 255));
-        cboxTV.setForeground(new java.awt.Color(0, 0, 0));
         cboxTV.setText("SI");
         jPanel1.add(cboxTV, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 100, 80, 40));
 
         cbxcocina.setBackground(new java.awt.Color(255, 255, 255));
-        cbxcocina.setForeground(new java.awt.Color(0, 0, 0));
         cbxcocina.setText("SI");
         jPanel1.add(cbxcocina, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 80, 40));
 
@@ -343,7 +344,6 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         CboxtipoCarro.setToolTipText("");
         jPanel1.add(CboxtipoCarro, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 170, -1));
 
-        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
         jLabel17.setText("Nombre:");
         jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, -1));
         jPanel1.add(txtnombreCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 170, -1));
@@ -351,7 +351,6 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         cbxPropietarios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0150698017", "0150989755", "0984501255", "0156598521" }));
         jPanel1.add(cbxPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 170, -1));
 
-        jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Filtro de busqueda:");
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, -1, -1));
 
@@ -361,13 +360,21 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 210, 270, 90));
 
-        btnVerPropietarios.setText("Ver");
+        btnVerPropietarios.setText("VER");
         btnVerPropietarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerPropietariosActionPerformed(evt);
             }
         });
         jPanel1.add(btnVerPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
+
+        jButton2.setText("VER");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -428,6 +435,11 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     private void btnVerPropietariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPropietariosActionPerformed
         mostrarDatosPropietarioSeleccionado();
     }//GEN-LAST:event_btnVerPropietariosActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosVehiculoSeleccionado();
+    }//GEN-LAST:event_jButton2ActionPerformed
     private void crearCasa() {
         try {
             if (!validarCampos()) {
@@ -816,6 +828,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     private javax.swing.JCheckBox cbxcocina;
     private javax.swing.JComboBox<String> cbxnacionalidad_crudcasa;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
