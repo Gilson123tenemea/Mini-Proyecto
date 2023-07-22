@@ -148,20 +148,37 @@ public class CRUD_Factura extends javax.swing.JPanel {
 // Método para eliminar un pago existente
 
     private void eliminarFactura() {
-        String ID_factura = txtIDFactura.getText();
-        Query query = BaseD.query();
-        query.constrain(Factura.class);
-        query.descend("ID_factura").constrain(ID_factura);
-        ObjectSet<Factura> result = query.execute();
-        if (!result.isEmpty()) {
-            Factura factura = result.next();
-            BaseD.delete(factura); // Eliminar el objeto de la base de datos
-            JOptionPane.showMessageDialog(null, "El registro de la factura se elimino exitosamente.");
-            limpiarCampos();
-            cargarTabla();
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un registro de factura con el ID ingresado.");
+        try {
+            String ID_factura = txtIDFactura.getText();
+            Query query = BaseD.query();
+            query.constrain(Factura.class);
+            query.descend("ID_factura").constrain(ID_factura);
+            ObjectSet<Factura> result = query.execute();
+            if (!result.isEmpty()) {
+
+                Factura factura = result.next();
+                if (factura.getIDCliente() == null || factura.getIDCliente().isEmpty()) {
+                    int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este factura con la id: " + ID_factura + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirmacion == JOptionPane.YES_OPTION) {
+                        BaseD.delete(factura); // Eliminar el objeto de la base de datos
+                        JOptionPane.showMessageDialog(null, "Fectura eliminada exitosamente.");
+                        limpiarCampos();
+                        cargarTabla();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes eliminar esta factura, ya que esta relacionada con un cliente\n primero elimina el cliente");
+                    BaseD.store(factura); // Actualizar la casa en la base de datos
+                    limpiarCampos();
+                    cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró un registro de factura con el ID ingresado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Puede que no exista clientes");
+            e.printStackTrace();
         }
+
     }
 
     //metodo para verifcar campos
@@ -205,21 +222,26 @@ public class CRUD_Factura extends javax.swing.JPanel {
     // Método para cargar la tabla con las facturas existentes en la base de datos
 
     private void cargarTabla() {
-        DefaultTableModel model = (DefaultTableModel) TablaFactura.getModel();
-        model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
+        try {
+            DefaultTableModel model = (DefaultTableModel) TablaFactura.getModel();
+            model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
-        ObjectSet<Factura> result = BaseD.queryByExample(Factura.class);
-        while (result.hasNext()) {
-            Factura factura = result.next();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Object[] row = {
-                factura.getID_factura(),
-                factura.getIDCliente(),
-                factura.getId_reservacion(),
-                sdf.format(factura.getFecha_emision()),
-                factura.getTotalPago(),};
-            model.addRow(row);
+            ObjectSet<Factura> result = BaseD.queryByExample(Factura.class);
+            while (result.hasNext()) {
+                Factura factura = result.next();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Object[] row = {
+                    factura.getID_factura(),
+                    factura.getIDCliente(),
+                    factura.getId_reservacion(),
+                    sdf.format(factura.getFecha_emision()),
+                    factura.getTotalPago(),};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: Puede ser por valores nulos");
         }
+
     }
 
     private void mostrarDatosClienteSeleccionado() {
@@ -247,7 +269,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró un cliente con la cédula seleccionada.", "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void mostrarDatosReservacionSeleccionada() {
         String idSeleccionado = cbxReservaciones.getSelectedItem().toString();
         Query query = BaseD.query();
@@ -269,7 +291,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró la reservacion con el id seleccionado.", "Reservacion no encontrada", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -384,6 +406,11 @@ public class CRUD_Factura extends javax.swing.JPanel {
 
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnReporte.setText("REPORTE");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
         add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 500, 120, 50));
 
         btnVerCliente.setText("VER");
@@ -414,16 +441,13 @@ public class CRUD_Factura extends javax.swing.JPanel {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         eliminarFactura();
-        limpiarCampos();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         modificarFactura();
-        limpiarCampos();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnVerClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerClienteActionPerformed
-        // TODO add your handling code here:
         mostrarDatosClienteSeleccionado();
     }//GEN-LAST:event_btnVerClienteActionPerformed
 
@@ -431,6 +455,10 @@ public class CRUD_Factura extends javax.swing.JPanel {
         // TODO add your handling code here:
         mostrarDatosReservacionSeleccionada();
     }//GEN-LAST:event_btnVerReservacionActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_btnReporteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

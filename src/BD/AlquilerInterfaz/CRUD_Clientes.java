@@ -3,6 +3,7 @@ package BD.AlquilerInterfaz;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Comentario;
 import BD.AlquilerCasas.Clases.Contrato;
+import BD.AlquilerCasas.Clases.Factura;
 import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
 import com.db4o.ObjectContainer;
@@ -15,7 +16,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class CRUD_Clientes extends javax.swing.JPanel {
 
-    //public static ObjectContainer BaseD = Db4o.openFile(dashboard.direccionBD);
     private ObjectContainer BaseD;
     String CedulaCli = "";
     String NombreCli = "";
@@ -174,7 +174,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 btnreportActionPerformed(evt);
             }
         });
-        add(btnreport, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, -1, 33));
+        add(btnreport, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 130, 40));
 
         spnEdad.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         add(spnEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 172, 79, -1));
@@ -575,6 +575,16 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 Comentario comentario = resultComentario.next();
                 comentario.setIDCliente(null); // Eliminamos la referencia del cliente en el comentario
                 BaseD.store(comentario);
+            }
+            // Cuarto, eliminamos la relación con la factura
+            Query queryFactura = BaseD.query();
+            queryFactura.constrain(Factura.class);
+            queryFactura.descend("IDCliente").constrain(cedula);
+            ObjectSet<Factura> resultFactura = queryFactura.execute();
+            while (resultFactura.hasNext()) {
+                Factura factura = resultFactura.next();
+                factura.setIDCliente(null); // Eliminamos la referencia del cliente en la factura
+                BaseD.store(factura);
             }
 
             int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este cliente con la cédula: " + cedula + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);

@@ -229,7 +229,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró la reservacion con el id seleccionado.", "Reservacion no encontrada", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -252,55 +252,75 @@ public class CRUD_Pago extends javax.swing.JPanel {
         TablaPago = new javax.swing.JTable();
         cbxReservaciones = new javax.swing.JComboBox<>();
         btnVerReservacion = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("ID DEL PAGO:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 124, -1, -1));
+        add(txtIDPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 118, -1));
 
         jLabel2.setText("ID DE RESERVACION:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 186, -1, -1));
 
         jLabel3.setText("MONTO:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 248, -1, -1));
 
         txtMonto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMontoActionPerformed(evt);
             }
         });
+        add(txtMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 240, 118, -1));
 
         jLabel4.setText("FECHA DE PAGO:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 316, -1, -1));
+        add(jcalendarFechaPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 102, -1));
 
         jLabel5.setText("ESTADO DE PAGO:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 380, -1, -1));
+        add(txtEstadoPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, 117, -1));
 
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
             }
         });
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, -1, 50));
 
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 480, -1, 50));
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 480, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel6.setText("PAGO");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, -1, -1));
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnBuscar.setText("BUSCAR");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
             }
         });
+        add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, -1, 50));
 
         TablaPago.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -315,7 +335,10 @@ public class CRUD_Pago extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaPago);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(359, 116, 470, 350));
+
         cbxReservaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Itemuno", "Itemdos", "Itemtres", "Itemcuatro" }));
+        add(cbxReservaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 180, 118, -1));
 
         btnVerReservacion.setText("VER");
         btnVerReservacion.addActionListener(new java.awt.event.ActionListener() {
@@ -323,91 +346,16 @@ public class CRUD_Pago extends javax.swing.JPanel {
                 btnVerReservacionActionPerformed(evt);
             }
         });
+        add(btnVerReservacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(61, 61, 61)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIDPago, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                            .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                            .addComponent(cbxReservaciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnVerReservacion))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1))
-                        .addGap(75, 75, 75)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEstadoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcalendarFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
-                .addGap(63, 63, 63))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(btnCrear)
-                        .addGap(59, 59, 59)
-                        .addComponent(btnBuscar)
-                        .addGap(60, 60, 60)
-                        .addComponent(btnModificar)
-                        .addGap(65, 65, 65)
-                        .addComponent(btnEliminar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(395, 395, 395)
-                        .addComponent(jLabel6)))
-                .addContainerGap(338, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel6)
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIDPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(cbxReservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVerReservacion))
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jcalendarFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel5))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(txtEstadoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnCrear))
-                .addGap(51, 51, 51))
-        );
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
+        jButton1.setText("REPORTE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 480, -1, 50));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
@@ -429,13 +377,16 @@ public class CRUD_Pago extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminarPago(); 
+        eliminarPago();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnVerReservacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReservacionActionPerformed
-        // TODO add your handling code here:
         mostrarDatosReservacionSeleccionada();
     }//GEN-LAST:event_btnVerReservacionActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -446,6 +397,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnVerReservacion;
     private javax.swing.JComboBox<String> cbxReservaciones;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -322,7 +322,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró un cliente con la cédula seleccionada.", "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -350,25 +350,36 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         txtContenido = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         btnVerCasa = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(810, 600));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("ID COMENTARIO:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 108, -1, -1));
+        add(txtIDComen, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 104, 146, -1));
 
         jLabel2.setText("ID DEL CLIENTE:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 160, -1, -1));
 
         jLabel3.setText("ID CASA:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 227, -1, -1));
 
         jLabel4.setText("CONTENIDO:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 272, -1, 20));
 
         jLabel5.setText("PUNTUACION:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 405, -1, 29));
 
         jLabel6.setText("FECHA DEL COMENTARIO:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 452, -1, 28));
+        add(jcalendarFechaComentario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 452, 155, 28));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel7.setText("COMENTARIO");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 29, -1, -1));
 
         TablaComentario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -383,43 +394,58 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaComentario);
 
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 460, 270));
+
         CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
+        add(CboxClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 155, 152, -1));
 
         cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNO ", "DOS", "TRES" }));
+        add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 214, 152, -1));
 
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
             }
         });
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 519, 110, -1));
 
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsultar.setText("CONSULTAR");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
             }
         });
+        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 520, -1, -1));
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 520, -1, 40));
 
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, -1, -1));
 
         spnPuntuacion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
+        add(spnPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 406, -1, -1));
 
         txtContenido.setColumns(20);
         txtContenido.setRows(5);
         jScrollPane3.setViewportView(txtContenido);
+
+        add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(109, 272, -1, 108));
 
         jButton1.setText("VER");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -427,6 +453,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 152, -1, -1));
 
         btnVerCasa.setText("VER");
         btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
@@ -434,105 +461,16 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 btnVerCasaActionPerformed(evt);
             }
         });
+        add(btnVerCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 211, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addComponent(btnCrear)
-                .addGap(57, 57, 57)
-                .addComponent(btnConsultar)
-                .addGap(58, 58, 58)
-                .addComponent(btnModificar)
-                .addGap(53, 53, 53)
-                .addComponent(btnEliminar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcalendarFechaComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(jLabel7))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel3))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtIDComen, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbxCasas, 0, 152, Short.MAX_VALUE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(btnVerCasa))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtIDComen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnVerCasa)))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcalendarFechaComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrear)
-                    .addComponent(btnConsultar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar))
-                .addGap(22, 22, 22))
-        );
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
+        jButton2.setText("REPORTE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 520, -1, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -543,27 +481,28 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String id = txtIDComen.getText();
-        buscarPorId(id);        // TODO add your handling code here:
+        buscarPorId(id);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         modificarComentario();
-        limpiarCampos();        // TODO add your handling code here:
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminarComentario();        // TODO add your handling code here:
+        eliminarComentario();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         mostrarDatosClienteSeleccionado();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
-        // TODO add your handling code here:
         mostrarDatosCasaSeleccionada();
     }//GEN-LAST:event_btnVerCasaActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -576,6 +515,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private javax.swing.JButton btnVerCasa;
     private javax.swing.JComboBox<String> cbxCasas;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

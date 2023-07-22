@@ -375,6 +375,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         cbxCasas = new javax.swing.JComboBox<>();
         btnVerCasa = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -404,44 +405,48 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
             }
         });
         add(txtNombreServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 190, 30));
-        add(txtIdServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 230, -1));
+        add(txtIdServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 150, -1));
 
         jScrollPane1.setViewportView(jtpDescripcionServicio);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 330, 90));
         add(txtCostoAdicional, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 120, -1));
 
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
             }
         });
-        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, 120, -1));
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 130, -1));
 
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 170, 120, -1));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 170, 130, -1));
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
             }
         });
-        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 120, -1));
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 130, -1));
 
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsultar.setText("CONSULTAR");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
             }
         });
-        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 120, -1));
+        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 140, -1));
 
         tblServicioAdicional.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -475,7 +480,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tblServicioAdicional);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 760, 200));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 770, 220));
 
         ComboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Servicio", "Nombre Casa", "Nombre Servicio" }));
         ComboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -488,16 +493,17 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         jLabel7.setText("Filtro de busqueda");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, -1, -1));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         jButton1.setText("REPORTE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 120, -1));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 230, 130, -1));
 
         cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 230, -1));
+        add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 150, -1));
 
         btnVerCasa.setText("VER");
         btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
@@ -505,7 +511,12 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
                 btnVerCasaActionPerformed(evt);
             }
         });
-        add(btnVerCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, -1, -1));
+        add(btnVerCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Dubai", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("$");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreServicioActionPerformed
@@ -577,6 +588,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jtpDescripcionServicio;

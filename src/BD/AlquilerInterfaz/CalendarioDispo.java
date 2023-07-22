@@ -143,6 +143,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(TablaDisponi);
 
+        btncrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btncrear.setText("CREAR");
         btncrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +151,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
             }
         });
 
+        btnConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsul.setText("CONSULTAR");
         btnConsul.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,6 +159,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
             }
         });
 
+        btnModi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModi.setText("MODIFICAR");
         btnModi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,6 +167,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
             }
         });
 
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnDelete.setText("ELIMINAR");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,7 +186,8 @@ public class CalendarioDispo extends javax.swing.JPanel {
             }
         });
 
-        btnTodos.setText("VER TODOS");
+        btnTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
+        btnTodos.setText("REPORTE");
         btnTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTodosActionPerformed(evt);
@@ -232,9 +237,6 @@ public class CalendarioDispo extends javax.swing.JPanel {
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel4)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(98, 98, 98)
                         .addComponent(btncrear)
                         .addGap(23, 23, 23)
@@ -244,8 +246,11 @@ public class CalendarioDispo extends javax.swing.JPanel {
                         .addGap(29, 29, 29)
                         .addComponent(btnDelete)
                         .addGap(19, 19, 19)
-                        .addComponent(btnTodos)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addComponent(btnTodos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 764, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,14 +281,14 @@ public class CalendarioDispo extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(CboxFechasDispo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btncrear)
-                    .addComponent(btnConsul)
-                    .addComponent(btnModi)
-                    .addComponent(btnDelete)
-                    .addComponent(btnTodos))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btncrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModi, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnConsul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
