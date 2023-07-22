@@ -10,15 +10,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 public class CRUD_Promociones extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
+
     public CRUD_Promociones(ObjectContainer BaseD) {
         this.BaseD = BaseD;
         initComponents();
         cargarCasas();
         cargarTabla();
     }
+
     public void cargarCasas() {
         CboxCasas.removeAllItems();
         Query query = BaseD.query();
@@ -40,32 +43,32 @@ public class CRUD_Promociones extends javax.swing.JPanel {
     public void crearPromocion() {
         try {
             if (!validarCampos()) {
-            return;
-        }
-        String Id_promo = txtIDpromo.getText();
-        // Consultar si ya existe un cliente con la misma cédula
-        ObjectSet<Promocion> result = BaseD.queryByExample(new Promocion(Id_promo, null, 0, null, null));
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ya existe una promocion con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        // Si no existe un con la misma codigo, proceder con la creación
-        String casas = CboxCasas.getSelectedItem().toString();
-        int descuento = Integer.parseInt(txtDescuento.getText());
-        String descuentoString = Integer.toString(descuento);
+                return;
+            }
+            String Id_promo = txtIDpromo.getText();
+            // Consultar si ya existe un cliente con la misma cédula
+            ObjectSet<Promocion> result = BaseD.queryByExample(new Promocion(Id_promo, null, 0, null, null));
+            if (!result.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ya existe una promocion con ese codigo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Si no existe un con la misma codigo, proceder con la creación
+            String casas = CboxCasas.getSelectedItem().toString();
+            int descuento = Integer.parseInt(txtDescuento.getText());
+            String descuentoString = Integer.toString(descuento);
 
-        Date fechaIni = jcalendarInicio.getDate();
-        Date fechaFin = jcalendarFin.getDate();
+            Date fechaIni = jcalendarInicio.getDate();
+            Date fechaFin = jcalendarFin.getDate();
 
-        Promocion mipromo = new Promocion(Id_promo, casas, descuento, fechaIni, fechaFin);
-        BaseD.store(mipromo); // Almacenar el objeto en la base de datos
-        JOptionPane.showMessageDialog(null, "Promocion creado exitosamente.");
-        limpiarCampos();
-        cargarTabla();
+            Promocion mipromo = new Promocion(Id_promo, casas, descuento, fechaIni, fechaFin);
+            BaseD.store(mipromo); // Almacenar el objeto en la base de datos
+            JOptionPane.showMessageDialog(null, "Promocion creado exitosamente.");
+            limpiarCampos();
+            cargarTabla();
         } catch (Exception e) {
             System.out.println("No se ha seleccionado un casa vacacional del combo box, puede ser que no exista ningun registro");
         }
-        
+
     }
 
     /////// busca / consultar por ID
@@ -94,7 +97,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         }
     }
 
-     // Método para modificar un registro existente
+    // Método para modificar un registro existente
     private void modificarPromocion() {
         if (!validarCampos()) {
             return;
@@ -124,10 +127,9 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró un registro de promocion con el ID ingresado.");
         }
     }
-    
-        
+
 // Método para eliminar un registro existente
-    private void eliminarPromocion(){
+    private void eliminarPromocion() {
         String E_promo = txtIDpromo.getText();
         Query query = BaseD.query();
         query.constrain(Promocion.class);
@@ -143,6 +145,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró un registro con el ID ingresado.");
         }
     }
+
     // Método para cargar la tabla con las casas promos existentes en la base de datos
     private void cargarTabla() {
         DefaultTableModel model = (DefaultTableModel) TablaDescuento.getModel();
@@ -178,11 +181,6 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         if (CboxCasas.getSelectedItem() == null || CboxCasas.getSelectedItem().toString().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa");
             ban_confirmar = false;
-        } else {
-            if (!miValidaciones.ValidarCiudad(CboxCasas.getSelectedItem().toString())) {
-                JOptionPane.showMessageDialog(this, "Selección de casa no válida");
-                ban_confirmar = false;
-            }
         }
         if (txtDescuento.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un valor valido"); // Ejemplo: AS-1234
@@ -269,6 +267,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(TablaDescuento);
 
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -276,6 +275,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             }
         });
 
+        btnConsul.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsul.setText("CONSULTAR");
         btnConsul.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,6 +283,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             }
         });
 
+        btnMod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnMod.setText("MODIFICAR");
         btnMod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,6 +291,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             }
         });
 
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnDelete.setText("ELIMINAR");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,6 +299,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
             }
         });
 
+        btnTodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnTodos.setText("VER TODOS");
         btnTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,8 +355,8 @@ public class CRUD_Promociones extends javax.swing.JPanel {
                         .addComponent(btnTodos))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,7 +407,7 @@ public class CRUD_Promociones extends javax.swing.JPanel {
                     .addComponent(btnDelete)
                     .addComponent(btnTodos))
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
