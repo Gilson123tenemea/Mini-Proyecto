@@ -217,6 +217,37 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         spnCosotosAdicionales.setValue(1);
         DateFechaActiviti.setDate(null);
     }
+    
+    private void mostrarDatosCasaSeleccionada() {
+        String casaSeleccionada = cbxCasas.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(casaSeleccionada);
+        ObjectSet<CasaVacacional> result = query.execute();
+
+        if (!result.isEmpty()) {
+            CasaVacacional casa = result.next();
+            String mensaje = "ID:: " + casa.getId_casa() + "\n"
+                    + "Cedula Propietario: " + casa.getIDPropietario() + "\n"
+                    + "Nombre: " + casa.getNombre() + "\n"
+                    + "Carro: " + casa.getCarro() + "\n"
+                    + "Numero De Pisos: " + casa.getNum_pisos() + "\n"
+                    + "Capacidad Maxima: " + casa.getCapacidad_maxima() + "\n"
+                    + "Numero De Habitaciones: " + casa.getNum_habitaciones() + "\n"
+                    + "Numero De Baños: " + casa.getNum_banos() + "\n"
+                    + "Piscina: " + casa.getTiene_piscina() + "\n"
+                    + "Jardin: " + casa.getTiene_jardin() + "\n"
+                    + "Wifi: " + casa.getTiene_wifi() + "\n"
+                    + "Tv: " + casa.getTiene_tv() + "\n"
+                    + "Cocina: " + casa.getTiene_cocina() + "\n"
+                    + "Ubicacion: " + casa.getUbicacion() + "\n"
+                    + "Otros Detalles: " + casa.getOtros_detalles();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de La Casa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -242,32 +273,27 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         tablaactivi = new javax.swing.JTable();
         cbxCasas = new javax.swing.JComboBox<>();
         cargardatos = new javax.swing.JButton();
+        btnVerCasa = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("REGUISTRO DE LAS ACTIVIDADES");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("ID Actividades:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Casas Vacacionales: ");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, -1, -1));
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Tipo de Actividades: ");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
 
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Costos Adicionales: ");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 120, -1, -1));
 
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Fecha:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 40, -1));
         jPanel1.add(txtidActividades, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 140, -1));
@@ -350,6 +376,14 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         });
         jPanel1.add(cargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, -1, -1));
 
+        btnVerCasa.setText("VER");
+        btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerCasaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVerCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 120, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -390,12 +424,18 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         consultarActtividad();
     }//GEN-LAST:event_cargardatosActionPerformed
 
+    private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosCasaSeleccionada();
+    }//GEN-LAST:event_btnVerCasaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CboxTipoActividades;
     private javax.swing.JComboBox<String> ComboHora;
     private com.toedter.calendar.JDateChooser DateFechaActiviti;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnVerCasa;
     private javax.swing.JButton btneliminar;
     private javax.swing.JButton btnmodificar;
     private javax.swing.JButton btnreporte;
