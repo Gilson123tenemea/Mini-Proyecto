@@ -266,6 +266,63 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
     }
 
+    private void mostrarDatosCasaSeleccionada() {
+        String casaSeleccionada = cbxCasas.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(casaSeleccionada);
+        ObjectSet<CasaVacacional> result = query.execute();
+
+        if (!result.isEmpty()) {
+            CasaVacacional casa = result.next();
+            String mensaje = "ID:: " + casa.getId_casa() + "\n"
+                    + "Cedula Propietario: " + casa.getIDPropietario() + "\n"
+                    + "Nombre: " + casa.getNombre() + "\n"
+                    + "Carro: " + casa.getCarro() + "\n"
+                    + "Numero De Pisos: " + casa.getNum_pisos() + "\n"
+                    + "Capacidad Maxima: " + casa.getCapacidad_maxima() + "\n"
+                    + "Numero De Habitaciones: " + casa.getNum_habitaciones() + "\n"
+                    + "Numero De Baños: " + casa.getNum_banos() + "\n"
+                    + "Piscina: " + casa.getTiene_piscina() + "\n"
+                    + "Jardin: " + casa.getTiene_jardin() + "\n"
+                    + "Wifi: " + casa.getTiene_wifi() + "\n"
+                    + "Tv: " + casa.getTiene_tv() + "\n"
+                    + "Cocina: " + casa.getTiene_cocina() + "\n"
+                    + "Ubicacion: " + casa.getUbicacion() + "\n"
+                    + "Otros Detalles: " + casa.getOtros_detalles();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de La Casa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarDatosClienteSeleccionado() {
+        String cedulaSeleccionada = CboxClientes.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+        query.descend("Cedula").constrain(cedulaSeleccionada);
+        ObjectSet<Cliente> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Cliente cliente = result.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String mensaje = "Cédula: " + cliente.getCedula() + "\n"
+                    + "Nombre: " + cliente.getNombreCliente() + "\n"
+                    + "Apellido: " + cliente.getApellidoCliente() + "\n"
+                    + "Genero: " + cliente.getGeneroCliente() + "\n"
+                    + "Edad: " + cliente.getEdadCliente() + "\n"
+                    + "Correo: " + cliente.getCorreo() + "\n"
+                    + "Celular: " + cliente.getCelular() + "\n"
+                    + "Nacionalidad: " + cliente.getNacionalidad() + "\n"
+                    + "Fecha De Nacimiento: " + sdf.format(cliente.getFecha_Naci());
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos del Cliente", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un cliente con la cédula seleccionada.", "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -291,6 +348,8 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         spnPuntuacion = new javax.swing.JSpinner();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtContenido = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        btnVerCasa = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -362,6 +421,20 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         txtContenido.setRows(5);
         jScrollPane3.setViewportView(txtContenido);
 
+        jButton1.setText("VER");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnVerCasa.setText("VER");
+        btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerCasaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -380,27 +453,25 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jcalendarFechaComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(261, 261, 261)
-                                .addComponent(jLabel7))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcalendarFechaComentario, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(261, 261, 261)
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
@@ -411,7 +482,10 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtIDComen, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(cbxCasas, 0, 152, Short.MAX_VALUE)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(btnVerCasa))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -425,15 +499,18 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtIDComen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
+                            .addComponent(CboxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(cbxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVerCasa)))
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3)))
@@ -478,6 +555,16 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         eliminarComentario();        // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosClienteSeleccionado();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosCasaSeleccionada();
+    }//GEN-LAST:event_btnVerCasaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CboxClientes;
@@ -486,7 +573,9 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnVerCasa;
     private javax.swing.JComboBox<String> cbxCasas;
+    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
