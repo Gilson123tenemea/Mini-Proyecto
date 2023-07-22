@@ -317,6 +317,37 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
             txtCostoAdicional.setText(costoAdicional);
         }
     }
+    
+    private void mostrarDatosCasaSeleccionada() {
+        String casaSeleccionada = cbxCasas.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(casaSeleccionada);
+        ObjectSet<CasaVacacional> result = query.execute();
+
+        if (!result.isEmpty()) {
+            CasaVacacional casa = result.next();
+            String mensaje = "ID:: " + casa.getId_casa() + "\n"
+                    + "Cedula Propietario: " + casa.getIDPropietario() + "\n"
+                    + "Nombre: " + casa.getNombre() + "\n"
+                    + "Carro: " + casa.getCarro() + "\n"
+                    + "Numero De Pisos: " + casa.getNum_pisos() + "\n"
+                    + "Capacidad Maxima: " + casa.getCapacidad_maxima() + "\n"
+                    + "Numero De Habitaciones: " + casa.getNum_habitaciones() + "\n"
+                    + "Numero De Baños: " + casa.getNum_banos() + "\n"
+                    + "Piscina: " + casa.getTiene_piscina() + "\n"
+                    + "Jardin: " + casa.getTiene_jardin() + "\n"
+                    + "Wifi: " + casa.getTiene_wifi() + "\n"
+                    + "Tv: " + casa.getTiene_tv() + "\n"
+                    + "Cocina: " + casa.getTiene_cocina() + "\n"
+                    + "Ubicacion: " + casa.getUbicacion() + "\n"
+                    + "Otros Detalles: " + casa.getOtros_detalles();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de La Casa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -343,6 +374,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         cbxCasas = new javax.swing.JComboBox<>();
+        btnVerCasa = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -466,6 +498,14 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
 
         cbxCasas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         add(cbxCasas, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 230, -1));
+
+        btnVerCasa.setText("VER");
+        btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerCasaActionPerformed(evt);
+            }
+        });
+        add(btnVerCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 80, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreServicioActionPerformed
@@ -515,6 +555,11 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
         cargarTabla();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosCasaSeleccionada();
+    }//GEN-LAST:event_btnVerCasaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxFiltro;
@@ -522,6 +567,7 @@ public class V_ServicioAdicional extends javax.swing.JPanel {
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnVerCasa;
     private javax.swing.JComboBox<String> cbxCasas;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
