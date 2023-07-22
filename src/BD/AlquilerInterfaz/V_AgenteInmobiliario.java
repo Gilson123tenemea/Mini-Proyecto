@@ -406,6 +406,37 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         }
     }
 
+    private void mostrarDatosCasaSeleccionada() {
+        String casaSeleccionada = cbxCasa.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(casaSeleccionada);
+        ObjectSet<CasaVacacional> result = query.execute();
+
+        if (!result.isEmpty()) {
+            CasaVacacional casa = result.next();
+            String mensaje = "ID:: " + casa.getId_casa() + "\n"
+                    + "Cedula Propietario: " + casa.getIDPropietario() + "\n"
+                    + "Nombre: " + casa.getNombre() + "\n"
+                    + "Carro: " + casa.getCarro() + "\n"
+                    + "Numero De Pisos: " + casa.getNum_pisos() + "\n"
+                    + "Capacidad Maxima: " + casa.getCapacidad_maxima() + "\n"
+                    + "Numero De Habitaciones: " + casa.getNum_habitaciones() + "\n"
+                    + "Numero De Baños: " + casa.getNum_banos() + "\n"
+                    + "Piscina: " + casa.getTiene_piscina() + "\n"
+                    + "Jardin: " + casa.getTiene_jardin() + "\n"
+                    + "Wifi: " + casa.getTiene_wifi() + "\n"
+                    + "Tv: " + casa.getTiene_tv() + "\n"
+                    + "Cocina: " + casa.getTiene_cocina() + "\n"
+                    + "Ubicacion: " + casa.getUbicacion() + "\n"
+                    + "Otros Detalles: " + casa.getOtros_detalles();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de La Casa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     public void cerrarBaseDatos() {
         BaseD.close();
     }
@@ -448,6 +479,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         btnBuscarFiltro = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         cbxCasa = new javax.swing.JComboBox<>();
+        btnVerCasa = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -594,6 +626,13 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
         cbxCasa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnVerCasa.setText("VER");
+        btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerCasaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -652,7 +691,10 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                             .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(90, 90, 90)
                                         .addComponent(btnBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnVerCasa))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -729,17 +771,18 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                 .addComponent(jLabel5)
                                 .addGap(14, 14, 14)
                                 .addComponent(jLabel12)))
-                        .addGap(4, 4, 4)
+                        .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cbxCasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVerCasa)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(14, 14, 14)
                         .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
                         .addComponent(btnBuscarFiltro)))
-                .addGap(19, 19, 19)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCrear)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -825,6 +868,11 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         cargarDatosDesdeTabla();
     }//GEN-LAST:event_jtbTablaInmobiliarioMouseClicked
 
+    private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosCasaSeleccionada();
+    }//GEN-LAST:event_btnVerCasaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxFiltro;
@@ -833,6 +881,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnReporte;
+    private javax.swing.JButton btnVerCasa;
     private javax.swing.JButton btncargardatos;
     private javax.swing.JComboBox<String> cbxCasa;
     private javax.swing.JComboBox<String> cbxNacionalidad;
