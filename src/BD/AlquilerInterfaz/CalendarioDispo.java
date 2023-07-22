@@ -43,6 +43,37 @@ public class CalendarioDispo extends javax.swing.JPanel {
         }
     }
 
+    private void mostrarDatosCasaSeleccionada() {
+        String casaSeleccionada = CBoxCasas.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(CasaVacacional.class);
+        query.descend("id_casa").constrain(casaSeleccionada);
+        ObjectSet<CasaVacacional> result = query.execute();
+
+        if (!result.isEmpty()) {
+            CasaVacacional casa = result.next();
+            String mensaje = "ID:: " + casa.getId_casa() + "\n"
+                    + "Cedula Propietario: " + casa.getIDPropietario() + "\n"
+                    + "Nombre: " + casa.getNombre() + "\n"
+                    + "Carro: " + casa.getCarro() + "\n"
+                    + "Numero De Pisos: " + casa.getNum_pisos() + "\n"
+                    + "Capacidad Maxima: " + casa.getCapacidad_maxima() + "\n"
+                    + "Numero De Habitaciones: " + casa.getNum_habitaciones() + "\n"
+                    + "Numero De Baños: " + casa.getNum_banos() + "\n"
+                    + "Piscina: " + casa.getTiene_piscina() + "\n"
+                    + "Jardin: " + casa.getTiene_jardin() + "\n"
+                    + "Wifi: " + casa.getTiene_wifi() + "\n"
+                    + "Tv: " + casa.getTiene_tv() + "\n"
+                    + "Cocina: " + casa.getTiene_cocina() + "\n"
+                    + "Ubicacion: " + casa.getUbicacion() + "\n"
+                    + "Otros Detalles: " + casa.getOtros_detalles();
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de La Casa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -64,6 +95,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
         jCalendar1 = new com.toedter.calendar.JCalendar();
         btnTodos = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        btnVerCasa = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(810, 589));
@@ -159,6 +191,13 @@ public class CalendarioDispo extends javax.swing.JPanel {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/24-horas.png"))); // NOI18N
 
+        btnVerCasa.setText("VER");
+        btnVerCasa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerCasaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,7 +220,9 @@ public class CalendarioDispo extends javax.swing.JPanel {
                                         .addGap(27, 27, 27)
                                         .addComponent(jLabel3)
                                         .addGap(15, 15, 15)
-                                        .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnVerCasa)))))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(CboxFechasDispo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,7 +259,9 @@ public class CalendarioDispo extends javax.swing.JPanel {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIdcale, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(CBoxCasas, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVerCasa))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +283,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
                     .addComponent(btnDelete)
                     .addComponent(btnTodos))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -280,6 +323,11 @@ public class CalendarioDispo extends javax.swing.JPanel {
     private void CBoxCasasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBoxCasasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CBoxCasasActionPerformed
+
+    private void btnVerCasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerCasaActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosCasaSeleccionada();
+    }//GEN-LAST:event_btnVerCasaActionPerformed
     /// crear disponibilidad
     public void crearDisponibilidad() {
         try {
@@ -484,6 +532,7 @@ public class CalendarioDispo extends javax.swing.JPanel {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModi;
     private javax.swing.JButton btnTodos;
+    private javax.swing.JButton btnVerCasa;
     private javax.swing.JButton btncrear;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
