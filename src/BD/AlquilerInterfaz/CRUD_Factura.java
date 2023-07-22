@@ -222,6 +222,54 @@ public class CRUD_Factura extends javax.swing.JPanel {
         }
     }
 
+    private void mostrarDatosClienteSeleccionado() {
+        String cedulaSeleccionada = CboxClientes.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(Cliente.class);
+        query.descend("Cedula").constrain(cedulaSeleccionada);
+        ObjectSet<Cliente> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Cliente cliente = result.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String mensaje = "Cédula: " + cliente.getCedula() + "\n"
+                    + "Nombre: " + cliente.getNombreCliente() + "\n"
+                    + "Apellido: " + cliente.getApellidoCliente() + "\n"
+                    + "Genero: " + cliente.getGeneroCliente() + "\n"
+                    + "Edad: " + cliente.getEdadCliente() + "\n"
+                    + "Correo: " + cliente.getCorreo() + "\n"
+                    + "Celular: " + cliente.getCelular() + "\n"
+                    + "Nacionalidad: " + cliente.getNacionalidad() + "\n"
+                    + "Fecha De Nacimiento: " + sdf.format(cliente.getFecha_Naci());
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos del Cliente", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró un cliente con la cédula seleccionada.", "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void mostrarDatosReservacionSeleccionada() {
+        String idSeleccionado = cbxReservaciones.getSelectedItem().toString();
+        Query query = BaseD.query();
+        query.constrain(Reservacion.class);
+        query.descend("id_reservacion").constrain(idSeleccionado);
+        ObjectSet<Reservacion> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Reservacion reserv = result.next();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String mensaje = "ID: " + reserv.getId_reservacion() + "\n"
+                    + "ID Casa: " + reserv.getId_casa() + "\n"
+                    + "Cedula Cliente: " + reserv.getIDCliente() + "\n"
+                    + "Fecha De Inicio: " + sdf.format(reserv.getFecha_inicio()) + "\n"
+                    + "Fecha Fin: " + sdf.format(reserv.getFecha_fin());
+
+            JOptionPane.showMessageDialog(this, mensaje, "Datos de la Reservacion", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró la reservacion con el id seleccionado.", "Reservacion no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -245,6 +293,8 @@ public class CRUD_Factura extends javax.swing.JPanel {
         btnCrear = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         btnReporte = new javax.swing.JButton();
+        btnVerCliente = new javax.swing.JButton();
+        btnVerReservacion = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -335,6 +385,22 @@ public class CRUD_Factura extends javax.swing.JPanel {
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
         btnReporte.setText("REPORTE");
         add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 500, 120, 50));
+
+        btnVerCliente.setText("VER");
+        btnVerCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerClienteActionPerformed(evt);
+            }
+        });
+        add(btnVerCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 140, -1, -1));
+
+        btnVerReservacion.setText("VER");
+        btnVerReservacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerReservacionActionPerformed(evt);
+            }
+        });
+        add(btnVerReservacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -356,6 +422,16 @@ public class CRUD_Factura extends javax.swing.JPanel {
         limpiarCampos();
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnVerClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerClienteActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosClienteSeleccionado();
+    }//GEN-LAST:event_btnVerClienteActionPerformed
+
+    private void btnVerReservacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReservacionActionPerformed
+        // TODO add your handling code here:
+        mostrarDatosReservacionSeleccionada();
+    }//GEN-LAST:event_btnVerReservacionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CboxClientes;
@@ -365,6 +441,8 @@ public class CRUD_Factura extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnReporte;
+    private javax.swing.JButton btnVerCliente;
+    private javax.swing.JButton btnVerReservacion;
     private javax.swing.JComboBox<String> cbxReservaciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
