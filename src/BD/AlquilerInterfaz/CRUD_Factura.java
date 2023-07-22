@@ -244,7 +244,10 @@ public class CRUD_Factura extends javax.swing.JPanel {
         cbxReservaciones = new javax.swing.JComboBox<>();
         btnCrear = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        btnReporte = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -291,7 +294,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                 btnModificarActionPerformed(evt);
             }
         });
-        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 490, -1, -1));
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, -1, -1));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -300,7 +303,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 490, -1, 50));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 500, -1, 50));
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnBuscar.setText("BUSCAR");
@@ -309,7 +312,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                 btnBuscarActionPerformed(evt);
             }
         });
-        add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 490, -1, 50));
+        add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 500, -1, 50));
 
         CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         add(CboxClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(167, 141, 140, -1));
@@ -324,10 +327,14 @@ public class CRUD_Factura extends javax.swing.JPanel {
                 btnCrearActionPerformed(evt);
             }
         });
-        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, -1, 50));
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, 50));
 
         jLabel7.setText("$");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 360, -1, -1));
+
+        btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/informe.png"))); // NOI18N
+        btnReporte.setText("REPORTE");
+        add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 500, 120, 50));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -357,6 +364,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnReporte;
     private javax.swing.JComboBox<String> cbxReservaciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
