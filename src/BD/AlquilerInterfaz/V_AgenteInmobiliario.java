@@ -133,7 +133,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             //String id_casa = txtIdcasa.getText();
             String casa = cbxCasa.getSelectedItem().toString();
 
-            AgenteInmobiliario agente = new AgenteInmobiliario(cedula, nombre, apellido, genero, edad, telefono, correo, nacionalidad, fechaNacimiento, casa);
+            AgenteInmobiliario agente = new AgenteInmobiliario(cedula, nombre, apellido, genero, edad, correo, telefono, nacionalidad, fechaNacimiento, casa);
             BaseD.store(agente); // Almacenar el objeto en la base de datos
 
             JOptionPane.showMessageDialog(null, "Agente inmobiliario creado exitosamente.");
@@ -141,6 +141,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             cargarTabla();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Seleccione una casa vacacional antes de guardar", "Error", JOptionPane.ERROR_MESSAGE);
+            //System.out.println("Erorr: Puede que no exista casas vacacionales");
         }
     }
 
@@ -168,7 +169,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         String cedula = txtCedula.getText();
         Query query = BaseD.query();
         query.constrain(AgenteInmobiliario.class);
-        query.descend("CedulaAgente").constrain(cedula);
+        query.descend("Cedula").constrain(cedula);
         ObjectSet<AgenteInmobiliario> result = query.execute();
         if (!result.isEmpty()) {
             AgenteInmobiliario agente = result.next();
@@ -241,20 +242,26 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
         ObjectSet<AgenteInmobiliario> result = BaseD.queryByExample(AgenteInmobiliario.class);
         while (result.hasNext()) {
             AgenteInmobiliario agente = result.next();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaNacimiento = dateFormat.format(agente.getFecha_NaciAgente());
+
+            // Verificar si la fecha de nacimiento es nula
+            Date fechaNacimiento = agente.getFecha_NaciAgente();
+            String fechaNacimientoStr = "";
+            if (fechaNacimiento != null) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                fechaNacimientoStr = dateFormat.format(fechaNacimiento);
+            }
+
             Object[] row = {
                 agente.getCedula(),
                 agente.getNombreAgente(),
                 agente.getApellidoAgente(),
                 agente.getEdadAgente(),
                 agente.getGeneroAgente(),
-                agente.getCelularAgente(),
                 agente.getCorreoAgente(),
+                agente.getCelularAgente(),
                 agente.getNacionalidadAgente(),
-                fechaNacimiento,
+                fechaNacimientoStr,
                 agente.getId_casa()
-
             };
 
             model.addRow(row);
@@ -304,8 +311,8 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             rbtnMujer.setSelected(true);
         }
         spnEdad.setValue(agente.getEdadAgente());
-        txtCelular.setText(agente.getCelularAgente());
         txtCorreo.setText(agente.getCorreoAgente());
+        txtCelular.setText(agente.getCelularAgente());
         cbxNacionalidad.setSelectedItem(agente.getNacionalidadAgente());
         dchFechaNacimiento.setDate(agente.getFecha_NaciAgente());
         cbxCasa.setSelectedItem(agente.getId_casa());
@@ -436,7 +443,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void cerrarBaseDatos() {
         BaseD.close();
     }
@@ -543,7 +550,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
 
         jLabel9.setText("Celular:");
 
-        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("CREAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -587,7 +594,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Celular", "Correo", "Nacionalidad", "Fecha Nacimiento", "Nombre casa"
+                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Correo", "Celular", "Nacionalidad", "Fecha Nacimiento", "Nombre casa"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -672,18 +679,20 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(btncargardatos)
-                                                .addGap(26, 26, 26)
-                                                .addComponent(jLabel9))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(80, 80, 80)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLabel6))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(40, 40, 40)
-                                                .addComponent(jLabel5))
+                                                .addComponent(jLabel5)
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(20, 20, 20)
-                                                .addComponent(jLabel12)))))
-                                .addGap(6, 6, 6)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel12)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(0, 63, Short.MAX_VALUE)
+                                                        .addComponent(jLabel9)))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -698,12 +707,12 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(5, 5, 5)
+                                                .addGap(10, 10, 10)
                                                 .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(4, 4, 4)
+                                                .addGap(11, 11, 11)
                                                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(75, 75, 75)
+                                        .addGap(69, 69, 69)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel10)
                                             .addComponent(ComboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -716,7 +725,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                 .addComponent(btnEliminar)
                                 .addGap(73, 73, 73)
                                 .addComponent(btnReporte)))
-                        .addGap(0, 91, Short.MAX_VALUE))
+                        .addGap(0, 89, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane1)))
@@ -731,11 +740,6 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)
-                                .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(14, 14, 14)
@@ -762,15 +766,22 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btncargardatos)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel9)
-                                        .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel5)
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel12)))
+                                        .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel6)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel9))
+                                        .addGap(21, 21, 21)
+                                        .addComponent(jLabel5)
+                                        .addGap(14, 14, 14)
+                                        .addComponent(jLabel12))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(51, 51, 51)
+                                        .addComponent(cbxNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2)
+                                        .addComponent(dchFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
@@ -790,7 +801,7 @@ public class V_AgenteInmobiliario extends javax.swing.JPanel {
                     .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
