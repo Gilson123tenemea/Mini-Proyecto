@@ -1,38 +1,23 @@
 package BD.AlquilerCasas.Clases;
 
-import java.util.Date;
 
 public class Reporte {
 
     private String ID_reporte;
-    private Date fechaGeneracion;
-    private Date fechaInicio;
-    private Date fechaFin;
-    private Propietario propietario;
-    private Cliente cliente;
-    private CasaVacacional casa;
-    private double precioAlquiler;
-    private double pagosRealizados;
-    private double saldoPendiente;
-    private String estadoCasa;
-    private String comentarios;
+    private String nombrecliente;
+    private String Apellidocliente;
+    private String nombreCasa;
+    private double totalFactura;
 
     public Reporte() {
     }
 
-    public Reporte(String ID_reporte, Date fechaGeneracion, Date fechaInicio, Date fechaFin, Propietario propietario, Cliente cliente, CasaVacacional casa, double precioAlquiler, double pagosRealizados, double saldoPendiente, String estadoCasa, String comentarios) {
+    public Reporte(String ID_reporte, String nombrecliente, String Apellidocliente, String nombreCasa, double totalFactura) {
         this.ID_reporte = ID_reporte;
-        this.fechaGeneracion = fechaGeneracion;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.propietario = propietario;
-        this.cliente = cliente;
-        this.casa = casa;
-        this.precioAlquiler = precioAlquiler;
-        this.pagosRealizados = pagosRealizados;
-        this.saldoPendiente = saldoPendiente;
-        this.estadoCasa = estadoCasa;
-        this.comentarios = comentarios;
+        this.nombrecliente = nombrecliente;
+        this.Apellidocliente = Apellidocliente;
+        this.nombreCasa = nombreCasa;
+        this.totalFactura = totalFactura;
     }
 
     public String getID_reporte() {
@@ -43,97 +28,41 @@ public class Reporte {
         this.ID_reporte = ID_reporte;
     }
 
-    public Date getFechaGeneracion() {
-        return fechaGeneracion;
+    public String getNombrecliente() {
+        return nombrecliente;
     }
 
-    public void setFechaGeneracion(Date fechaGeneracion) {
-        this.fechaGeneracion = fechaGeneracion;
+    public void setNombrecliente(String nombrecliente) {
+        this.nombrecliente = nombrecliente;
     }
 
-    public Date getFechaInicio() {
-        return fechaInicio;
+    public String getApellidocliente() {
+        return Apellidocliente;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setApellidocliente(String Apellidocliente) {
+        this.Apellidocliente = Apellidocliente;
     }
 
-    public Date getFechaFin() {
-        return fechaFin;
+    public String getNombreCasa() {
+        return nombreCasa;
     }
 
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setNombreCasa(String nombreCasa) {
+        this.nombreCasa = nombreCasa;
     }
 
-    public Propietario getPropietario() {
-        return propietario;
+    public double getTotalFactura() {
+        return totalFactura;
     }
 
-    public void setPropietario(Propietario propietario) {
-        this.propietario = propietario;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public CasaVacacional getCasa() {
-        return casa;
-    }
-
-    public void setCasa(CasaVacacional casa) {
-        this.casa = casa;
-    }
-
-    public double getPrecioAlquiler() {
-        return precioAlquiler;
-    }
-
-    public void setPrecioAlquiler(double precioAlquiler) {
-        this.precioAlquiler = precioAlquiler;
-    }
-
-    public double getPagosRealizados() {
-        return pagosRealizados;
-    }
-
-    public void setPagosRealizados(double pagosRealizados) {
-        this.pagosRealizados = pagosRealizados;
-    }
-
-    public double getSaldoPendiente() {
-        return saldoPendiente;
-    }
-
-    public void setSaldoPendiente(double saldoPendiente) {
-        this.saldoPendiente = saldoPendiente;
-    }
-
-    public String getEstadoCasa() {
-        return estadoCasa;
-    }
-
-    public void setEstadoCasa(String estadoCasa) {
-        this.estadoCasa = estadoCasa;
-    }
-
-    public String getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(String comentarios) {
-        this.comentarios = comentarios;
+    public void setTotalFactura(double totalFactura) {
+        this.totalFactura = totalFactura;
     }
 
     @Override
     public String toString() {
-        return "Reporte{" + "ID_reporte=" + ID_reporte + ", fechaGeneracion=" + fechaGeneracion + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", propietario=" + propietario + ", cliente=" + cliente + ", casa=" + casa + ", precioAlquiler=" + precioAlquiler + ", pagosRealizados=" + pagosRealizados + ", saldoPendiente=" + saldoPendiente + ", estadoCasa=" + estadoCasa + ", comentarios=" + comentarios + '}';
+        return "Reporte{" + "ID_reporte=" + ID_reporte + ", nombrecliente=" + nombrecliente + ", Apellidocliente=" + Apellidocliente + ", nombreCasa=" + nombreCasa + ", totalFactura=" + totalFactura + '}';
     }
 
 }
