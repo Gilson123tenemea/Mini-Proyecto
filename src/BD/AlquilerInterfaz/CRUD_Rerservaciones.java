@@ -4,13 +4,20 @@ import BD.AlquilerCasas.Clases.CasaVacacional;
 import BD.AlquilerCasas.Clases.Cliente;
 import BD.AlquilerCasas.Clases.Reservacion;
 import BD.AlquilerCasas.Clases.Validaciones;
+import Reporte.ReportFrame;
+import Reporte.ReportGenerator;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Query;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
 public class CRUD_Rerservaciones extends javax.swing.JPanel {
 
@@ -256,7 +263,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             }
         }
     }
-    
+
     private void mostrarDatosCasaSeleccionada() {
         String casaSeleccionada = cbxCasas.getSelectedItem().toString();
         Query query = BaseD.query();
@@ -287,7 +294,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontró la casa con el ID seleccionado.", "Casa no encontrada", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void mostrarDatosClienteSeleccionado() {
         String cedulaSeleccionada = CboxClientes.getSelectedItem().toString();
         Query query = BaseD.query();
@@ -341,6 +348,7 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
         btnVerCliente = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setName("panelReporte"); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("INGRESO RESERVACIONES");
@@ -493,13 +501,10 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
                         .addComponent(jLabel1)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jDateLlegada, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 141, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -570,9 +575,48 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        cargarTabla();
-        limpiarCampos();
-        habilitarParametros();
+
+DefaultTableModel model = (DefaultTableModel) jTableReservaciones.getModel();
+        int rowCount = model.getRowCount();
+        int columnCount = model.getColumnCount();
+        Object[][] data = new Object[rowCount][columnCount];
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Definir los índices de las columnas de fecha
+        int fechaInicioColumnIndex = 3; // Por ejemplo, si la columna de fecha de inicio es la 3
+        int fechaFinColumnIndex = 4; // Por ejemplo, si la columna de fecha de fin es la 4
+
+        for (int i = 0; i < rowCount; i++) {
+            boolean isValidRow = true; // Bandera para verificar si la fila es válida
+            for (int j = 0; j < columnCount; j++) {
+                if (j == fechaInicioColumnIndex || j == fechaFinColumnIndex) {
+                    try {
+                        data[i][j] = sdf.parse((String) model.getValueAt(i, j));
+                    } catch (ParseException e) {
+                        // Si hay un error al parsear la fecha, marca la fila como no válida
+                        isValidRow = false;
+                        break; // No es necesario seguir verificando el resto de las celdas
+                    }
+                } else {
+                    data[i][j] = model.getValueAt(i, j);
+                }
+            }
+            if (!isValidRow) {
+                // Si la fila no es válida, no se agrega a la matriz data
+                data[i] = null;
+            }
+        }
+
+        // Generar el informe utilizando la clase ReportGenerator
+        JasperPrint reportViewer = ReportGenerator.generateReport(data);
+
+// Crear una instancia de JRViewer y agregar reportViewer como contenido
+        JRViewer jrViewer = new JRViewer(reportViewer);
+
+// Crear una instancia de ReportFrame y mostrar el informe en un nuevo JFrame
+        ReportFrame reportFrame = new ReportFrame(jrViewer);
+        reportFrame.setVisible(true);
+
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -614,3 +658,4 @@ public class CRUD_Rerservaciones extends javax.swing.JPanel {
     private javax.swing.JTextField txt_id;
     // End of variables declaration//GEN-END:variables
 }
+

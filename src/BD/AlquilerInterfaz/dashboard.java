@@ -3,6 +3,7 @@ package BD.AlquilerInterfaz;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class dashboard extends javax.swing.JFrame {
@@ -202,6 +203,11 @@ public class dashboard extends javax.swing.JFrame {
         jButton7.setBorder(null);
         jButton7.setBorderPainted(false);
         jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("COMENTARIO");
         jButton8.setBorder(null);
@@ -320,7 +326,7 @@ public class dashboard extends javax.swing.JFrame {
         );
 
         titulo.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        titulo.setText("ALQUILER DE CASAS VACACIONALES \"KAME HOUSE\"");
+        titulo.setText("ALQUILER DE CASAS VACACIONALES \"M2B KAME HOUSE\"");
 
         Contenido.setBackground(new java.awt.Color(255, 255, 255));
         Contenido.setForeground(new java.awt.Color(255, 255, 255));
@@ -348,7 +354,7 @@ public class dashboard extends javax.swing.JFrame {
                         .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(BgLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(BgLayout.createSequentialGroup()
                 .addGap(190, 190, 190)
@@ -439,6 +445,10 @@ public class dashboard extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         ShowJPanel(new CRUD_Contrato(baseD));
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        JOptionPane.showMessageDialog(null, "En proceso...");
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
