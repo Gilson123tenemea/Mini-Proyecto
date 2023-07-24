@@ -83,7 +83,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="100" y="220" width="-1" height="-1"/>
+          <AbsoluteConstraints x="100" y="210" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -139,18 +139,27 @@
     <Component class="javax.swing.JComboBox" name="cbxNacionalidad">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="11">
-            <StringItem index="0" value="Ecuatoriano"/>
-            <StringItem index="1" value="Mexicano"/>
-            <StringItem index="2" value="Canadiense"/>
-            <StringItem index="3" value="Brasile&#xf1;o"/>
-            <StringItem index="4" value="Ucraniana"/>
-            <StringItem index="5" value="Brit&#xe1;nica"/>
-            <StringItem index="6" value="Escocesa"/>
-            <StringItem index="7" value="Finlandesa"/>
-            <StringItem index="8" value="Austriaca"/>
-            <StringItem index="9" value="Rusa"/>
-            <StringItem index="10" value="Espa&#xf1;ola"/>
+          <StringArray count="20">
+            <StringItem index="0" value="Ecuatoriana"/>
+            <StringItem index="1" value="Estadounidense"/>
+            <StringItem index="2" value="Mexicana"/>
+            <StringItem index="3" value="Colombiana"/>
+            <StringItem index="4" value="Argentina"/>
+            <StringItem index="5" value="Espa&#xf1;ola"/>
+            <StringItem index="6" value="Brasile&#xf1;a"/>
+            <StringItem index="7" value="Canadiense"/>
+            <StringItem index="8" value="Peruana"/>
+            <StringItem index="9" value="Francesa"/>
+            <StringItem index="10" value="Alemana"/>
+            <StringItem index="11" value="Italiana"/>
+            <StringItem index="12" value="Inglesa"/>
+            <StringItem index="13" value="China"/>
+            <StringItem index="14" value="Japonesa"/>
+            <StringItem index="15" value="Coreana"/>
+            <StringItem index="16" value="Australiana"/>
+            <StringItem index="17" value="Chilena"/>
+            <StringItem index="18" value="Venezolana"/>
+            <StringItem index="19" value="Suiza"/>
           </StringArray>
         </Property>
       </Properties>
@@ -249,8 +258,8 @@
                 <Column editable="false" title="Apellido" type="java.lang.Object"/>
                 <Column editable="false" title="Edad" type="java.lang.Object"/>
                 <Column editable="false" title="Sexo" type="java.lang.Object"/>
-                <Column editable="false" title="Celular" type="java.lang.Object"/>
                 <Column editable="false" title="Correo" type="java.lang.Object"/>
+                <Column editable="false" title="Celular" type="java.lang.Object"/>
                 <Column editable="false" title="Nacionalidad" type="java.lang.Object"/>
                 <Column editable="false" title="Fecha Nacimiento" type="java.lang.Object"/>
               </Table>

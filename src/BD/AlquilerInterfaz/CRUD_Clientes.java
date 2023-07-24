@@ -89,7 +89,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 177, -1, -1));
 
         jLabel8.setText("Sexo:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, -1, -1));
 
         btngrupSexo.add(rbtnHombre);
         rbtnHombre.setText("Hombre");
@@ -110,7 +110,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         jLabel5.setText("Nacionalidad:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
 
-        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriano", "Mexicano", "Canadiense", "Brasileño", "Ucraniana", "Británica", "Escocesa", "Finlandesa", "Austriaca", "Rusa", "Española" }));
+        cbxNacionalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuatoriana", "Estadounidense", "Mexicana", "Colombiana", "Argentina", "Española", "Brasileña", "Canadiense", "Peruana", "Francesa", "Alemana", "Italiana", "Inglesa", "China", "Japonesa", "Coreana", "Australiana", "Chilena", "Venezolana", "Suiza" }));
         add(cbxNacionalidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 120, 160, 28));
 
         jLabel12.setText("Fecha Nacimiento:");
@@ -152,7 +152,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Celular", "Correo", "Nacionalidad", "Fecha Nacimiento"
+                "Cedula", "Nombre", "Apellido", "Edad", "Sexo", "Correo", "Celular", "Nacionalidad", "Fecha Nacimiento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -252,12 +252,12 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         String apellido = txtApellido.getText();
         String genero = rbtnHombre.isSelected() ? "Hombre" : "Mujer";
         int edad = (int) spnEdad.getValue();
-        String telefono = txtcelu.getText();
         String correo = txtCorreo.getText();
+        String telefono = txtcelu.getText();
         String nacionalidad = cbxNacionalidad.getSelectedItem().toString();
         Date fechaNacimiento = dchFechaNacimiento.getDate();
 
-        Cliente mi_cli = new Cliente(cedula, nombre, apellido, genero, edad, telefono, correo, nacionalidad, fechaNacimiento);
+        Cliente mi_cli = new Cliente(cedula, nombre, apellido, genero, edad, correo, telefono, nacionalidad, fechaNacimiento);
         BaseD.store(mi_cli); // Almacenar el objeto en la base de datos
 
         JOptionPane.showMessageDialog(null, "Cliente creado exitosamente.");
@@ -320,8 +320,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         rbtnHombre.setSelected(cliente.getGeneroCliente() == "H");
         rbtnMujer.setSelected(cliente.getGeneroCliente() == "M");
         spnEdad.setValue(cliente.getEdadCliente());
-        txtcelu.setText(cliente.getCelular());
         txtCorreo.setText(cliente.getCorreo());
+        txtcelu.setText(cliente.getCelular());
         cbxNacionalidad.setSelectedItem(cliente.getNacionalidad());
         dchFechaNacimiento.setDate(cliente.getFecha_Naci());
     }
@@ -392,10 +392,10 @@ public class CRUD_Clientes extends javax.swing.JPanel {
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreportActionPerformed
-        // TODO add your handling code here:
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
+        btnCrear.setEnabled(true);
     }//GEN-LAST:event_btnreportActionPerformed
     // Método para cargar la tabla con los propietarios existentes en la base de datos
     private void cargarTabla() {
@@ -414,8 +414,8 @@ public class CRUD_Clientes extends javax.swing.JPanel {
                 cliente.getApellidoCliente(),
                 cliente.getEdadCliente(),
                 cliente.getGeneroCliente(),
-                cliente.getCelular(),
                 cliente.getCorreo(),
+                cliente.getCelular(),
                 cliente.getNacionalidad(),
                 cliente.getFecha_Naci() != null ? sdf.format(cliente.getFecha_Naci()) : null // Verificar si la fecha no es null antes de formatearla
             };
