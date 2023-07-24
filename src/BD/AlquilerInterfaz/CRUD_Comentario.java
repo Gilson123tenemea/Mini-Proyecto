@@ -98,6 +98,35 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         }
     }
 
+    private void consultarComentario() {
+        String ID_comentario = txtIDComen.getText();
+        Query query = BaseD.query();
+        query.constrain(Comentario.class);
+        query.descend("ID_comentario").constrain(ID_comentario);
+        ObjectSet<Comentario> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Comentario comentario = result.get(0);
+            mostrarDatos(comentario);
+            txtIDComen.setEnabled(false);
+            btnCrear.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un comentario con el id ingresado.");
+            limpiarCampos();
+        }
+    }
+
+    private void mostrarDatos(Comentario comentario) {// Método para mostrar los datos de un propietario en los campos de la interfaz
+        txtIDComen.setText(comentario.getID_comentario());
+        CboxClientes.setSelectedItem(comentario.getIDCliente());
+        cbxCasas.setSelectedItem(comentario.getId_casa());
+        txtContenido.setText(comentario.getContenido());
+        int puntuacion = comentario.getPuntuacion();
+        spnPuntuacion.setValue(puntuacion);
+
+        jcalendarFechaComentario.setDate(comentario.getFecha_comentario());
+    }
+
     /////// busca / consultar por ID
     private void buscarPorId(String id) {
         Query query = BaseD.query();
@@ -351,6 +380,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         btnVerCasa = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btncargarrdatos = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -365,7 +395,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 160, -1, -1));
 
         jLabel3.setText("ID CASA:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 227, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 211, -1, 30));
 
         jLabel4.setText("CONTENIDO:");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 272, -1, 20));
@@ -409,7 +439,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 btnCrearActionPerformed(evt);
             }
         });
-        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 519, 110, -1));
+        add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 519, 110, 40));
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
         btnConsultar.setText("CONSULTAR");
@@ -418,7 +448,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 btnConsultarActionPerformed(evt);
             }
         });
-        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 520, -1, -1));
+        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 520, -1, 40));
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mod.png"))); // NOI18N
         btnModificar.setText("MODIFICAR");
@@ -436,7 +466,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
                 btnEliminarActionPerformed(evt);
             }
         });
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, -1, -1));
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, -1, 40));
 
         spnPuntuacion.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         add(spnPuntuacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 406, -1, -1));
@@ -471,6 +501,14 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             }
         });
         add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 520, -1, 40));
+
+        btncargarrdatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
+        btncargarrdatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncargarrdatosActionPerformed(evt);
+            }
+        });
+        add(btncargarrdatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, 40, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -502,7 +540,12 @@ public class CRUD_Comentario extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cargarTabla();
+        btnCrear.setEnabled(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btncargarrdatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarrdatosActionPerformed
+        consultarComentario();
+    }//GEN-LAST:event_btncargarrdatosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -513,6 +556,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnVerCasa;
+    private javax.swing.JButton btncargarrdatos;
     private javax.swing.JComboBox<String> cbxCasas;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
