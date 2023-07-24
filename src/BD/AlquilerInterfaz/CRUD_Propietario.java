@@ -515,7 +515,7 @@ public class CRUD_Propietario extends javax.swing.JPanel {
         jLabel4.setText("Edad:");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
 
-        spnEdad.setModel(new javax.swing.SpinnerNumberModel(18, 18, 100, 1));
+        spnEdad.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
         add(spnEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 80, -1));
 
         jLabel8.setText("Sexo:");
