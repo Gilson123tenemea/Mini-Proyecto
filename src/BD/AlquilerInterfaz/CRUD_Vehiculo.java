@@ -46,8 +46,8 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
 
             Vehiculo micarro = new Vehiculo();
             micarro.setID_carro(ID_carro);
-            micarro.setModelo(modelo);
             micarro.setMarca(marca);
+            micarro.setModelo(modelo);
             micarro.setAnio(anio);
             micarro.setTipoVehiculo(tipo);
 
@@ -153,8 +153,8 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             Vehiculo carro = result.next();
             Object[] row = {
                 carro.getID_carro(),
-                carro.getModelo(),
                 carro.getMarca(),
+                carro.getModelo(),
                 carro.getAnio(),
                 carro.getTipoVehiculo(),};
             model.addRow(row);
@@ -315,7 +315,15 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
             new String [] {
                 "Placa", "Marca", "Modelo", "Año", "Tipo Vehiculo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaVehiculo);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 810, 250));
@@ -345,6 +353,7 @@ public class CRUD_Vehiculo extends javax.swing.JPanel {
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
+        btnGuardar.setEnabled(true);
     }//GEN-LAST:event_tbnReporteActionPerformed
 
     private void cboxTipoVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxTipoVehiculoActionPerformed
