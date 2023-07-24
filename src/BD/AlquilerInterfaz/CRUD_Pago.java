@@ -70,6 +70,35 @@ public class CRUD_Pago extends javax.swing.JPanel {
         }
     }
 
+    private void consultarPago() {
+        String cedula = txtIDPago.getText();
+        Query query = BaseD.query();
+        query.constrain(Pago.class);
+        query.descend("ID_pago").constrain(cedula);
+        ObjectSet<Pago> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Pago pago = result.get(0);
+            mostrarDatos(pago);
+            txtIDPago.setEnabled(false);
+            btnCrear.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un pago con la idingresada.");
+            limpiarCampos();
+        }
+    }
+
+    private void mostrarDatos(Pago pago) {// Método para mostrar los datos de un propietario en los campos de la interfaz
+        txtIDPago.setText(pago.getID_pago());
+        cbxReservaciones.setSelectedItem(pago.getId_reservacion());
+        double monto = pago.getMonto();
+        String montoStr = String.valueOf(monto);
+        txtMonto.setText(montoStr);
+
+        txtEstadoPago.setText(pago.getEstado_pago());
+        jcalendarFechaPago.setDate(pago.getFecha_pago());
+    }
+
     /////// busca / consultar por ID
     private void buscarPorId(String id) {
         Query query = BaseD.query();
@@ -201,9 +230,8 @@ public class CRUD_Pago extends javax.swing.JPanel {
                 pago.getID_pago(),
                 pago.getId_reservacion(),
                 pago.getMonto(),
-                pago.getEstado_pago(),
                 sdf.format(pago.getFecha_pago()), //fechaFormateada
-            };
+                pago.getEstado_pago(),};
             model.addRow(row);
         }
     }
@@ -253,6 +281,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         cbxReservaciones = new javax.swing.JComboBox<>();
         btnVerReservacion = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        btncargardatos = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -314,7 +343,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, -1, -1));
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
-        btnBuscar.setText("BUSCAR");
+        btnBuscar.setText("CONSULTAR");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -356,6 +385,14 @@ public class CRUD_Pago extends javax.swing.JPanel {
             }
         });
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 480, -1, 50));
+
+        btncargardatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
+        btncargardatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncargardatosActionPerformed(evt);
+            }
+        });
+        add(btncargardatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 40, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
@@ -386,7 +423,12 @@ public class CRUD_Pago extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cargarTabla();
+        btnCrear.setEnabled(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
+        consultarPago();
+    }//GEN-LAST:event_btncargardatosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -396,6 +438,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnVerReservacion;
+    private javax.swing.JButton btncargardatos;
     private javax.swing.JComboBox<String> cbxReservaciones;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
