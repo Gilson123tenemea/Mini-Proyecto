@@ -14,11 +14,11 @@ import javax.swing.table.DefaultTableModel;
 public class CRUD_Actividades extends javax.swing.JPanel {
 
     private ObjectContainer BaseD;
-    String ID_actividades = "";
-    String casa = "";
-    String tipoActividad = "";
-    double costoAdicional = 0;
-    Date fechaHora = null;
+//    String ID_actividades = "";
+//    //String casa = "";
+//    String tipoActividad = "";
+//    double costoAdicional = 0;
+//    Date fechaHora = null;
 
     public CRUD_Actividades(ObjectContainer BaseD) {
         this.BaseD = BaseD;
@@ -59,7 +59,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
                 return;
             }
 
-            String casa = cbxCasas.getSelectedItem().toString();
+            String casa1 = cbxCasas.getSelectedItem().toString();
             String tipoActividad = CboxTipoActividades.getSelectedItem().toString();
             double costoAdicional = (double) spnCosotosAdicionales.getValue();
             Date fechaHora = DateFechaActiviti.getDate();
@@ -67,7 +67,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
             Actividades misacti = new Actividades();
 
             misacti.setID_actividades(ID_actividades);
-            misacti.setCasa(casa);
+            misacti.setCasa(casa1);
             misacti.setTipoActividad(tipoActividad);
             misacti.setCostoAdicional(costoAdicional);
             misacti.setFechaHora(fechaHora);
@@ -103,17 +103,18 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         if (!validarCampos()) {
             return;
         }
-        String ID_actividades = txtidActividades.getText();
+        String id = txtidActividades.getText();
         Query query = BaseD.query();
         query.constrain(Actividades.class);
-        query.descend("ID_actividades").constrain(ID_actividades);
+        query.descend("ID_actividades").constrain(id);
         ObjectSet<Actividades> result = query.execute();
         if (!result.isEmpty()) {
             Actividades acti = result.next();
+            acti.setID_actividades(txtidActividades.getText());
             acti.setCasa(cbxCasas.getSelectedItem().toString());
-            acti.setID_actividades(CboxTipoActividades.getSelectedItem().toString());
             acti.setCostoAdicional((double) spnCosotosAdicionales.getValue());
             acti.setFechaHora(DateFechaActiviti.getDate());
+            acti.setTipoActividad(CboxTipoActividades.getSelectedItem().toString());
 
             BaseD.store(acti);
             JOptionPane.showMessageDialog(null, "Actividad modificado exitosamente.");
@@ -127,9 +128,9 @@ public class CRUD_Actividades extends javax.swing.JPanel {
 
         txtidActividades.setText(activi.getID_actividades());
         cbxCasas.setSelectedItem(activi.getCasa());
+        DateFechaActiviti.setDate(activi.getFechaHora());
         CboxTipoActividades.setSelectedItem(activi.getTipoActividad());
         spnCosotosAdicionales.setValue(activi.getCostoAdicional());
-        DateFechaActiviti.setDate(activi.getFechaHora());
 
     }
 
@@ -166,7 +167,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Object[] row = {
                 acti.getID_actividades(),
-                acti.getClass(),
+                acti.getCasa(),
                 acti.getTipoActividad(),
                 acti.getCostoAdicional(),
                 sdf.format(acti.getFechaHora())
@@ -400,6 +401,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         cargarTabla();
         limpiarCampos();
         habilitarParametros();
+        btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnreporteActionPerformed
 
     private void ComboHoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboHoraActionPerformed
