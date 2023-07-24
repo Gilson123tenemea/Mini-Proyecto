@@ -501,6 +501,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         cargarTabla();
+        btnCrear.setEnabled(true);
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btncargardatossActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatossActionPerformed
