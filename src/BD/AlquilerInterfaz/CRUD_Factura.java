@@ -89,6 +89,35 @@ public class CRUD_Factura extends javax.swing.JPanel {
             System.out.println("Se debe escoger una id de cliente, o de una reservacion");
         }
     }
+    
+     private void consultarFactura() {
+        String ID_factura = txtIDFactura.getText();
+        Query query = BaseD.query();
+        query.constrain(Factura.class);
+        query.descend("ID_factura").constrain(ID_factura);
+        ObjectSet<Factura> result = query.execute();
+
+        if (!result.isEmpty()) {
+            Factura factura = result.get(0);
+            mostrarDatos(factura);
+            txtIDFactura.setEnabled(false);
+            btnCrear.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró una factura con la id ingresada.");
+            limpiarCampos();
+        }
+    }
+     
+     private void mostrarDatos(Factura factura) {// Método para mostrar los datos de un propietario en los campos de la interfaz
+        txtIDFactura.setText(factura.getID_factura());
+        CboxClientes.setSelectedItem(factura.getIDCliente());
+        cbxReservaciones.setSelectedItem(factura.getId_reservacion());
+        double totalPago = factura.getTotalPago();
+        String totalPagor = String.valueOf(totalPago);
+        txtPago.setText(totalPagor);
+
+        jcalendarEmision.setDate(factura.getFecha_emision());
+    }
 
     /////// busca / consultar por ID
     private void buscarPorId(String id) {
@@ -317,6 +346,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
         btnReporte = new javax.swing.JButton();
         btnVerCliente = new javax.swing.JButton();
         btnVerReservacion = new javax.swing.JButton();
+        btncargardatoss = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -337,8 +367,8 @@ public class CRUD_Factura extends javax.swing.JPanel {
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 212, -1, -1));
 
         jLabel5.setText("FECHA DE EMISION:");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 286, -1, -1));
-        add(jcalendarEmision, new org.netbeans.lib.awtextra.AbsoluteConstraints(169, 273, 150, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 280, -1, 20));
+        add(jcalendarEmision, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, 150, -1));
 
         jLabel6.setText("TOTAL DE PAGO:");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 354, -1, 20));
@@ -366,7 +396,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
                 btnModificarActionPerformed(evt);
             }
         });
-        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, -1, -1));
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, -1, 50));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -387,6 +417,11 @@ public class CRUD_Factura extends javax.swing.JPanel {
         add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 500, -1, 50));
 
         CboxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CboxClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CboxClientesActionPerformed(evt);
+            }
+        });
         add(CboxClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(167, 141, 140, -1));
 
         cbxReservaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -428,6 +463,14 @@ public class CRUD_Factura extends javax.swing.JPanel {
             }
         });
         add(btnVerReservacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, -1));
+
+        btncargardatoss.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/busqueda.png"))); // NOI18N
+        btncargardatoss.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncargardatossActionPerformed(evt);
+            }
+        });
+        add(btncargardatoss, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 40, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
@@ -460,6 +503,14 @@ public class CRUD_Factura extends javax.swing.JPanel {
         cargarTabla();
     }//GEN-LAST:event_btnReporteActionPerformed
 
+    private void btncargardatossActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatossActionPerformed
+        consultarFactura();
+    }//GEN-LAST:event_btncargardatossActionPerformed
+
+    private void CboxClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CboxClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CboxClientesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CboxClientes;
@@ -471,6 +522,7 @@ public class CRUD_Factura extends javax.swing.JPanel {
     private javax.swing.JButton btnReporte;
     private javax.swing.JButton btnVerCliente;
     private javax.swing.JButton btnVerReservacion;
+    private javax.swing.JButton btncargardatoss;
     private javax.swing.JComboBox<String> cbxReservaciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
