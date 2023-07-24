@@ -326,7 +326,7 @@
         <Component class="javax.swing.JButton" name="btnGUARDAR">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/imagenes/sav.png"/>
+              <Image iconType="3" name="/imagenes/crear.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="GUARDAR"/>
           </Properties>

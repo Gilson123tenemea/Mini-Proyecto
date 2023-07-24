@@ -313,7 +313,7 @@ public class CRUD_Actividades extends javax.swing.JPanel {
         });
         jPanel1.add(ComboHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 120, -1, -1));
 
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnGuardar.setText("GUARDAR");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

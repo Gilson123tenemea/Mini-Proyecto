@@ -252,7 +252,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         cbxcocina.setText("SI");
         jPanel1.add(cbxcocina, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 80, 40));
 
-        btnGUARDAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
+        btnGUARDAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnGUARDAR.setText("GUARDAR");
         btnGUARDAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

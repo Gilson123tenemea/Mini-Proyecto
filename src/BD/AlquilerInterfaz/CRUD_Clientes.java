@@ -117,7 +117,7 @@ public class CRUD_Clientes extends javax.swing.JPanel {
         add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, -1, -1));
         add(dchFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 132, 30));
 
-        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sav.png"))); // NOI18N
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         btnCrear.setText("GUARDAR");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
