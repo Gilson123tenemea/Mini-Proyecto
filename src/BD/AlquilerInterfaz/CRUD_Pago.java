@@ -83,7 +83,7 @@ public class CRUD_Pago extends javax.swing.JPanel {
             txtIDPago.setEnabled(false);
             btnCrear.setEnabled(false);
         } else {
-            JOptionPane.showMessageDialog(null, "No se encontró un pago con la idingresada.");
+            JOptionPane.showMessageDialog(null, "No se encontró un pago con la id ingresada.");
             limpiarCampos();
         }
     }
