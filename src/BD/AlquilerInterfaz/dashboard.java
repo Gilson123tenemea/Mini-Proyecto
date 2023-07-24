@@ -447,7 +447,7 @@ public class dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        JOptionPane.showMessageDialog(null, "En proceso...");
+        ShowJPanel(new V_Reporte(baseD));
     }//GEN-LAST:event_jButton7ActionPerformed
 
     public static void main(String args[]) {
