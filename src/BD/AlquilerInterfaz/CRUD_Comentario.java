@@ -279,7 +279,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ingrese un valor en el contenido valido");
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarContenido(txtContenido.getText())) {
-            JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
+            JOptionPane.showMessageDialog(this, "Valor incorrecto del contenido. Ingrese de nuevo");
             ban_confirmar = false;
         }
         int puntuacion = (int) spnPuntuacion.getValue();
@@ -288,7 +288,7 @@ public class CRUD_Comentario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ingrese un valor válido");
             ban_confirmar = false;
         } else if (!miValidaciones.ValidarPuntuacion(Integer.toString(puntuacion))) {
-            JOptionPane.showMessageDialog(this, "Valor incorrecto. Ingrese de nuevo");
+            JOptionPane.showMessageDialog(this, "Valor incorrecto de la puntuacion. Ingrese de nuevo");
             ban_confirmar = false;
         }
         return ban_confirmar;
