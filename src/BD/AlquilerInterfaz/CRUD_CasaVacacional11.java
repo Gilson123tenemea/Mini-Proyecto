@@ -323,7 +323,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, -1, -1));
 
-        CbxFiltrarbsuque.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Casa", "ID Propiedad", "Nombre", " " }));
+        CbxFiltrarbsuque.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "idCasa", "cedulaPropietario", "nombre", " " }));
         CbxFiltrarbsuque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CbxFiltrarbsuqueActionPerformed(evt);
@@ -647,12 +647,12 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
         model.setRowCount(0); // Limpiar la tabla antes de cargar los datos
 
         ObjectSet<CasaVacacional> result;
-        if (criterio.equals("id_casa")) {
-            result = BaseD.queryByExample(new CasaVacacional(id_casa, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
-        } else if (criterio.equals("IDPropietario")) {
-            result = BaseD.queryByExample(new CasaVacacional(null, IDPropietario, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
-        } else if (criterio.equals("otros_detalles")) {
-            CasaVacacional filtro = new CasaVacacional(null, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, otros_detalles);
+        if (criterio.equals("idCasa")) {
+            result = BaseD.queryByExample(new CasaVacacional(valorBusqueda, null, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
+        } else if (criterio.equals("cedulaPropietario")) {
+            result = BaseD.queryByExample(new CasaVacacional(null, valorBusqueda, null, null, 0, 0, 0, 0, null, null, null, null, null, null, null));
+        } else if (criterio.equals("nombre")) {
+            CasaVacacional filtro = new CasaVacacional(null, null, valorBusqueda, null, 0, 0, 0, 0, null, null, null, null, null, null, null);
             result = BaseD.queryByExample(filtro);
         } else {
             // Criterio inválido, no se realiza la búsqueda
@@ -683,7 +683,7 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
     }
 
     private void habilitarCamposBusqueda(String criterioSeleccionado) {
-        deshabilitarParametros();
+        //deshabilitarParametros();
         if (criterioSeleccionado.equals("id_casa")) {
             txtIDCASA.setEnabled(true);
         } else if (criterioSeleccionado.equals("IDPropietario")) {
@@ -696,9 +696,9 @@ public class CRUD_CasaVacacional11 extends javax.swing.JPanel {
 
     private String obtenerValorBusqueda(String criterioSeleccionado) {
         String valorBusqueda = "";
-        if (criterioSeleccionado.equals("id_casa")) {
+        if (criterioSeleccionado.equals("idCasa")) {
             valorBusqueda = txtIDCASA.getText();
-        } else if (criterioSeleccionado.equals("IDPropietario")) {
+        } else if (criterioSeleccionado.equals("cedulaPropietario")) {
             valorBusqueda = cbxPropietarios.getSelectedItem().toString();
         } else if (criterioSeleccionado.equals("nombre")) {
             valorBusqueda = txtnombreCasa.getText();
