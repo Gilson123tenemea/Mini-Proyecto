@@ -20,7 +20,7 @@ public class CasaVacacional {
     private String tiene_cocina;
     private String ubicacion;
     private String otros_detalles;
-    public static ArrayList<String> listaUbicacion = new ArrayList<>();
+    //public static ArrayList<String> listaUbicacion = new ArrayList<>();
 
     public CasaVacacional() {
     }
