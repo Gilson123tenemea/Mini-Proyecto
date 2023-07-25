@@ -114,7 +114,7 @@ public class V_Reporte extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Dubai", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Reporte Genereal");
+        jLabel1.setText("Reporte General");
 
         tblReporte.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
