@@ -3,14 +3,13 @@ package BD.AlquilerInterfaz;
 import com.db4o.Db4o;
 import com.db4o.ObjectContainer;
 import java.awt.BorderLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class dashboard extends javax.swing.JFrame {
 
     //Direccion de la base de datos
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\David\\Desktop\\BDMP\\AlquilerInterfaz1.yap";//Isaac Villa
+    public static String direccionBD = "C:\\Users\\David\\Downloads\\BASEMiniProyecto\\BASEMiniProyecto.yap";//Isaac Villa
     //public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Stiven Carpio
     //public static String direccionBD = "C:\\Users\\PC01\\Documents\\GitHub\\AlquilerInterfaz.yap";
     //public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";
@@ -23,6 +22,7 @@ public class dashboard extends javax.swing.JFrame {
         this.setTitle("Base De Datos Orientada a Objetos");
         this.setLocationRelativeTo(null);
         cerrarBaseVentana();
+        ShowJPanel(new Inicio());
     }
 
     private void cerrarBaseVentana() {
@@ -69,7 +69,6 @@ public class dashboard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Bg.setBackground(new java.awt.Color(255, 255, 255));
         Bg.setForeground(new java.awt.Color(255, 255, 255));
@@ -79,6 +78,7 @@ public class dashboard extends javax.swing.JFrame {
 
         jLabelCasa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/casa.png"))); // NOI18N
 
+        btncliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/users-altV.png"))); // NOI18N
         btncliente.setText("CLIENTES");
         btncliente.setBorder(null);
         btncliente.setBorderPainted(false);
@@ -89,6 +89,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnpropi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/users-altV.png"))); // NOI18N
         btnpropi.setText("PROPIETARIO");
         btnpropi.setBorder(null);
         btnpropi.setBorderPainted(false);
@@ -99,6 +100,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnadmi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8_Contacts_25px.png"))); // NOI18N
         btnadmi.setText("AGENTE INMOBILIARIO");
         btnadmi.setBorder(null);
         btnadmi.setBorderPainted(false);
@@ -109,6 +111,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btncasa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8-casa-32.png"))); // NOI18N
         btncasa.setText("CASAS VACACIONALES");
         btncasa.setBorder(null);
         btncasa.setBorderPainted(false);
@@ -129,6 +132,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnpago.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/billete-de-banco.png"))); // NOI18N
         btnpago.setText("PAGO");
         btnpago.setBorder(null);
         btnpago.setBorderPainted(false);
@@ -139,6 +143,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/camion1.png"))); // NOI18N
         jButton2.setText("VEHICULO");
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
@@ -159,6 +164,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnFactura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/google_forms_24px.png"))); // NOI18N
         btnFactura.setText("FACTURA");
         btnFactura.setBorder(null);
         btnFactura.setBorderPainted(false);
@@ -199,6 +205,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/account_24px.png"))); // NOI18N
         jButton7.setText("REPORTE");
         jButton7.setBorder(null);
         jButton7.setBorderPainted(false);
@@ -229,6 +236,7 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnsalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8_Exit_25px.png"))); // NOI18N
         btnsalir.setText("SALIR");
         btnsalir.setBorder(null);
         btnsalir.setBorderPainted(false);
@@ -335,7 +343,7 @@ public class dashboard extends javax.swing.JFrame {
         Contenido.setLayout(ContenidoLayout);
         ContenidoLayout.setHorizontalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         ContenidoLayout.setVerticalGroup(
             ContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,7 +363,7 @@ public class dashboard extends javax.swing.JFrame {
                     .addGroup(BgLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 157, Short.MAX_VALUE))))
             .addGroup(BgLayout.createSequentialGroup()
                 .addGap(190, 190, 190)
                 .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -372,7 +380,16 @@ public class dashboard extends javax.swing.JFrame {
                 .addComponent(Contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(Bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 730));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
