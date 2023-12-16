@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sistema" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9ba7caa-86f7-406e-873b-0e05ebf188e3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="39fb118b-7765-45a6-9455-e6d08e370ae3"/>
+	<field name="id_reservacion" class="java.lang.String"/>
+	<field name="id_casa" class="java.lang.String"/>
+	<field name="IDCliente" class="java.lang.String"/>
+	<field name="fecha_inicio" class="java.util.Date"/>
+	<field name="fecha_fin" class="java.util.Date"/>
+	<variable name="id_reservacion_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{id_reservacion}]]></variableExpression>
+	</variable>
+	<variable name="id_reservacion_2" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{id_reservacion}]]></variableExpression>
+	</variable>
+	<variable name="id_casa_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{id_casa}]]></variableExpression>
+	</variable>
+	<variable name="IDCliente_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{IDCliente}]]></variableExpression>
+	</variable>
+	<variable name="fecha_inicio_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{fecha_inicio}]]></variableExpression>
+	</variable>
+	<variable name="fecha_fin_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{fecha_fin}]]></variableExpression>
+	</variable>
+	<background>
+		<band height="555" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement style="SubTitle" x="336" y="65" width="449" height="29" uuid="6c7f63b6-bcf8-46de-aff9-90bce517f0f1"/>
+				<textElement textAlignment="Right">
+					<font size="22" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Reporte de reservaciones]]></text>
+			</staticText>
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="822" height="65" forecolor="#006699" backcolor="#006699" uuid="f13b477c-660e-4424-8c43-015db57d4174"/>
+				<staticText>
+					<reportElement style="Title" x="231" y="0" width="578" height="65" uuid="2d5ba6ad-6ae7-44ad-8950-5a220c242887"/>
+					<textElement textAlignment="Right">
+						<font size="54" isBold="false"/>
+					</textElement>
+					<text><![CDATA[M2B KAME HOUSE]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="802" height="36" uuid="b94d0131-58cc-46e0-961f-fa9535119924"/>
+				<staticText>
+					<reportElement style="Column header" x="0" y="0" width="127" height="36" uuid="cccf529a-491e-4243-9a3a-f42835fa9a1b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ID RESERVACION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="127" y="0" width="168" height="36" uuid="0b71ea14-1e0c-49bc-a26f-4fc8582c7f09"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[ID CASA VACACIONAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="295" y="0" width="189" height="36" uuid="4c296b49-e4c9-4bfe-af20-3e137bf12332"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CEDULA CLIENTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="484" y="0" width="167" height="36" uuid="7b629539-d656-4212-ada7-feb35a671117"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[FECHA INICIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="651" y="0" width="151" height="36" uuid="b800649a-3c59-4331-85f3-67d98644345f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[FECHA FIN]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="76" splitType="Stretch">
+			<frame>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="802" height="40" uuid="da1f6fc3-f11b-483c-bcd3-4c7f0bb9aa0f"/>
+				<textField>
+					<reportElement x="0" y="0" width="127" height="40" uuid="8b133b50-7494-4094-a821-2449f38f4905"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{id_reservacion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="127" y="0" width="168" height="40" uuid="983bc889-b37f-4d07-b52d-cb6192b99b23"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{id_casa}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="295" y="0" width="189" height="40" uuid="0f11d224-f48a-4a84-a6c5-acb0aa9f346a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{IDCliente}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="484" y="0" width="167" height="40" uuid="29564332-c760-4f51-87dc-944b1449d40b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{fecha_inicio}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="651" y="0" width="151" height="40" uuid="8d9954cc-d2a0-4389-bdb9-e43e2edc12c2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{fecha_fin}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="52" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="47" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

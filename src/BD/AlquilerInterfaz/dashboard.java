@@ -9,10 +9,10 @@ public class dashboard extends javax.swing.JFrame {
 
     //Direccion de la base de datos
     //public static String direccionBD = "C:\\Users\\USER\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Bryan farez
-    public static String direccionBD = "C:\\Users\\David\\Downloads\\BASEMiniProyecto\\BASEMiniProyecto.yap";//Isaac Villa
+    //public static String direccionBD = "C:\\Users\\David\\Downloads\\BASEMiniProyecto\\BASEMiniProyecto.yap";//Isaac Villa
     //public static String direccionBD = "C:\\Users\\HP\\Documents\\GitHub\\AlquilerInterfaz.yap"; // Stiven Carpio
     //public static String direccionBD = "C:\\Users\\PC01\\Documents\\GitHub\\AlquilerInterfaz.yap";
-    //public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";
+    public static String direccionBD = "C:\\Users\\ADMIN_01\\Documents\\MINI PROYECTO BDOO\\AlquilerInterfaz.yap";
 
     ObjectContainer baseD = Db4o.openFile(direccionBD);
 
